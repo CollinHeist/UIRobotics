@@ -1,31 +1,12 @@
-/* ************************************************************************** */
-/** Descriptive File Name
-  @ Author
-    Richard Wall
- 
-  @ Date:       April 30, 2016
-    Revised:    December 12, 2016
-    Verified:   May 20, 2017
-
-  @Company
-    Digilent Inc.      
-
-  @File Name
-    hardware.h
-
-  @Summary
-    Definition of constants and macro routines for the Basys MX3A processor board 
-
-  @Description
-    The #define statements and macro C code provides high level access to the 
-    Basys MX3A trainer boards switches, push buttons, and LEDs.
-    
- */
-/* ************************************************************************** */
-/* Conditional inclusion prevents multiple definition errors */
+/* --------------------- Constants and Macro Routines -----------------------
+  @ Summary
+     Definition of constants and macro routines for the Basys MX3A processor board 
+  @ Description
+     The #define statements and macro C code provides high level access to the 
+     Basys MX3A trainer boards switches, push buttons, and LEDs.
+  ---------------------------------------------------------------------------- */
 #ifndef _HARDWARE_H_   
     #define	_HARDWARE_H_
-
     #ifndef _SUPPRESS_PLIB_WARNING	/* Suppress plib obsolesce warnings */
         #define _SUPPRESS_PLIB_WARNING
     #endif
@@ -35,14 +16,12 @@
     #endif
 
    #include <plib.h>
-   
-/* The following definitions are for IO assigned on the Digilent Basys MX3
-   processor board. */
-
-/* The ANSELx register has a default value of 0xFFFF; therefore, all pins that
- * share analog functions are analog (not digital) by default. All pins are 
- * initially set be digital followed be setting A_POT for the ANALOG INPUT 
- * CONTROL and A_MIC for the microphone input back to being analog input pins.*/
+/* ---------------- IO Assignments for the Digilent Basys MX3 ----------------
+   The ANSELx register has a default value of 0xFFFF; therefore, all pins that
+   share analog functions are analog (not digital) by default. All pins are 
+   initially set be digital followed be setting A_POT for the ANALOG INPUT 
+   CONTROL and A_MIC for the microphone input back to being analog input pins.
+  ---------------------------------------------------------------------------- */
     #define ALL_DIGITAL_IO() (ANSELA = 0, ANSELB = 0, ANSELC = 0, 
                               ANSELD = 0, ANSELE = 0, ANSELF = 0, ANSELG = 0)
     #define SET_MIC_ANALOG()  ANSELBbits.ANSB4 = 1
@@ -53,14 +32,14 @@
 /* The following macro instruction sets the processor pins for all 8 switch inputs */
 
 // Configure slide switches
-    #define SW0cfg()    TRISFbits.TRISF3 = 1 
-    #define SW1cfg()    TRISFbits.TRISF5 = 1 
-    #define SW2cfg()    TRISFbits.TRISF4 = 1 
+    #define SW0cfg()    TRISFbits.TRISF3  = 1 
+    #define SW1cfg()    TRISFbits.TRISF5  = 1 
+    #define SW2cfg()    TRISFbits.TRISF4  = 1 
     #define SW3cfg()    TRISDbits.TRISD15 = 1
     #define SW4cfg()    TRISDbits.TRISD14 = 1
     #define SW5cfg()    TRISBbits.TRISB11 = 1
     #define SW6cfg()    TRISBbits.TRISB10 = 1
-    #define SW7cfg()    TRISBbits.TRISB9 = 1
+    #define SW7cfg()    TRISBbits.TRISB9  = 1
     #define SWcfg()     (SW0cfg(), SW1cfg(), SW2cfg(), SW3cfg(), SW4cfg(),\
                          SW5cfg(), SW6cfg(), SW7cfg())
 
@@ -137,14 +116,14 @@
     #define Set_All_LEDs_Output()  TRISACLR = All_LED_bits
 
 /* Macros to set board each LED on (1) or off (0) */
-    #define setLED0(a);  {if(a) LATASET = LED0_bit; else LATACLR = LED0_bit;}
-    #define setLED1(a);  {if(a) LATASET = LED1_bit; else LATACLR = LED1_bit;}
-    #define setLED2(a);  {if(a) LATASET = LED2_bit; else LATACLR = LED2_bit;}
-    #define setLED3(a);  {if(a) LATASET = LED3_bit; else LATACLR = LED3_bit;}
-    #define setLED4(a);  {if(a) LATASET = LED4_bit; else LATACLR = LED4_bit;}
-    #define setLED5(a);  {if(a) LATASET = LED5_bit; else LATACLR = LED5_bit;}
-    #define setLED6(a);  {if(a) LATASET = LED6_bit; else LATACLR = LED6_bit;}
-    #define setLED7(a);  {if(a) LATASET = LED7_bit; else LATACLR = LED7_bit;}
+    #define setLED0(a); { if(a) LATASET = LED0_bit; else LATACLR = LED0_bit; }
+    #define setLED1(a); { if(a) LATASET = LED1_bit; else LATACLR = LED1_bit; }
+    #define setLED2(a); { if(a) LATASET = LED2_bit; else LATACLR = LED2_bit; }
+    #define setLED3(a); { if(a) LATASET = LED3_bit; else LATACLR = LED3_bit; }
+    #define setLED4(a); { if(a) LATASET = LED4_bit; else LATACLR = LED4_bit; }
+    #define setLED5(a); { if(a) LATASET = LED5_bit; else LATACLR = LED5_bit; }
+    #define setLED6(a); { if(a) LATASET = LED6_bit; else LATACLR = LED6_bit; }
+    #define setLED7(a); { if(a) LATASET = LED7_bit; else LATACLR = LED7_bit; }
     #define Set_All_LEDs_On()   LATASET = All_LED_bits  // Set all LEDs on
     #define Set_All_LEDs_Off()  LATACLR = All_LED_bits  // Set all LEDs off
 
@@ -178,11 +157,11 @@
 	#define MCMODEcfg() (TRISFbits.TRISF1 = 0, LATFbits.LATF1 = 0)
 	#define MCInit()	(AIN1cfg(), AIN2cfg(), BIN1cfg(), BIN2cfg(), MCMODEcfg())
 
-	#define AIN1(a);    {if(a) LATBbits.LATB3 = 1; else LATBbits.LATB3 = 0;}
-	#define AIN2(a);    {if(a) LATEbits.LATE8 = 1; else LATEbits.LATE8 = 0;}
-	#define BIN1(a);    {if(a) LATEbits.LATE9 = 1; else LATEbits.LATE9 = 0;}
-	#define BIN2(a);    {if(a) LATBbits.LATB5 = 1; else LATBbits.LATB5 = 0;}
-	#define MCMODE(a);  {if(a) LATFbits.LATF1 = 1; else LATFbits.LATF1 = 0;}
+	#define AIN1(a);   { if(a) LATBbits.LATB3 = 1; else LATBbits.LATB3 = 0; }
+	#define AIN2(a);   { if(a) LATEbits.LATE8 = 1; else LATEbits.LATE8 = 0; }
+	#define BIN1(a);   { if(a) LATEbits.LATE9 = 1; else LATEbits.LATE9 = 0; }
+	#define BIN2(a);   { if(a) LATBbits.LATB5 = 1; else LATBbits.LATB5 = 0; }
+	#define MCMODE(a); { if(a) LATFbits.LATF1 = 1; else LATFbits.LATF1 = 0; }
 
 //  define setup parameters for OpenADC10
 //                       Turn module on | output integer  | trigger mode auto | enable auto sample
@@ -221,25 +200,18 @@
 
 #endif	/* End of _HARDWARE_H_ */
 
-// *****************************************************************************
-/**
-  @Function
-    void hardware(void);
-
-  @Summary
-    Initializes PIC32 pins commonly used for IO on the Basys MX3 Trainer 
-    processor board.
-
-  @Description
-    Initializes PIC32 digital IO pins to provide functionality for the 
-    slide switches, push buttons, and LEDs
-
-  @Parameters
-    None
-
-  @Returns
-    None
-***************************************************************************** */    
+/* ------------------------------- hardware() --------------------------------
+  @ Function
+     void hardware(void);
+  @ Summary
+     Initializes PIC32 pins commonly used for IO on the Basys MX3 Trainer 
+     processor board.
+  @ Description
+     Initializes PIC32 digital IO pins to provide functionality for the 
+     slide switches, push buttons, and LEDs
+  @ Parameters
+     None
+  @ Returns
+     None
+  ---------------------------------------------------------------------------- */
 void Hardware_Setup(void);
-
-// End of hardware.h 
