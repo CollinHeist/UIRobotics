@@ -91,7 +91,7 @@ void _mon_putc(char c) {
     This function will not block if space is not available 
     in the transmit buffer 
   -------------------------------------------------------------------------- */
-BOOL putcU4( int ch) {
+BOOL putcU4(int ch) {
 UART_DATA c;
 BOOL done = FALSE;
     c.data8bit = (char) ch;
@@ -115,7 +115,7 @@ BOOL done = FALSE;
  @ Remarks
     This function does not block for no character received
   -------------------------------------------------------------------------- */
-BOOL getcU4( char *ch) {
+BOOL getcU4(char *ch) {
     UART_DATA c;
     BOOL done = FALSE;
     if(UARTReceivedDataIsAvailable(UART4)) {	// wait for new char to arrive
@@ -123,7 +123,7 @@ BOOL getcU4( char *ch) {
         *ch = (c.data8bit);
         done = TRUE;		// Return new data available flag
     }
-    return done;            // Return new data not available flag
+    return done;                // Return new data not available flag
 } /* End of getU4 */
 
 /* ------------------------------ putsU4 -----------------------------------
@@ -216,7 +216,7 @@ int getstrU4(char *s, unsigned int len) {
                 buf_len--;          // decrement length counter
         }
     }
-    if( buf_len == 0 || eol) {      // Check for buffer full or end of line
+    if(buf_len == 0 || eol) {       // Check for buffer full or end of line
         *p1 = '\0';                 // add null terminate the string
         return TRUE;                // Set EOL flag 
     }
