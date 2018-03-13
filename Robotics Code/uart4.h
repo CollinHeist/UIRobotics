@@ -1,24 +1,6 @@
 /* ************************************************************************** */
-/** Descriptive File Name: UART Serial communications header file for 
- *  comm_lib.c. This declares all public functions.
-
-  @ Author  
-     Richard Wall
-  
-  @ Date: 
-     Created:    June 17, 2016 for Basys MX3
-     Verified:	 May 18, 2017
-
-  @Company
-    Digilent Inc
-
-  @File Name
-    comm_lib.h
-
-  @Development Environment
-    MPLAB X IDE x3.61 - http://www.microchip.com/mplab/mplab-x-ide 
-	XC32 1.43 - http://www.microchip.com/mplab/compilers
-	PLIB 3/7/20162 - http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20Library
+/* UART Serial communications header file for comm_lib.c. 
+   This declares all public functions.
 
   @Summary
     UART 4 initialization and character and string I/O.
@@ -30,11 +12,9 @@
 
   @Remarks
     This code also uses the "printf" function on UART Serial Port 4
-
 **************************************************************************** */
 
 #ifndef __MX370_COMM_H__
-
     #define __MX370_COMM_H__
     #define _UART4
 
@@ -43,7 +23,6 @@
     #define NO_PARITY       0
     #define ODD_PARITY      1
     #define EVEN_PARITY     2
-
 #endif
 
 /* uart4_init FUNCTION DESCRIPTION *************************************
@@ -57,7 +36,7 @@
     parity. Character and string input functions are non blocking functions.
     The serial interface uses UART channel 4.
 
- @ PARAMETERS
+ @PARAMETERS
     @param1:        integer Baud rate
     @param2:        integer (parity, NO_PARITY, ODD_PARITY, or EVEN_PARITY)
  @RETURN VALUE:     None
@@ -65,7 +44,6 @@
   @Remarks
     This code also uses the "printf" function on UART Serial Port 4
     9 bit mode MARK or SPACE parity is not supported
-
  
  * END DESCRIPTION **********************************************************/
 void uart4_init(unsigned int baud, int parity);
@@ -91,13 +69,13 @@ void uart4_init(unsigned int baud, int parity);
 void _mon_putc(char c);
 
 /* putU4 FUNCTION DESCRIPTION ********************************************
- @SYNTAX:           BOOL putU1( int c);
- * 
+ @SYNTAX:           BOOL putU1(int c);
+ 
  @KEYWORDS:         UART, character
- * 
+ 
  @DESCRIPTION:      Send single character to UART4. Waits while UART4 is busy 
                     (buffer full) and then sends a single byte to UART1
- * 
+ 
  @PARAMETER
     @param1:        character to send
  
@@ -106,17 +84,12 @@ void _mon_putc(char c);
  
  @REMARKS:          This function will not block if space is not available
                     in the transmit buffer
-@EXAMPLE
-   @code
-        BOOL result;
-        char ch;
-        result = putcU4(ch);
  
  * END DESCRIPTION **********************************************************/
-BOOL putcU4( int c);
+BOOL putcU4(int c);
 
 /* getcU4 FUNCTION DESCRIPTION ********************************************
- @SYNTAX:           BOOL getcU4( char *ch);
+ @SYNTAX:           BOOL getcU4(char *ch);
 
  @KEYWORDS:         character, get
 
@@ -130,24 +103,18 @@ BOOL putcU4( int c);
 
  @REMARKS:          This function does not block for no character received
  
- @EXAMPLE
-   @code
-        BOOL result;
-        char ch;
-        result = getcU4(&ch);
- 
  * END DESCRIPTION ********************************************************/
-BOOL getcU4( char *ch);
+BOOL getcU4(char *ch);
 
 /* putsU4 FUNCTION DESCRIPTION ********************************************
- @SYNTAX:          int putsU4( const char *s);
+ @SYNTAX:          int putsU4(const char *s);
 
  @KEYWORDS:        UART, string
 
  @DESCRIPTION:     Sends a NULL terminates text string to UART4 with
                    CR and LF appended
  @PARAMETER
-    @param1:       pointer to text string
+    @param1:       Pointer to text string
  
  @RETURN VALUE:    Logical TRUE
 
@@ -181,13 +148,8 @@ int putsU4(const char *s);
                     to free up resource. There is no way to restart the function
                     after the first call until a EOL has been received.  Hence
                     this function has denial of service security risks.
- @EXAMPLE
-   @code
-        int result, len;
-        char str[];
-        result = getstrU4(str, len);
  
 * END DESCRIPTION ************************************************************/
-int getstrU4( char *s, unsigned int len );
+int getstrU4(char *s, unsigned int len);
 
 /* End of comm_lib.h */
