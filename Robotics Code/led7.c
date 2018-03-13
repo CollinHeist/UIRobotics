@@ -1,29 +1,11 @@
-/* ************************************************************************** */
-/** Descriptive File Name: Led7.c - driver code for a 4-digit 7 segment LED
-                           display
+/* ------------ driver code for a 4-digit 7 segment LED display --------------
+  @ Summary
+     Four digit - seven segment LED display library.
+  @ Description
+     Displays decimal values of a four digit - seven segment display
+  ---------------------------------------------------------------------------- */
 
-  @ Author
-    Richard Wall
- 
-  @ Date
-    Created:    May 28, 2016
-    Revised:    May 20, 2017
-    Verified:   May 20, 2017
-
-  @Company
-    Digilent
-
-  @File Name
-    led7.c
-
-  @Summary
-    Four digit - seven segment LED display library.
-
-  @Description
-    Displays decimal values of a four digit - seven segment display
- */
-
-/* Section: Included Files */
+/*  ------------------------- Section: Included Files ------------------------ */
 #include "swDelay.h"
 #include "led7.h"
 #include "hardware.h"
@@ -33,35 +15,20 @@
 int16_t led_value = 0;
 BOOL led_flag = 0;
 
-/* ************************************************************************** */
-/* ************************************************************************** */
-/* Section: Four digit seven segment library                                  */
-/* ************************************************************************** */
-/* ************************************************************************** */
-
-/* Provides control of individual digits or write a decimal value to the four
- * LED displays
- */
-
-/** 
-  @Function
-    * void seg7_init(void);
-  @Summary
-    * Initialized 7 segment IO pins as outputs
-  @Description
-    * The assigned PIC32 IO pins are assigned as outputs and the digit LED 
-    * anodes are set to zero.
-  @Precondition
-    * None
-  @Parameters
-    * None
-  @Returns
-    * None
-  @Remarks
-    * None
- */
-void seg7_init(void)
-{
+/* -------------------------------- seg7_init --------------------------------
+  @ Summary
+     Initialized 7 segment IO pins as outputs
+  @ Description
+     The assigned PIC32 IO pins are assigned as outputs and the digit LED 
+     anodes are set to zero.
+  @ Precondition
+     None
+  @ Parameters
+     None
+  @ Returns
+     None
+  ---------------------------------------------------------------------------- */
+void seg7_init (void) {
     Seg7cfg();
     DIGITS_OFF();
     clr_dsp();
@@ -78,24 +45,19 @@ void seg7_init(void)
     mT1IntEnable( 1);           // Enable T1 interrupts   
 }
 
-/** 
-  @Function
-    * void clr_dsp(void);
-  @Summary
-    * Turns off all LED segments 
-  @Description
-    * All 7 LEDs are set to zero.
-  @Precondition
-    * LED IO pins have been initialized as outputs
-  @Parameters
-    * None    
-  @Returns
-    * None
-  @Remarks
-    * None
- */
-void clr_dsp(void)
-{
+/* --------------------------------- clr_dsp ---------------------------------
+  @ Summary
+     Turns off all LED segments 
+  @ Description
+     All 7 LEDs are set to zero.
+  @ Precondition
+     LED IO pins have been initialized as outputs
+  @ Parameters
+     None    
+  @ Returns
+     None
+  ---------------------------------------------------------------------------- */
+void clr_dsp(void) {
     SEG_CA(0);      
     SEG_CB(0);
     SEG_CC(0);
@@ -106,32 +68,26 @@ void clr_dsp(void)
     SEG_DP(0);
 }
 
-/** 
-  @Function
-    * void set_digit(int dsp, int value, int dp);
-  @Summary
-    * Turns off all LED segments 
-  @Description
-    * All 7 LEDs are set to zero.
-  @Precondition
-    * LED IO pins have been initialized as outputs
-  @Parameters
-    * 1: Display digit
-    * 2: Display value
-    * 3: decimal point control   
-  @Returns
-    * None
-  @Remarks
-    * Digital display anode controls are active low.
-    * 
-    * Pmod JA Pin 2 is used for timing instrumentation and should be removed 
-    * after testing.
- */
-void set_digit(int dsp, int value, int dp)
-{
+/* ------------------------------- set_digit ---------------------------------
+  @ Summary
+     Turns off all LED segments 
+  @ Description
+     All 7 LEDs are set to zero.
+  @ Precondition
+     LED IO pins have been initialized as outputs
+  @ Parameters
+     @ param1: Display digit
+     @ param2: Display value
+     @ param3: decimal point control   
+  @ Returns
+     None
+  @ Remarks
+     Digital display anode controls are active low. mod JA Pin 2 is used for
+     timing instrumentation and should be removed after testing.
+  ---------------------------------------------------------------------------- */
+void set_digit (int dsp, int value, int dp) {
     dsp_digit(value, dp);   // Set LED cathodes according to 
-    switch(dsp)
-    {
+    switch (dsp) {
         case 0:
             DIG_AN0(0);
             DIG_AN1(1);
@@ -164,28 +120,22 @@ void set_digit(int dsp, int value, int dp)
     }
 }
 
-/** 
-  @Function
-* void dsp_digit(int value);
-
-  @Summary
-    *  Single digit LED display
-  @Description
-    * Turns on specific LEDs segments to display the value in decimal format.
-  @Precondition
-    * LED IO pins have been initialized as outputs
-  @Parameters
-    * int - value to be displayed    
-  @Returns
-    * None
-  @Remarks
-    * Each value is displayed using a macro that consists of multiple C 
-    * statements.
- */
-void dsp_digit(int value, int dp)
-{
-    switch(value)
-    {      
+/* ------------------------------- dsp_digit ---------------------------------
+  @ Summary
+     Single digit LED display
+  @ Description
+     Turns on specific LEDs segments to display the value in decimal format.
+  @ Precondition
+     LED IO pins have been initialized as outputs
+  @ Parameters
+     int - value to be displayed    
+  @ Returns
+     None
+  @ Remarks
+     Each value is displayed using a macro that consists of multiple C statements.
+  ---------------------------------------------------------------------------- */
+void dsp_digit (int value, int dp) {
+    switch (value) {      
         case 0:
             SEG_LED0
             break;
@@ -220,31 +170,27 @@ void dsp_digit(int value, int dp)
             SEG_NEG     // generate negative sign
             break;            
         default:
-            SEG_OFF    // Blank the display
+            SEG_OFF     // Blank the display
     }
     SEG_DP(dp);
 }
 
-/** 
-  @Function
-* void led_number(int value);
-  @Summary
-    * Display 4 digit decimal number
-  @Description
-    * A value of -999 through 9999 is displayed on the 4 digit 7 segment 
-    * display. Leading zero blanking is used.
-  @Precondition
-    * LED IO pins have been initialized as outputs 
-  @Parameters
-    * int - value to be displayed in the range -999 to +9999
-    * None    
-  @Returns
-    * None
-  @Remarks
-    * Each value is displayed using a macro that consists of multiple C 
-    * statements. This function must be call frequently to keep the numbers
-    * visible to the viewer. 
- */
+/* ------------------------------- led_number ---------------------------------
+  @ Summary
+     Display 4 digit decimal number
+  @ Description
+     A value of -999 through 9999 is displayed on the 4 digit 7 segment 
+     display. Leading zero blanking is used.
+  @ Precondition
+     LED IO pins have been initialized as outputs 
+  @ Parameters
+     @ param1: int - value to be displayed in the range -999 to +9999  
+  @ Returns
+     None
+  @ Remarks
+     Each value is displayed using a macro that consists of multiple C statements.
+     This function must be call frequently to keep the numbers visible to the viewer. 
+  ---------------------------------------------------------------------------- */
 void led_number(int value) {
     int d1, d2, d3, d4, dz = 0;     // Segment values and display zero flag
     
@@ -297,25 +243,21 @@ void led_number(int value) {
     }
 }
 
-/** 
-  @Function
-* void test_7seg_leds(void);
-  @Summary
-    * A display test sequence for the 4 digit seven segment display
-  @Description
-    * Each of the 7 LED segments A through F are displayed on digit 0. The the 
-    * number "8" is shifted from eft to right on the display 
-  @Precondition
-    * LED IO pins have been initialized as outputs 
-  @Parameters
-* int - value to be displayed
-    * None    
-  @Returns
-    * None
-  @Remarks
-    * Each value is displayed using a macro that consists of multiple C 
-    * statements.
- */
+/* ------------------------------ test_7seg_leds -----------------------------
+  @ Summary
+     A display test sequence for the 4 digit seven segment display
+  @ Description
+     Each of the 7 LED segments A through F are displayed on digit 0. The the 
+     number "8" is shifted from eft to right on the display 
+  @ Precondition
+     LED IO pins have been initialized as outputs 
+  @ Parameters
+     @ param1: int - value to be displayed
+  @ Returns
+     None
+  @ Remarks
+     Each value is displayed using a macro that consists of multiple C statements.
+  ---------------------------------------------------------------------------- */
 void test_7seg_leds (void) {
     DIG_AN0(0);
     SEG_CA(1);
@@ -347,22 +289,23 @@ void test_7seg_leds (void) {
     DIG_AN3(1);   
 }
 
-/* T2Interrupt Function Description *****************************************
- * SYNTAX:          void T1Interrupt(void);
- * KEYWORDS:        Timer1 interrupt service routine
- * DESCRIPTION:     Toggles JA4 every Timer 1 interrupt at interrutpt group
- *                  level 1.
- * PARAMETERS:      None
- * RETURN VALUE:    None
- *
- * NOTES:           See initPWM
- * END DESCRIPTION **********************************************************/
-void __ISR( _TIMER_1_VECTOR, IPL1SOFT) T1Interrupt (void) {
-static int led_disp = 3;            // Seven-segment LED digit display index
-static int led_digit;               // Seven-segment LED digit display value
-static int ms_cntr = 10;
-
-    if (--ms_cntr<=0) {             // Measure out 10 tenths of a second 
+/* ------------------------------- T1Interrupt -------------------------------
+ @ Syntax
+    void T1Interrupt(void);
+ @ Description
+    Toggles JA4 every Timer 1 interrupt at interrutpt group level 1.
+ @ Parameters
+    None
+ @ Return Value
+    None
+ @ Notes
+    See initPWM
+  ---------------------------------------------------------------------------- */
+void __ISR (_TIMER_1_VECTOR, IPL1SOFT) T1Interrupt (void) {
+    static int led_disp = 3;            // Seven-segment LED digit display index
+    static int led_digit;               // Seven-segment LED digit display value
+    static int ms_cntr = 10;
+    if (--ms_cntr<=0) {                 // Measure out 10 tenths of a second 
         ms_cntr = 10;
         if (led_flag && (led_value<10000) && (led_value > -1000)) {
             switch(led_disp) {      // Determine the display digit
@@ -398,6 +341,5 @@ static int ms_cntr = 10;
             clr_dsp();
         }
     }
-    
     mT1ClearIntFlag(); 	// clear T2Interrupt flag
 } // End of T1Interrupt ISR
