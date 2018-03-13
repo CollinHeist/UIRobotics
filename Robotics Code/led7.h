@@ -1,70 +1,39 @@
-/* ************************************************************************** */
-/** Descriptive File Name: Led7.h - header file for the  4-digit 7 segment LED
-                           display driver code.
-
-  @ Author
-    Richard Wall
- 
-  @ Date
-    Created:    May 28, 2016
-    Revised:    May 20, 2017
-    Verified:   May 20, 2017
- 
-  @Company
-    Digilent
-
-  @File Name
-    LED7.h
-
-  @Summary
-    Four Digit - Seven segment display constants.
-
-  @Description
-    Defines the IO pins and decimal digit output for a seven segment display.
- */
-/* ************************************************************************** */
+/** Header file for the  4-digit 7 segment LED display driver code.
+  @ Summary
+     Four Digit - Seven segment display constants.
+  @ Description
+     Defines the IO pins and decimal digit output for a seven segment display.
+ ---------------------------------------------------------------------------- */
 
 #ifndef _LED7_H_    /* Guard against multiple inclusion */
 #define _LED7_H_
-
-/* ************************************************************************** */
-/* ************************************************************************** */
-/* Section: Included Files                                                    */
-/* ************************************************************************** */
-/* ************************************************************************** */
 
 #include "hardware.h"
 #include <plib.h>
 #include <stdint.h>
 
-    /* ************************************************************************** */
-    /* ************************************************************************** */
-    /* Section: Constants                                                         */
-    /* ************************************************************************** */
-    /* ************************************************************************** */
-
-    /*  This file defines the port and pin assignments for the 7 segment LED 
-     * displays.  Macros are used extensively to implement abstraction of the
-     * bit-bang control required because the segment LEDs are not assigned to
-     * contiguous pins on a single port.  
-     */
+    /* ----------------------------------------------------------------------
+       This file defines the port and pin assignments for the 7 segment LED 
+       displays.  Macros are used extensively to implement abstraction of the
+       bit-bang control required because the segment LEDs are not assigned to
+       contiguous pins on a single port.
+       ---------------------------------------------------------------------- */
 
 // Configure the PIC32 pins for 7 segment LED outputs
 	#define CAcfg()    TRISGbits.TRISG12 = 0
 	#define CBcfg()    TRISAbits.TRISA14 = 0
-	#define CCcfg()    TRISDbits.TRISD6 = 0
+	#define CCcfg()    TRISDbits.TRISD6  = 0
 	#define CDcfg()    TRISGbits.TRISG13 = 0
 	#define CEcfg()    TRISGbits.TRISG15 = 0
-	#define CFcfg()    TRISDbits.TRISD7 = 0
+	#define CFcfg()    TRISDbits.TRISD7  = 0
 	#define CGcfg()    TRISDbits.TRISD13 = 0
 	#define DPcfg()    TRISGbits.TRISG14 = 0
 
 // Macros that set the PIC32 pins as digital outputs for LED Digit display 
-    #define AN0cfg()   (TRISBbits.TRISB12 = 0, ANSELBbits.ANSB12 = 0)   // RB12
-    #define AN1cfg()   (TRISBbits.TRISB13 = 0, ANSELBbits.ANSB13 = 0)   // RB13
-    #define AN2cfg()   TRISAbits.TRISA9 = 0    // RA9
-    #define AN3cfg()   TRISAbits.TRISA10 = 0   // RA10
-
+    #define AN0cfg()   (TRISBbits.TRISB12 = 0, ANSELBbits.ANSB12 = 0)  // RB12
+    #define AN1cfg()   (TRISBbits.TRISB13 = 0, ANSELBbits.ANSB13 = 0)  // RB13
+    #define AN2cfg()    TRISAbits.TRISA9  = 0   // RA9
+    #define AN3cfg()    TRISAbits.TRISA10 = 0   // RA10
 
     #define DIG_DLY     100
 
@@ -104,26 +73,16 @@
     #define SET_DP      0                           // Decimal point position
     #define T1_TICK (GetPeripheralClock()/10000)    // Used PBCLK = 10MHz
 
-    /* ************************************************************************** */
-    /** Descriptive Constant Name
-
-      @Summary
-     Seven segment display definition and control macros.
-      
-      @Description
-       LED segment control definitions require individual bit control. "SET_xx"
-       operators declare the segment pins as outputs. "SEG_xx" and "DIG_xx" 
-       operators assign values either "0" or "1" to the outputs.  "SEG_xx" 
-       operators control the LED segments and "DIG_ANx" select the display 
-       digit. Digits are selected by asserting the digit anode low.
-        
-       Reference: https://en.wikipedia.org/wiki/Seven-segment_display  
-     */
-// *****************************************************************************
-// *****************************************************************************
-// Section: Interface Functions
-// *****************************************************************************
-// *****************************************************************************
+    /* -----------------------------------------------------------------------
+      @ Summary
+         Seven segment display definition and control macros.
+      @ Description
+         LED segment control definitions require individual bit control. "SET_xx"
+	 operators declare the segment pins as outputs. "SEG_xx" and "DIG_xx" 
+	 operators assign values either "0" or "1" to the outputs.  "SEG_xx" 
+	 operators control the LED segments and "DIG_ANx" select the display
+	 digit. Digits are selected by asserting the digit anode low.
+       ----------------------------------------------------------------------- */
 
 #endif /* _LED7_H_ */
 
@@ -133,7 +92,3 @@ void set_digit(int dsp, int value, int dp); // Sets Segment LEDS and activates d
 void dsp_digit(int dsp, int dp); // Sets segment LEDs for specific value
 void led_number(int value); // Displays a value (0 - 9999)
 void test_7seg_leds(void);  // Seven segment display test sequence
-
-/* *****************************************************************************
- End of File led7.h
- */
