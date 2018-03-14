@@ -1,42 +1,13 @@
-/* ************************************************************************** */
-/** Descriptive File Name:  main.c for Lab 7a. Generates one of eight single
-                            frequency tones.
+/* ------------ Main project file, runs all the non-library code -------------
+  @ Summary
+     
+  @ Description
+     
+  @ Notes
+     Uses a peripheral bus clock set to 80 MHz
+  ---------------------------------------------------------------------------- */
 
-  @ Author
-    Richard Wall
- 
-  @ Date
-    Created;    February 6, 2018
-
-  @Development Environment
-    MPLAB X IDE x3.61 - http://www.microchip.com/mplab/mplab-x-ide 
-	XC32 1.43 - http://www.microchip.com/mplab/compilers
-	PLIB 3/7/20162 - http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20Library
-  @File Name
-    main.c
-
-  @Summary
-    The RCTC is not available on the Basys MX3 processor system
-
-  @Description
-   Continuously reads the PmodGPS and displays the available time and date on 
-   the system LCD. Pressing BTNR, BTND, or BTNC will change the GPS sentence
-   type. LED0 is toggles each time a new sentence is received from the GPS.
- 
-  @Remarks
-    Reference:     PIC32MX2xx/4xx Users Manual - 
-        http://ww1.microchip.com/downloads/en/DeviceDoc/61143H.pdf
-    
-    Uses XC32 peripheral library. See 
- http://ww1.microchip.com/downloads/en/DeviceDoc/32bitPeripheralLibraryGuide.pdf
- http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20Library
-  
- ****   This application uses a peripheral bus clock set to 80MHz.  ****
-    PBCLK set for 80 MHz, Set parameters in config_bits.h and hardware.h
-
- ******************************************************************************/
-
-// System included files
+/* -------------------------- Project Include Files -------------------------- */
 #include "config_bits.h"
 #include "hardware.h"
 #include "main.h"
@@ -47,99 +18,76 @@
 #include <stdint.h>
 #include <math.h>
 
-// Platform common included files
 #include "swDelay.h"
 
-// Application included files
 #include "uart4.h"  // Monitor UART
 #include "uart2.h"  // GPS UART
 #include "led7.h"
 #include "LCDlib.h"
+/* --------------------------------------------------------------------------- */
 
+/* ---------------------------- Function Declarations ------------------------ */
 int set_gps(void);
 int calc_ck_sum(char *str);
-// was "int *lat, int *lng"
 int decode_gps_msg(char *str, float *lat, float *lng, unsigned char *hour, unsigned char *min, 
-                          unsigned char *sec, unsigned char *year, 
-                          unsigned char *day, unsigned char *mon);
+                   unsigned char *sec, unsigned char *year, unsigned char *day, unsigned char *mon);
+/* --------------------------------------------------------------------------- */
 
-// Global variables
-int gps_message = 0;        // Active GPS sentence 
+/* --------------------- Global Variable Declarations ------------------------ */
+int gps_message = 0;
 extern int16_t led_value;
 extern BOOL led_flag;
-
-// A structure that stores an x and y location
-// Used for returning from GPS parse function
-struct location {
-    float latitude;
-    float longitude;
-};
+/* --------------------------------------------------------------------------- */
 
 
-
-/** 
-  @Function
-    int main( void ); 
-
-  @Summary
-    Initializes the hardware platform and performs the calculator operations.
-
-  @Description
-    System initialization and infinite application loop. Reads the GPS sentence 
-    and decodes the sentence before displaying on the LCD. Also facilitates
-    changing GPS sentences.
-
-  @Precondition
-    None
-
-  @Parameters
-    None
-
-  @Returns
- The system has failed if the last statement is executed. 
-      <li> EXIT_FAILURE (1)   Indicates an error occurred
-      <li> EXIT_SUCCESS (0)   Indicates an error did not occur
-
-  @Remarks
-    See http://www.rhydolabz.com/documents/25/PMTK_A11.pdf and
-    http://aprs.gids.nl/nmea/
- */
+/* -------------------------------- main() -----------------------------------
+  @ Function
+     int main(void); 
+  @ Summary
+     
+  @ Description
+    
+  @ Parameters
+     None
+  @ Returns
+     The system has failed if the last statement is executed. 
+     @ 1 : Indicates an error occurred
+     @ 0 : Indicates an error did not occur
+  ---------------------------------------------------------------------------- */
 int main (void) {
-char str_buf[GPS_BUFFER_SIZE];
-unsigned int str_idx = 0;                           // GPS sentence buffer
-char ch;                                            // Received character
-int rx_flag;                                        // Character ready
-unsigned char hour, minute, sec, year, day, mon;    // Time and date
-
+    char str_buf[GPS_BUFFER_SIZE];
+    unsigned int str_idx = 0;                           // GPS sentence buffer
+    char ch;                                            // Received character
+    int rx_flag;                                        // Character ready
+    unsigned char hour, minute, sec, year, day, mon;    // Time and date
+	
+    /* ---------------- Initilizing fuctions ------------------- */
     Hardware_Setup();               // Initialize common IO
     initLCD();                      // Local real time display
-    uart4_init(38400, NO_PARITY);   // PC Terminal
+    uart4_init(38400, NO_PARITY);   // Uart Output to the PC
     uart2_init(9600, NO_PARITY);    // GPS 
     seg7_init();                    // Displays seconds only
     led_flag = 1;
-    
+    /* --------------------------------------------------------- */
+
 //    TRISCbits.TRISC2 = 0;   // Set JA1 for diagnostics timing output
 //    LATCbits.LATC2 = 0;
 
-    while(1)	// Background process handles UART communications 
-    {
-        do{
+    while(1) {	// Background process handles UART communications
+        do {
             rx_flag = getcU2(&ch);  // Poll for character received
-        }while(!rx_flag);        
+        } while(!rx_flag);        
         putcU4(ch);                 // Send received character to monitor
         
-        if((ch == '$') || (str_idx >= GPS_BUFFER_SIZE-1)) // Detect EOL
-        {
+        if((ch == '$') || (str_idx >= GPS_BUFFER_SIZE-1)) { // Detect EOL
             str_buf[str_idx] = 0;   // Add string NULL character
             str_idx = 0;            // Reset index for new line
             invLED0();              // Toggle message marker
         }
         
         str_buf[str_idx++] = ch;    // Add new character to buffer
-        if(ch == '\n') {             // Look for new line character
-            if(!set_gps())          // Check for change of message
-            {
-//                LATCbits.LATC2 = 1; // Process timing
+        if(ch == '\n') {            // Look for new line character
+            if(!set_gps()) {        // Check for change of message
                 // Requires 3.5ms to decode and display on LCD
                 struct location currLoc;
                 float lat, lng;
@@ -217,52 +165,45 @@ unsigned char hour, minute, sec, year, day, mon;    // Time and date
  * NOTES:           See GlobalTop reference manual
  *                  http://www.adafruit.com/datasheets/PMTK_A11.pdf
  * END DESCRIPTION **********************************************************/
-int set_gps(void)
-{
-int new_msg = 0;    // Flag message has been set
-int cksum;
-char gps_msg1[GPS_BUFFER_SIZE];
-char gps_msg2[GPS_BUFFER_SIZE];
-    if(BTNR()) /* Set RMC */
-    {
+int set_gps(void) {
+    int new_msg = 0;    // Flag message has been set
+    int cksum;
+    char gps_msg1[GPS_BUFFER_SIZE];
+    char gps_msg2[GPS_BUFFER_SIZE];
+    if (BTNR()) { // Set RMC
         gps_message = GPRMC;
         strcpy(gps_msg1, "$PMTK314,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*");
         cksum = calc_ck_sum(gps_msg1);
         sprintf(gps_msg2,"%s%X\r\n", gps_msg1, cksum);
         printf("\n\r%s", gps_msg2);
         putsU2( gps_msg2 );
-        do              // Debounce push button switch
-        {
+        do { // Debounce push button switch
             msDelay(10);
-        }while(BTNR());
+        } while (BTNR());
         new_msg = 1;
     }
-    if(BTNC()) /* Set GGA */
-    {
+    if (BTNC()) { // Set GGA
         gps_message = GPGGA;
         strcpy(gps_msg1, "$PMTK314,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*");
         cksum = calc_ck_sum(gps_msg1);
         sprintf(gps_msg2,"%s%X\r\n", gps_msg1, cksum);
         printf("\n\r%s", gps_msg2);
         putsU2( gps_msg2 );
-        do              // Debounce push button switch
-        {
+        do {             // Debounce push button switch
             msDelay(10);
-        }while(BTNC());
+        } while (BTNC());
         new_msg = 1;
     }
-    if(BTND()) /* Set GLL */
-    {
+    if (BTND()) { // Set GLL
         gps_message = GPGLL;
         strcpy(gps_msg1, "$PMTK314,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*");
         cksum = calc_ck_sum(gps_msg1);
         sprintf(gps_msg2,"%s%X\r\n", gps_msg1, cksum);
         printf("\n\r%s", gps_msg2);
-        putsU2( gps_msg2 );
-        do              // Debounce push button switch
-        {
+        putsU2(gps_msg2 );
+        do {            // Debounce push button switch
             msDelay(10);
-        }while(BTND());
+        } while (BTND());
         new_msg = 1;
     }
     return new_msg;
@@ -278,166 +219,140 @@ char gps_msg2[GPS_BUFFER_SIZE];
  * RETURN VALUE:    check_sum of BYTE type
  * NOTES:           Called from set_gps(void) function.
  * END DESCRIPTION **********************************************************/
-int calc_ck_sum(char *str)
-{
-int cksum = 0;
-int start_flag = 0;
-int stop_flag = 0;
+int calc_ck_sum(char *str) {
+    int cksum = 0;
+    int start_flag = 0;
+    int stop_flag = 0;
 
-    do
-    {   // Search for "$" character 
-        if(start_flag == 0 )
-        {
-            if(*str == 0x24)    // Search for '$' character
-            {
+    do {  // Search for "$" character 
+        if (start_flag == 0) {
+            if (*str == 0x24) {  // Search for '$' character
                 start_flag = 1;
             }
         }
-        else
-        {       // Search for "*" character signifying the end of sentence 
-            if(*str == '*')
-            {
+        else { // Search for "*" character signifying the end of sentence 
+            if (*str == '*') {
                 stop_flag = 1;   // Mark end of GPS sentence 
             }
-            else
-            {
-                cksum ^= (unsigned char) ( *str );   //  Update check sum 
+            else {
+                cksum ^= (unsigned char) (*str );   //  Update check sum 
             }
         }
         str++;
-    } while((*str != 0x00) && (stop_flag == 0)); // End of string or "*" 
+    } while ((*str != 0x00) && (stop_flag == 0)); // End of string or "*" 
     return cksum;
 } // End of calc_ck_sum
+/* --------------------------- decode_gps_msg() ------------------------------
+  @ Syntax
+     decode_gps_msg(char *str, BYTE *hour, BYTE *min, BYTE *sec,
+                    BYTE *year, BYTE *day, BYTE *mon);
+  @ Description
+     This function parses one of three different GPS sentences
+  @ Parameter
+    @ param1: string containing the GPS sentence
+    @ param2: int reference to hours
+    @ param3: int reference to minutes
+    @ param4: int reference to seconds
+    @ param5: int reference to year (units and tens digits only)
+    @ param6: int reference to day
+    @ param7: int reference to month
+  @ Return Value
+     number of variables successfully decoded
+  ---------------------------------------------------------------------------- */
+int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hour, 
+                   unsigned char *min, unsigned char *sec, unsigned char *year, 
+                   unsigned char *day, unsigned char *mon) {
+    int vars = 0;
+    char msg[8] = {' '};
+    unsigned int time = 0, date = 0;
+    char status=' ', NS=' ', EW=' ', mdir=' ', mode=' ', cksum=0, alt_units=' ', geo_units=' ';
+    float utc=0, lat=0, lng=0, speed=0, dir=0, mag_var=0, hdop=0, alt=0, geo_sep=0;
+    int pos_fix=0, sats=0;
 
-/* FUNCTION DESCRIPTION *****************************************************
- * SYNTAX:          static WORD decode_gps_msg(char *str, BYTE *hour, BYTE *min,
- *                          BYTE *sec, BYTE *year, BYTE *day, BYTE *mon);
- * KEYWORDS:        Decode, GPS, sentence
- * DESCRIPTION:     This function parses one of three different GPS sentences
- * Parameter 1:     string containing the GPS sentence
- * Parameter 3:     int reference to hours
- * Parameter 4:     int reference to minutes
- * Parameter 5:     int reference to seconds
- * Parameter 6:     int reference to year (units and tens digits only)
- * Parameter 7:     int reference to day
- * Parameter 8:     int reference to month
- * RETURN VALUE:    number of variables successfully decoded
- * NOTES:           None
- * END DESCRIPTION **********************************************************/
-int decode_gps_msg(char *str, 
-                   float * retLat, float * retLng,
-                   unsigned char *hour, 
-                   unsigned char *min, 
-                   unsigned char *sec,
-                   unsigned char *year, 
-                   unsigned char *day, 
-                   unsigned char *mon) {
-int vars = 0;
-char msg[8] ={' '};
-unsigned int time = 0, date = 0;
-char status=' ', NS=' ', EW=' ', mdir=' ', mode=' ', cksum=0, alt_units=' ', geo_units=' ';
-float utc=0, lat=0, lng=0, speed=0, dir=0, mag_var=0, hdop=0, alt=0, geo_sep=0;
-int pos_fix=0, sats=0;
+    unsigned char dow;
+    char lcd_str[17];
+    char roll_back = 0;
 
-unsigned char dow;
-char lcd_str[17];
-char roll_back = 0;
+    #ifdef USE_RTCC         // Not available on Basys X3 - requires 32KHz crystal
+	rtccTime     tm;    // RTCC time structure
+	rtccDate     dt;    // RTCC date structure
+    #endif
 
-#ifdef USE_RTCC         // Not available on Basys X3 - requires 32KHz crystal
-    rtccTime     tm;    // RTCC time structure
-    rtccDate     dt;    // RTCC date structure
-#endif
-
-    if (gps_message == 0)   // Power-up reset - determine GPS message mode 
-    {
-        if(*str != '$') {
+    if (gps_message == 0) { // Power-up reset - determine GPS message mode 
+        if (*str != '$') {
             return 0;       // Incorrect message identifier
         }
-        else
-        {
+        else {
             memcpy(msg, str, 6);    // Determine type of GPS sentence
-            if(memcmp(msg, "$GPRMC", 6) == 0)
-            {
+            if (memcmp(msg, "$GPRMC", 6) == 0) {
                 gps_message = GPRMC;
             }
-            if(memcmp(msg, "$GPGGA", 6) == 0)
-            {
+            if (memcmp(msg, "$GPGGA", 6) == 0) {
                 gps_message = GPGGA;
             }
-            if(memcmp(msg, "$GPGLL", 6) == 0)
-            {
+            if (memcmp(msg, "$GPGLL", 6) == 0) {
                 gps_message = GPGLL;
             }
         }
     }
     
 // Decode the appropriate sentence
-    if(gps_message == GPRMC)
-    {
+    if (gps_message == GPRMC) {
         vars = sscanf(str,"%s,%f,%c,%f,%c,%f,%c,%f,%f,%d,%f,%c,%c*%x",msg,
                     &utc, &status, &lat, &NS, &lng, &EW, &speed, &dir,
                     &date, &mag_var, &mdir, &mode, &cksum  );
 //      LATCbits.LATC2 = str[12] & 1;
     }
 
-    if(gps_message == GPGLL)
-    {
+    if (gps_message == GPGLL) {
         vars = sscanf(str,"%s,%f,%c,%f,%c,%f,%c*%x", msg,
                &lat, &NS, &lng, &EW, &utc, &mode, &cksum  );
     }
 
-    if( (gps_message == GPGGA))
-    {
+    if ((gps_message == GPGGA)) {
         vars = sscanf(str,"%s,%f,%f,%c,%f,%c,%d,%d,%f,%f,%c,%f,%c,,*%x", msg,
                 &utc, &lat, &NS, &lng, &EW, &pos_fix, &sats,
-                &hdop, &alt, &alt_units, &geo_sep, &geo_units ,&cksum  );
+                &hdop, &alt, &alt_units, &geo_sep, &geo_units ,&cksum);
     }
     
     // Make a struct of lat and longitude 
     
     
-// assign data if one of three specific sentences
-    if((memcmp(msg, "$GPRMC", 6) == 0) ||
-       (memcmp(msg, "$GPGGA", 6) == 0) ||
-       (memcmp(msg, "$GPGLL", 6) == 0))
-    {
-        time = (INT32) utc;                 // Type cast float to integer                
-// Convert from big integer to composite hour, minute, and seconds 
+//  assign data if one of three specific sentences
+    if ((memcmp(msg, "$GPRMC", 6) == 0) ||
+        (memcmp(msg, "$GPGGA", 6) == 0) ||
+        (memcmp(msg, "$GPGLL", 6) == 0)) {
+        time  = (INT32) utc; // Type cast float to integer                
+//      Convert from big integer to composite hour, minute, and seconds 
         *hour = (BYTE) (time / 10000);
-        time = time % 10000;
-        *min =  (BYTE) (time / 100 );
-        time = time % 100;
-        *sec =  (BYTE) (time);
+        time  = time % 10000;
+        *min  = (BYTE) (time / 100 );
+        time  = time % 100;
+        *sec  = (BYTE) (time);
         led_value = *sec;
               
-// Compensate for 9 hour difference for PST
-        if(*hour < 9)
-        {
+//      Compensate for 9 hour difference for PST
+        if (*hour < 9) {
             *hour += 24;
             roll_back = -1;
         }
         *hour -= 8;
     }
-// decode date if GPRMC sentence
-    if((memcmp(msg, "$GPRMC", 6) == 0) && (vars >= 10)) {
-/* Convert from large integer to days, months, and year */
-        *day  =  (BYTE) ( date  / 10000);
-        if(*hour >= 9)
-            --*day;
-        date = date % 10000;
-        *mon  =  (BYTE) ( date / 100);
-        date = date % 100;
-        *year =  (BYTE) date;
+//  decode date if GPRMC sentence
+    if ((memcmp(msg, "$GPRMC", 6) == 0) && (vars >= 10)) {
+/*      Convert from large integer to days, months, and year */
+        *day = (BYTE) (date / 10000);
+        if (*hour >= 9) 
+	    --*day;
+        date  = date % 10000;
+        *mon  = (BYTE) (date / 100);
+        date  = date % 100;
+        *year = (BYTE) date;
         
-        
-        
-// Compensate for 9 hour difference for PST
-        if(roll_back == -1) // Between midnight and 9:00:00 for PST 
-        {
-            if(*day == 1)
-            {
-                switch(*mon)
-                {
+//      Compensate for 9 hour difference for PST
+        if (roll_back == -1) {// Between midnight and 9:00:00 for PST 
+            if (*day == 1) {
+                switch(*mon) {
                     case 1: // January
                         *mon = 12;
                         *day = 31;
@@ -471,27 +386,24 @@ char roll_back = 0;
             }
         }
     }
-// Display time and date, if available, on the LCD 
+//  Display time and date, if available, on the LCD 
     clrLCD();
-    if((strcmp(msg, "$GPRMC") == 0) ||
-       (strcmp(msg, "$GPGGA") == 0) ||
-       (strcmp(msg, "$GPGLL") == 0))
-    {
+    if ((strcmp(msg, "$GPRMC") == 0) ||
+        (strcmp(msg, "$GPGGA") == 0) ||
+        (strcmp(msg, "$GPGLL") == 0)) {
         
-// Display sentence type and time on LCD
+//      Display sentence type and time on LCD
         sprintf(lcd_str,"%s %2d:%2d:%2d", msg, *hour, *min, *sec);
         putsLCD(lcd_str);
 
-// Display if date is available for GPRMC message
-        if(((status == 'A') && (vars >= 10)) && (gps_message == GPRMC))
-        {
+//      Display if date is available for GPRMC message
+        if (((status == 'A') && (vars >= 10)) && (gps_message == GPRMC)) {
             gotoLCD(16);    /* Go to second line of LCD */
             sprintf(lcd_str,"%c%3d %2d/%2d/%2d",status, vars, *mon, *day,*year);
             putsLCD(lcd_str);
         }
     }
-    else    // No valid GPS sentence received
-    {
+    else {  // No valid GPS sentence received
         sprintf(lcd_str,"%s %d ", msg, vars);
         putsLCD(lcd_str);
     }
@@ -503,21 +415,18 @@ char roll_back = 0;
 #ifdef USE_RTCC
     new_day = (*hour + *min + *sec);    // Check for midnight
 // Update PIC32 RTCC at midnight or reboot
-    if((new_day == 0 ) || (rttc_initialized ==  FALSE ))
-    {
-        if(status == 'A' && (vars >= 10))
-        {
+    if ((new_day == 0 ) || (rttc_initialized ==  FALSE )) {
+        if (status == 'A' && (vars >= 10)) {
             dow = RtccWeekDay(*year, *mon, *day); // XC32 PLIB function 
-
             dt.year = bin2bcd( *year);
             dt.mon = bin2bcd( *mon);
             dt.mday = bin2bcd( *day);
             dt.wday = dow;
             RtccSetDate(dt.l);
         }
-        tm.hour = bin2bcd( *hour);
-        tm.min = bin2bcd( *min);
-        tm.sec = bin2bcd( *sec);
+        tm.hour = bin2bcd(*hour);
+        tm.min = bin2bcd(*min);
+        tm.sec = bin2bcd(*sec);
         RtccSetTime(tm.l);
 
         rttc_initialized =  TRUE;
