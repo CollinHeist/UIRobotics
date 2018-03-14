@@ -24,21 +24,17 @@
 #include "uart2.h"  // GPS UART
 #include "led7.h"
 #include "LCDlib.h"
-/* --------------------------------------------------------------------------- */
 
 /* ---------------------------- Function Declarations ------------------------ */
 int set_gps(void);
 int calc_ck_sum(char *str);
 int decode_gps_msg(char *str, float *lat, float *lng, unsigned char *hour, unsigned char *min, 
                    unsigned char *sec, unsigned char *year, unsigned char *day, unsigned char *mon);
-/* --------------------------------------------------------------------------- */
 
 /* --------------------- Global Variable Declarations ------------------------ */
 int gps_message = 0;
 extern int16_t led_value;
 extern BOOL led_flag;
-/* --------------------------------------------------------------------------- */
-
 
 /* -------------------------------- main() -----------------------------------
   @ Function
