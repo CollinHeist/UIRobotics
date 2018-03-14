@@ -45,21 +45,19 @@ extern BOOL led_flag;
      int main(void); 
   @ Summary
      
-  @ Description
-    
-  @ Parameters
-     None
   @ Returns
      The system has failed if the last statement is executed. 
      @ 1 : Indicates an error occurred
      @ 0 : Indicates an error did not occur
   ---------------------------------------------------------------------------- */
 int main (void) {
+    /* -------------- Variable's used in main ------------------ */
     char str_buf[GPS_BUFFER_SIZE];
     unsigned int str_idx = 0;                           // GPS sentence buffer
     char ch;                                            // Received character
     int rx_flag;                                        // Character ready
     unsigned char hour, minute, sec, year, day, mon;    // Time and date
+    float latitude, longitude;				// Latitude and Longitude
 	
     /* ---------------- Initilizing fuctions ------------------- */
     Hardware_Setup();               // Initialize common IO
@@ -68,104 +66,61 @@ int main (void) {
     uart2_init(9600, NO_PARITY);    // GPS 
     seg7_init();                    // Displays seconds only
     led_flag = 1;
-    /* --------------------------------------------------------- */
-
-//    TRISCbits.TRISC2 = 0;   // Set JA1 for diagnostics timing output
-//    LATCbits.LATC2 = 0;
-
-    while(1) {	// Background process handles UART communications
+	
+    /* ------------------ Main while loop ---------------------- */
+    while (1) {
+	/* ------- Code that deals with all UART output -------- */
         do {
             rx_flag = getcU2(&ch);  // Poll for character received
-        } while(!rx_flag);        
+        } while (!rx_flag);        
         putcU4(ch);                 // Send received character to monitor
         
-        if((ch == '$') || (str_idx >= GPS_BUFFER_SIZE-1)) { // Detect EOL
+        if ((ch == '$') || (str_idx >= GPS_BUFFER_SIZE-1)) { // Detect EOL
             str_buf[str_idx] = 0;   // Add string NULL character
             str_idx = 0;            // Reset index for new line
             invLED0();              // Toggle message marker
         }
-        
-        str_buf[str_idx++] = ch;    // Add new character to buffer
-        if(ch == '\n') {            // Look for new line character
-            if(!set_gps()) {        // Check for change of message
+	/* ----------------------------------------------------- */
+
+        str_buf[str_idx++] = ch;     // Add new character to buffer
+        if (ch == '\n') {            // Look for new line character
+            if (!set_gps()) {        // Check for change of message
                 // Requires 3.5ms to decode and display on LCD
-                struct location currLoc;
                 float lat, lng;
                 decode_gps_msg(str_buf,  &lat, &lng, &hour, // Decode present message
                                &minute, &sec, &year, &day, &mon);
                 
-                currLoc.latitude = lat;
-                currLoc.longitude = lng;
-                
-                float currLat = currLoc.latitude;
-                float currLng = currLoc.longitude;
-                
                 // Testing gave (4644.006347, 11700.389648)
+		// ddmm.mmmm and dddmm.mmmm for lat and long
                 currLat = 4644.006347;
                 currLng = 11700.389648;
-                // Documentation says the format for the Latitude and Longitude are..
-                // ddmm.mmmm and dddmm.mmmm respectively
                 
-                int latDegrees = currLat / 100.0; // Truncates all but the decimal
+	        // Truncates all but the decimal
+                int latDegrees = currLat / 100.0; 
                 int lngDegrees = currLng / 100.0;
-                
-                printf("\n\rDegree Ints: %i, %i", latDegrees, lngDegrees);
-                
+                                
                 // First part of the coordinate's minute portion
                 int latMin1 = fmod(currLat, 100);
                 int lngMin1 = fmod(currLng, 100);
-                
-                // Decimal part of the coordinate's minute 
-                float latMin2 = ((int) (currLat * 10000) % 10000) / 10000.0;
-                float lngMin2 = ((int) (currLng * 10000) % 10000) / 10000.0;
-                
-                float totalLat = latDegrees + ((float) latMin1 / 60.0) + (latMin2 / 60.0);
-                printf("\n\rDegree Version of Lat: %f", totalLat);
-                
-                float totalLng = lngDegrees + ((float) lngMin1 / 60.0) + (lngMin2 / 60.0);
-                printf("\n\rDegree Version of Lng: %f", totalLng);
-                
-                
-                // Arbitrary testing values | Meaningless
-                float oldLat = totalLat + 5;
-                float oldLng = totalLng + 5;
-                
-                currLat = 3.1415926535 / 180.0 * totalLat;
-                currLng = 3.1415926535 / 180.0 * totalLng;
-                oldLat = 3.1415926535 / 180.0 * oldLat;
-                oldLng = 3.1415926535 / 180.0 * oldLng;
-                printf("\n\rRadian Version of currLat: %f", currLat);
-                printf("\n\rRadian Version of currLng: %f", currLng);
-                printf("\n\rRadian Version of oldLat: %f", oldLat);
-                printf("\n\rRadian Version of oldLng: %f", oldLng);
-                
-                // Implementation of the distance formula
-                float a = pow(sin((oldLat-currLat)/2), 2.0) + cos(currLat) * pow(sin((oldLng-currLng)/2), 2.0);
-                float c = 2 * atan2(sqrt(a), sqrt(1 - a));
-                float distance = (6371 * pow(10, 3)) * c;
-                
-                printf("\n\rDistance:%d\n\r", distance);
-//                putsU2( distance );
-                
-//               LATCbits.LATC2 = 0; // Process timing
             }
         }
     }
-    return EXIT_FAILURE; // COde execution should never get to this statement 
+    return EXIT_FAILURE; // Code execution should never get to this statement 
 }
 
-/* set_gps FUNCTION DESCRIPTION **********************************************
- * SYNTAX:          static void set_gps(void);
- *
- * KEYWORDS:        configure, GPS, sentence
- * DESCRIPTION:     This function changes the NMEA sentence that the GPS reports
- *                  based upon which on of the three buttons is pressed.
- * Parameter 1:     None
- * RETURN VALUE:    None
- * NOTES:           See GlobalTop reference manual
- *                  http://www.adafruit.com/datasheets/PMTK_A11.pdf
- * END DESCRIPTION **********************************************************/
-int set_gps(void) {
+/* ------------------------------ set_gps() ----------------------------------
+ @ Syntax
+    static void set_gps(void);
+ @ Description
+    This function changes the NMEA sentence that the GPS reports based upon
+    which on of the three buttons is pressed.
+ @ Parameters
+    None
+ @ Return Value
+    0: No new message has been recieved
+    1: A new message has been received
+  ---------------------------------------------------------------------------- */
+int set_gps (void) {
     int new_msg = 0;    // Flag message has been set
     int cksum;
     char gps_msg1[GPS_BUFFER_SIZE];
@@ -176,10 +131,9 @@ int set_gps(void) {
         cksum = calc_ck_sum(gps_msg1);
         sprintf(gps_msg2,"%s%X\r\n", gps_msg1, cksum);
         printf("\n\r%s", gps_msg2);
-        putsU2( gps_msg2 );
-        do { // Debounce push button switch
-            msDelay(10);
-        } while (BTNR());
+        putsU2(gps_msg2);
+	// Debounce push button switch
+        do { msDelay(10); } while (BTNR());
         new_msg = 1;
     }
     if (BTNC()) { // Set GGA
@@ -188,10 +142,9 @@ int set_gps(void) {
         cksum = calc_ck_sum(gps_msg1);
         sprintf(gps_msg2,"%s%X\r\n", gps_msg1, cksum);
         printf("\n\r%s", gps_msg2);
-        putsU2( gps_msg2 );
-        do {             // Debounce push button switch
-            msDelay(10);
-        } while (BTNC());
+        putsU2(gps_msg2);
+	// Debounce push button switch
+        do { msDelay(10); } while (BTNC());
         new_msg = 1;
     }
     if (BTND()) { // Set GLL
@@ -200,25 +153,27 @@ int set_gps(void) {
         cksum = calc_ck_sum(gps_msg1);
         sprintf(gps_msg2,"%s%X\r\n", gps_msg1, cksum);
         printf("\n\r%s", gps_msg2);
-        putsU2(gps_msg2 );
-        do {            // Debounce push button switch
-            msDelay(10);
-        } while (BTND());
+        putsU2(gps_msg2);
+	// Debounce push button switch
+        do { msDelay(10); } while (BTND());
         new_msg = 1;
     }
     return new_msg;
 } // End of set_gps 
 
-/* FUNCTION DESCRIPTION ******************************************************
- * SYNTAX:          static unsigned char calc_ck_sum(char *str);
- *
- * KEYWORDS:        check sum, GPS, sentence
- * DESCRIPTION:     This function computes the checksum for a NMEA sentence
- *                  between the "$" and "*" characters,
- * Parameter 1:     string containing the GPS sentence
- * RETURN VALUE:    check_sum of BYTE type
- * NOTES:           Called from set_gps(void) function.
- * END DESCRIPTION **********************************************************/
+/* ---------------------------- calc_ck_sum ----------------------------------
+  @ Syntax
+     calc_ck_sum(char *str);
+  @ Description
+     This function computes the checksum for an NMEA sentence 
+     between the "$" and "*" characters,
+  @ Parameter
+    @ param1: string containing the GPS sentence
+  @ Return Value
+     checksum of BYTE type
+  @ Notes
+     Called from set_gps(void) function.
+  ---------------------------------------------------------------------------- */
 int calc_ck_sum(char *str) {
     int cksum = 0;
     int start_flag = 0;
@@ -235,7 +190,7 @@ int calc_ck_sum(char *str) {
                 stop_flag = 1;   // Mark end of GPS sentence 
             }
             else {
-                cksum ^= (unsigned char) (*str );   //  Update check sum 
+                cksum ^= (unsigned char) (*str);   //  Update check sum 
             }
         }
         str++;
@@ -257,7 +212,8 @@ int calc_ck_sum(char *str) {
     @ param6: int reference to day
     @ param7: int reference to month
   @ Return Value
-     number of variables successfully decoded
+     Number of variables successfully decoded
+     The real return is the changed values of the parameters (passed by ref.)
   ---------------------------------------------------------------------------- */
 int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hour, 
                    unsigned char *min, unsigned char *sec, unsigned char *year, 
@@ -322,8 +278,8 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
     if ((memcmp(msg, "$GPRMC", 6) == 0) ||
         (memcmp(msg, "$GPGGA", 6) == 0) ||
         (memcmp(msg, "$GPGLL", 6) == 0)) {
-        time  = (INT32) utc; // Type cast float to integer                
-//      Convert from big integer to composite hour, minute, and seconds 
+        time  = (INT32) utc; // Type cast float to integer
+	// Convert from big integer to composite hour, minute, and seconds 
         *hour = (BYTE) (time / 10000);
         time  = time % 10000;
         *min  = (BYTE) (time / 100 );
@@ -331,14 +287,14 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
         *sec  = (BYTE) (time);
         led_value = *sec;
               
-//      Compensate for 9 hour difference for PST
+        // Compensate for 9 hour difference for PST
         if (*hour < 9) {
             *hour += 24;
             roll_back = -1;
         }
         *hour -= 8;
     }
-//  decode date if GPRMC sentence
+    // Decode date if GPRMC sentence
     if ((memcmp(msg, "$GPRMC", 6) == 0) && (vars >= 10)) {
 /*      Convert from large integer to days, months, and year */
         *day = (BYTE) (date / 10000);
@@ -349,8 +305,8 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
         date  = date % 100;
         *year = (BYTE) date;
         
-//      Compensate for 9 hour difference for PST
-        if (roll_back == -1) {// Between midnight and 9:00:00 for PST 
+        // Compensate for 9 hour difference for PST
+        if (roll_back == -1) { // Between midnight and 9:00 for PST 
             if (*day == 1) {
                 switch(*mon) {
                     case 1: // January
@@ -386,24 +342,24 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
             }
         }
     }
-//  Display time and date, if available, on the LCD 
+    // Display time and date, if available, on the LCD 
     clrLCD();
     if ((strcmp(msg, "$GPRMC") == 0) ||
         (strcmp(msg, "$GPGGA") == 0) ||
         (strcmp(msg, "$GPGLL") == 0)) {
         
-//      Display sentence type and time on LCD
+        // Display sentence type and time on LCD
         sprintf(lcd_str,"%s %2d:%2d:%2d", msg, *hour, *min, *sec);
         putsLCD(lcd_str);
 
-//      Display if date is available for GPRMC message
+        // Display if date is available for GPRMC message
         if (((status == 'A') && (vars >= 10)) && (gps_message == GPRMC)) {
-            gotoLCD(16);    /* Go to second line of LCD */
+            gotoLCD(16); // Go to second line of LCD
             sprintf(lcd_str,"%c%3d %2d/%2d/%2d",status, vars, *mon, *day,*year);
             putsLCD(lcd_str);
         }
     }
-    else {  // No valid GPS sentence received
+    else { // No valid GPS sentence received
         sprintf(lcd_str,"%s %d ", msg, vars);
         putsLCD(lcd_str);
     }
@@ -434,5 +390,3 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
 #endif
     return vars;    // Number of variables decoded 
 } // End of decode_gps_msg 
-
-// End of main.c
