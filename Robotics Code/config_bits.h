@@ -1,30 +1,13 @@
 
-/* ************************************************************************** */
-/** Descriptive File Name
+/* ------------- Custom settings for the PIC32MX370 processor ----------------
+  @ Summary
+     Configuration settings for the PIC32MX370 processor.
+  @ Description
+     This file is to be included only once in each MPLAB project. The processor
+     is configured for a specific development / operation environment.
+  ---------------------------------------------------------------------------- */
 
-  @Company
-    Digilent Inc
-
-   @Author
-     Richard Wall
-
-   @Date
-     Created: March 8, 2017
-	 Revised: May 19. 2017  - Lab7: Changed FPBDIV to DIV_1 for 80 MHZ PBCLK
- 
-  @File Name
-    config_bits.h
-
-  @Summary
-    Configuration settings for the PIC32MX370 processor.
-
-  @Description
-    This file is to be includd only once in each MPLAB project. The processor
-	is configured for a specific development / operation environment.
- */
-/* ************************************************************************** */
-
-#ifndef _CONFIG_BITS_H    /* Guard against multiple inclusion */
+#ifndef _CONFIG_BITS_H    // Guard against multiple inclusion
 #define _CONFIG_BITS_H
 
 // PIC32MX370F512L Configuration Bit Settings
@@ -66,7 +49,3 @@
 #pragma config CP = OFF                 // Code Protect (Protection Disabled)
 
 #endif /* _CONFIG_BITS_H */
-
-/* *****************************************************************************
- End of File
- */
