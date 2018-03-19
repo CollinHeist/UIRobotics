@@ -82,7 +82,7 @@ int main (void) {
         if (ch == '\n') {            // Look for new line character
             if (!set_gps()) {        // Check for change of message
                 // Requires 3.5ms to decode and display on LCD
-                float lat, lng;
+                float lat, lng, currLat, currLng;
                 decode_gps_msg(str_buf,  &lat, &lng, &hour, // Decode present message
                                &minute, &sec, &year, &day, &mon);
                 
