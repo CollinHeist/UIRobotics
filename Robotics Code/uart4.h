@@ -1,5 +1,5 @@
-/* --------- UART Serial communications header file for comm_lib.c. -----------
-                    This declares all public functions.
+/* --------- UART Serial communications header file for comm_lib.c -----------
+   ----------------- This declares all public functions. ---------------------
   @ Summary
     UART 4 initialization and character and string I/O.
   @ Description
@@ -8,13 +8,13 @@
     The serial interface uses UART channel 4.
   @ Remarks
     This code also uses the "printf" function on UART Serial Port 4
-**************************************************************************** */
+  ---------------------------------------------------------------------------- */
 
 #ifndef __MX370_COMM_H__
     #define __MX370_COMM_H__
     #define _UART4
 
-/* ASCII control characters */
+//  ASCII control characters
     #define BACKSPACE       0x08
     #define NO_PARITY       0
     #define ODD_PARITY      1
