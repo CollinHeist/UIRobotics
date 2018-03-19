@@ -22,16 +22,14 @@
    initially set be digital followed be setting A_POT for the ANALOG INPUT 
    CONTROL and A_MIC for the microphone input back to being analog input pins.
   ---------------------------------------------------------------------------- */
-    #define ALL_DIGITAL_IO() (ANSELA = 0, ANSELB = 0, ANSELC = 0, 
-                              ANSELD = 0, ANSELE = 0, ANSELF = 0, ANSELG = 0)
+    #define ALL_DIGITAL_IO() (ANSELA = 0, ANSELB = 0, ANSELC = 0, ANSELD = 0,\
+    			      ANSELE = 0, ANSELF = 0, ANSELG = 0)
     #define SET_MIC_ANALOG()  ANSELBbits.ANSB4 = 1
     #define SET_POT_ANALOG()  ANSELBbits.ANSB2 = 1
 
-/* Macros to configure PIC pins as inputs to sense switch settings */
-
-/* The following macro instruction sets the processor pins for all 8 switch inputs */
-
-// Configure slide switches
+/* ------------ Set the processor pins for all 8 input switches -------------- */
+	
+//  Configure slide switches
     #define SW0cfg()    TRISFbits.TRISF3  = 1 
     #define SW1cfg()    TRISFbits.TRISF5  = 1 
     #define SW2cfg()    TRISFbits.TRISF4  = 1 
@@ -43,7 +41,7 @@
     #define SWcfg()     (SW0cfg(), SW1cfg(), SW2cfg(), SW3cfg(), SW4cfg(),\
                          SW5cfg(), SW6cfg(), SW7cfg())
 
-/* The following macro instructions provide for reading the position of the 8 switches. */
+/* -- Macro instructions that allow for reading of position of the switches -- */
     #define SW0()           PORTFbits.RF3
     #define SW1()           PORTFbits.RF5
     #define SW2()           PORTFbits.RF4
@@ -58,32 +56,32 @@
                              (((int) SW4()) << 4) + (((int) SW5()) <<5 ) +\
                              (((int) SW6()) << 6) + (((int) SW7()) <<7 ))
 
+/* ---------------- Macros to set the push buttons as inputs ----------------- */
 
-/* Macro instructions to set the push buttons as inputs */
     #ifndef DEBUG_MODE
-/* Include BTNL and BTNU only if NOT in debug mode */
+//      Include BTNL and BTNU only if NOT in debug mode
         #define Set_BTNL_in()  (TRISBbits.TRISB0 = 1, CNPDBbits.CNPDB0 = 1)
         #define Set_BTNU_in()  (TRISBbits.TRISB1 = 1, CNPDBbits.CNPDB1 = 1) 
     #endif
-    #define Set_BTNR_in()   TRISBbits.TRISB8 = 1
-    #define Set_BTNR_out()  TRISBbits.TRISB8 = 0    // use for Servo J1
+    #define Set_BTNR_in()   TRISBbits.TRISB8  = 1
+    #define Set_BTNR_out()  TRISBbits.TRISB8  = 0  // use for Servo J1
     #define Set_BTND_in()   TRISAbits.TRISA15 = 1
-    #define Set_BTND_out()  TRISAbits.TRISA15 = 0   // use for Servo J2
-    #define Set_BTNC_in()   TRISFbits.TRISF0 = 1
+    #define Set_BTND_out()  TRISAbits.TRISA15 = 0  // use for Servo J2
+    #define Set_BTNC_in()   TRISFbits.TRISF0  = 1
 
-/* Single macro instruction to configure all 5 push buttons */	
+/* ------------- Single macros to configure all 5 push buttons -------------- */
     #ifndef DEBUG_MODE
-/* Allow use of BTNL and BTNU */
+//      Allow use of BTNL and BTNU
         #define Set_All_PBs_Input()( Set_BTNL_in(),Set_BTNR_in(),\
                                      Set_BTNU_in(),Set_BTND_in(),Set_BTNC_in() )    
     #else
-/* Allow use of BTNL and BTNU */
+//      Allow use of BTNL and BTNU
         #define Set_All_PBs_Input()( Set_BTNR_in(),Set_BTND_in(),Set_BTNC_in() )
     #endif
 
-/* Macro instructions to read the button position values. 1 = button pressed */ 
+//  Macro instructions to read the button position values. 1 = button pressed
     #ifndef DEBUG_MODE
-/* Include BTNL and BTNU only if NOT in debug mode */
+//      Include BTNL and BTNU only if NOT in debug mode
         #define BTNL()      PORTBbits.RB0  
         #define BTNU()      PORTBbits.RB1  
     #endif
@@ -91,7 +89,7 @@
     #define BTND()          PORTAbits.RA15 
     #define BTNC()          PORTFbits.RF0 
 
-/* Macros to define the PIC pin values for the board LEDs */
+/* ------------- Macros to define PIC pin values for board LEDs -------------- */
     #define LED0_bit        0x01
     #define LED1_bit        0x02
     #define LED2_bit        0x04
@@ -102,7 +100,7 @@
     #define LED7_bit        0x80
     #define All_LED_bits    0xFF	// Set all LEDs off  
 
-/* Macros to configure PIC pins as outputs for board LEDs */
+/* --------- Macros to configure PIC pins as outputs for board LEDS ---------- */
     #define Set_LED0_out()  TRISAbits.TRISA0 = 0
     #define Set_LED1_out()  TRISAbits.TRISA1 = 0
     #define Set_LED2_out()  TRISAbits.TRISA2 = 0
@@ -112,10 +110,10 @@
     #define Set_LED6_out()  TRISAbits.TRISA6 = 0
     #define Set_LED7_out()  TRISAbits.TRISA7 = 0
 	
-/* Macro instruction to configure all 8 LED pins for outputs */
+/* ------- Macro instructions to configure all 8 LED pins for output --------- */
     #define Set_All_LEDs_Output()  TRISACLR = All_LED_bits
 
-/* Macros to set board each LED on (1) or off (0) */
+//  Macros to set board each LED on (1) or off (0)
     #define setLED0(a); { if(a) LATASET = LED0_bit; else LATACLR = LED0_bit; }
     #define setLED1(a); { if(a) LATASET = LED1_bit; else LATACLR = LED1_bit; }
     #define setLED2(a); { if(a) LATASET = LED2_bit; else LATACLR = LED2_bit; }
@@ -127,7 +125,7 @@
     #define Set_All_LEDs_On()   LATASET = All_LED_bits  // Set all LEDs on
     #define Set_All_LEDs_Off()  LATACLR = All_LED_bits  // Set all LEDs off
 
-/* Macros to invert the output to the board LEDs */
+//  Macros to invert the output to the board LEDs
     #define invLED0()   LATAINV = LED0_bit    
     #define invLED1()   LATAINV = LED1_bit
     #define invLED2()   LATAINV = LED2_bit
@@ -137,11 +135,12 @@
     #define invLED6()   LATAINV = LED6_bit
     #define invLED7()   LATAINV = LED7_bit
 
-/* Configure RGB LED outputs */
+/* ----------------------- Configure RGB LED outputs ------------------------- */
+
 	#define Set_LED8_R_Out()	TRISDbits.TRISD2 = 0		
 	#define Set_LED8_G_Out()	TRISDbits.TRISD12 = 0		
 	#define Set_LED8_B_Out()	TRISDbits.TRISD3 = 0		
-    #define Set_RGB_Output()    ( Set_LED8_R_Out(), Set_LED8_G_Out(), Set_LED8_B_Out() )
+    #define Set_RGB_Output()    (Set_LED8_R_Out(), Set_LED8_G_Out(), Set_LED8_B_Out())
 
     #define Set_LED8_R(a)       LATDbits.LATD2 = a
     #define Set_LED8_G(a)       LATDbits.LATD12 = a
@@ -149,13 +148,13 @@
 
     #define Set_LED8_RGB(a)     (LATDbits.LATD2 = a, LATDbits.LATD12 = a, LATDbits.LATD3 = a)             
 
-// Set Motor Control drive inputs
+/* -------------------- Set Motor Control drive inputs ----------------------- */
 	#define AIN1cfg()   (TRISBbits.TRISB3 = 0, ANSELBbits.ANSB3 = 0, LATBbits.LATB3 = 0)
-	#define AIN2cfg()   (TRISEbits.TRISE8 = 0, LATEbits.LATE8 = 0)
-	#define BIN1cfg()   (TRISEbits.TRISE9 = 0, LATEbits.LATE9 = 0)
+	#define AIN2cfg()   (TRISEbits.TRISE8 = 0, LATEbits.LATE8   = 0)
+	#define BIN1cfg()   (TRISEbits.TRISE9 = 0, LATEbits.LATE9   = 0)
 	#define BIN2cfg()   (TRISBbits.TRISB5 = 0, ANSELBbits.ANSB5 = 0, LATBbits.LATB5 = 0)
-	#define MCMODEcfg() (TRISFbits.TRISF1 = 0, LATFbits.LATF1 = 0)
-	#define MCInit()	(AIN1cfg(), AIN2cfg(), BIN1cfg(), BIN2cfg(), MCMODEcfg())
+	#define MCMODEcfg() (TRISFbits.TRISF1 = 0, LATFbits.LATF1   = 0)
+	#define MCInit()    (AIN1cfg(), AIN2cfg(), BIN1cfg(), BIN2cfg(), MCMODEcfg())
 
 	#define AIN1(a);   { if(a) LATBbits.LATB3 = 1; else LATBbits.LATB3 = 0; }
 	#define AIN2(a);   { if(a) LATEbits.LATE8 = 1; else LATEbits.LATE8 = 0; }
