@@ -17,6 +17,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <math.h>
+#include <stdbool.h>
 
 #include "swDelay.h"
 
@@ -98,6 +99,8 @@ int main (void) {
                 // First part of the coordinate's minute portion
                 int latMin1 = fmod(currLat, 100);
                 int lngMin1 = fmod(currLng, 100);
+		    
+		printf("Lat: %f, Lng: %f\n\r", lat, lng); // UART Output
             }
         }
     }
@@ -116,7 +119,7 @@ int main (void) {
     0: No new message has been recieved
     1: A new message has been received
   ---------------------------------------------------------------------------- */
-int set_gps (void) {
+int set_gps () {
     int new_msg = 0;    // Flag message has been set
     int cksum;
     char gps_msg1[GPS_BUFFER_SIZE];
@@ -126,7 +129,7 @@ int set_gps (void) {
         strcpy(gps_msg1, "$PMTK314,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*");
         cksum = calc_ck_sum(gps_msg1);
         sprintf(gps_msg2,"%s%X\r\n", gps_msg1, cksum);
-        printf("\n\r%s", gps_msg2);
+        // printf("\n\r%s", gps_msg2);
         putsU2(gps_msg2);
 	// Debounce push button switch
         do { msDelay(10); } while (BTNR());
@@ -137,7 +140,7 @@ int set_gps (void) {
         strcpy(gps_msg1, "$PMTK314,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*");
         cksum = calc_ck_sum(gps_msg1);
         sprintf(gps_msg2,"%s%X\r\n", gps_msg1, cksum);
-        printf("\n\r%s", gps_msg2);
+        // printf("\n\r%s", gps_msg2);
         putsU2(gps_msg2);
 	// Debounce push button switch
         do { msDelay(10); } while (BTNC());
@@ -148,7 +151,7 @@ int set_gps (void) {
         strcpy(gps_msg1, "$PMTK314,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*");
         cksum = calc_ck_sum(gps_msg1);
         sprintf(gps_msg2,"%s%X\r\n", gps_msg1, cksum);
-        printf("\n\r%s", gps_msg2);
+        // printf("\n\r%s", gps_msg2);
         putsU2(gps_msg2);
 	// Debounce push button switch
         do { msDelay(10); } while (BTND());
@@ -168,7 +171,7 @@ int set_gps (void) {
   @ Return Value
      checksum of BYTE type
   @ Notes
-     Called from set_gps(void) function.
+     Called from set_gps() function.
   ---------------------------------------------------------------------------- */
 int calc_ck_sum(char *str) {
     int cksum = 0;
@@ -253,7 +256,7 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
         vars = sscanf(str,"%s,%f,%c,%f,%c,%f,%c,%f,%f,%d,%f,%c,%c*%x",msg,
                     &utc, &status, &lat, &NS, &lng, &EW, &speed, &dir,
                     &date, &mag_var, &mdir, &mode, &cksum  );
-//      LATCbits.LATC2 = str[12] & 1;
+	// LATCbits.LATC2 = str[12] & 1;
     }
 
     if (gps_message == GPGLL) {
@@ -270,7 +273,7 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
     // Make a struct of lat and longitude 
     
     
-//  assign data if one of three specific sentences
+//  Assign data if one of three specific sentences
     if ((memcmp(msg, "$GPRMC", 6) == 0) ||
         (memcmp(msg, "$GPGGA", 6) == 0) ||
         (memcmp(msg, "$GPGLL", 6) == 0)) {
@@ -292,7 +295,7 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
     }
     // Decode date if GPRMC sentence
     if ((memcmp(msg, "$GPRMC", 6) == 0) && (vars >= 10)) {
-/*      Convert from large integer to days, months, and year */
+        // Convert from large integer to days, months, and year
         *day = (BYTE) (date / 10000);
         if (*hour >= 9) 
 	    --*day;
@@ -366,7 +369,7 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
     
 #ifdef USE_RTCC
     new_day = (*hour + *min + *sec);    // Check for midnight
-// Update PIC32 RTCC at midnight or reboot
+    // Update PIC32 RTCC at midnight or reboot
     if ((new_day == 0 ) || (rttc_initialized ==  FALSE )) {
         if (status == 'A' && (vars >= 10)) {
             dow = RtccWeekDay(*year, *mon, *day); // XC32 PLIB function 
