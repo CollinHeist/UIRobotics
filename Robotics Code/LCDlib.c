@@ -1,3 +1,4 @@
+//NOW THAT I HAVE THIS POWER, I WILL SPAM YOU TO DEATH
 /* ---------- Character LCD driver using the PIC32 PMP interface -------------
   @ Summary
     Character LCD control using the PIC32 parallel Master Port (PMP).
