@@ -31,7 +31,7 @@
 int gps_message = 0;
 extern int16_t led_value;
 extern BOOL led_flag;
-typedef struct {
+typedef struct { // A custom structure that holds all relevant position data
 	float latitude;
 	float longitude;
 	float heading;
@@ -47,8 +47,8 @@ int decode_gps_msg(char *str, float *lat, float *lng, unsigned char *hour, unsig
                    unsigned char *sec, unsigned char *year, unsigned char *day, unsigned char *mon);
 
 /* -------------------------------- main() -----------------------------------
-  @ Function
-     int main(void); 
+  @ Syntax
+     Run automatically - No need to call from anywhere
   @ Summary
      
   @ Returns
@@ -74,7 +74,7 @@ int main (void) {
 	
     /* ------------------------- Main while loop ----------------------------- */
     while (1) {
-		/* -------------- Code that deals with all UART output --------------- */
+	/* -------------- Code that deals with all UART output --------------- */
         do {
             rx_flag = getcU2(&ch);  // Poll for character received
         } while (!rx_flag);        
@@ -85,7 +85,7 @@ int main (void) {
             str_idx = 0;            // Reset index for new line
             invLED0();              // Toggle message marker
         }
-		/* ------------------------------------------------------------------- */
+	/* ------------------------------------------------------------------- */
 
         str_buf[str_idx++] = ch;     // Add new character to buffer
         if (ch == '\n') {            // Look for new line character
@@ -117,38 +117,42 @@ int main (void) {
 
 /* ---------------------------- powerMotors() --------------------------------
  @ Syntax
-    static void powerMotors(float leftMotor, float rightMotor);
+    powerMotors(float leftMotor, float rightMotor, float duration);
  @ Description
-    This function powers the left motor to |a| % and the right motor to |b| %
+    This function powers the left motor to |a|% and the right motor to |b|%
     of their total power.
  @ Parameters
     @ param1 : a float from the range [-100, 100], where (-) values indicate
     	       backwards power (i.e. reverse). Power level of the left motor
     @ param2 : a float from the range [-100, 100], where (-) values indicate
     	       backwards power (i.e. reverse). Power level of the right motor
+    @ param3 : a float that represents how long we want the motors to be
+               powered for. Represented in seconds.
  @ Return Value
     None
   ---------------------------------------------------------------------------- */
-void powerMotors(float leftMotor, float rightMotor) {
+void powerMotors(float leftMotor, float rightMotor, float duration) {
     /* Needs Implementation */
 }
 
 /* --------------------------- changeHeading() -------------------------------
  @ Syntax
- 	int changeHeading(Position currPos, Position desPos, float precision);
+     int a = changeHeading(Position currPos, Position desPos, float precision);
  @ Description
-    This function turns the boat towards the desired latitude and longitude
+    This function turns the boat towards the desired latitude and longitude.
+    This should be continually called until it returns a 1, indicating we're
+    within the passed parameter of precision
  @ Parameters
     @ param1 : a Position structure that contains the current latitude,
 			   longitude, and heading
     @ param2 : a Position structure that contains the desired latitude,
 	 	       longitude, and heading
-	@ param3 : a float representing how precise we want our heading to be.
-	           A degree value (i.e. how far off our current heading and angle
-			   should be)
+    @ param3 : a float representing how precise we want our heading to be.
+	       A degree value (i.e. how far off our current heading and angle
+               should be)
  @ Return Value
     1 : Successfully rotated the boat towards the desired location
-	0 : The boat is still not at its desired heading, continue rotating 
+    0 : The boat is still not at its desired heading, continue rotating 
   ---------------------------------------------------------------------------- */
 int changeHeading(Position currPos, Position desPos, float precision) {
 	float deltaLat  = desPos.latitude  - currPos.latitude;
@@ -175,16 +179,16 @@ int changeHeading(Position currPos, Position desPos, float precision) {
 	if (abs(currPos.heading - angleToRotate) < precision)
 		return 1;
 	else if ((currPos.heading - angleToRotate) < 0)
-		powerMotors(-100, 100);
+		powerMotors(-100, 100, 3);
 	else
-		powerMotors(100, -100);
+		powerMotors(100, -100, 3);
 	
 	return 0; // Return 0 so long as we're not at the proper heading
 }
 
 /* ------------------------------ set_gps() ----------------------------------
  @ Syntax
-    static void set_gps(void);
+    set_gps(void);
  @ Description
     This function changes the NMEA sentence that the GPS reports based upon
     which on of the three buttons is pressed.
@@ -237,16 +241,14 @@ int set_gps () {
 
 /* ---------------------------- calc_ck_sum ----------------------------------
   @ Syntax
-     calc_ck_sum(char *str);
+     int a = calc_ck_sum(char *str);
   @ Description
      This function computes the checksum for an NMEA sentence 
-     between the "$" and "*" characters,
+     between the "$" and "*" characters. Called only from set_gps()
   @ Parameter
     @ param1: string containing the GPS sentence
   @ Return Value
      checksum of BYTE type
-  @ Notes
-     Called from set_gps() function.
   ---------------------------------------------------------------------------- */
 int calc_ck_sum(char *str) {
     int cksum = 0;
@@ -274,18 +276,18 @@ int calc_ck_sum(char *str) {
 
 /* --------------------------- decode_gps_msg() ------------------------------
   @ Syntax
-     decode_gps_msg(char *str, BYTE *hour, BYTE *min, BYTE *sec,
-                    BYTE *year, BYTE *day, BYTE *mon);
+     int a = decode_gps_msg(char *str, BYTE *hour, BYTE *min, BYTE *sec,
+                            BYTE *year, BYTE *day, BYTE *mon);
   @ Description
      This function parses one of three different GPS sentences
   @ Parameter
-    @ param1: string containing the GPS sentence
-    @ param2: int reference to hours
-    @ param3: int reference to minutes
-    @ param4: int reference to seconds
-    @ param5: int reference to year (units and tens digits only)
-    @ param6: int reference to day
-    @ param7: int reference to month
+    @ param1 : string containing the GPS sentence
+    @ param2 : int reference to hours
+    @ param3 : int reference to minutes
+    @ param4 : int reference to seconds
+    @ param5 : int reference to year (units and tens digits only)
+    @ param6 : int reference to day
+    @ param7 : int reference to month
   @ Return Value
      Number of variables successfully decoded
      The real return is the changed values of the parameters (passed by ref.)
@@ -327,7 +329,7 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
         }
     }
     
-// Decode the appropriate sentence
+    // Decode the appropriate sentence
     if (gps_message == GPRMC) {
         vars = sscanf(str,"%s,%f,%c,%f,%c,%f,%c,%f,%f,%d,%f,%c,%c*%x",msg,
                     &utc, &status, &lat, &NS, &lng, &EW, &speed, &dir,
@@ -349,7 +351,7 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
     // Make a struct of lat and longitude 
     
     
-//  Assign data if one of three specific sentences
+    // Assign data if one of three specific sentences
     if ((memcmp(msg, "$GPRMC", 6) == 0) ||
         (memcmp(msg, "$GPGGA", 6) == 0) ||
         (memcmp(msg, "$GPGLL", 6) == 0)) {
