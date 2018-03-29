@@ -26,16 +26,25 @@
 #include "led7.h"
 #include "LCDlib.h"
 
+/* --------------------- Global Variable Declarations ------------------------ */
+
+int gps_message = 0;
+extern int16_t led_value;
+extern BOOL led_flag;
+typedef struct {
+	float latitude;
+	float longitude;
+	float heading;
+} Position;
+
 /* ---------------------------- Function Declarations ------------------------ */
+
+void powerMotors(float leftMotor, float rightMotor);
+int changeHeading(Position currPos, Position desPos, float precision);
 int set_gps(void);
 int calc_ck_sum(char *str);
 int decode_gps_msg(char *str, float *lat, float *lng, unsigned char *hour, unsigned char *min, 
                    unsigned char *sec, unsigned char *year, unsigned char *day, unsigned char *mon);
-
-/* --------------------- Global Variable Declarations ------------------------ */
-int gps_message = 0;
-extern int16_t led_value;
-extern BOOL led_flag;
 
 /* -------------------------------- main() -----------------------------------
   @ Function
@@ -44,11 +53,10 @@ extern BOOL led_flag;
      
   @ Returns
      The system has failed if the last statement is executed. 
-     @ 1 : Indicates an error occurred
-     @ 0 : Indicates an error did not occur
+     Any return indicates the system has failed
   ---------------------------------------------------------------------------- */
 int main (void) {
-    /* -------------- Variable's used in main ------------------ */
+    /* --------------------- Variable's used in main ------------------------- */
     char str_buf[GPS_BUFFER_SIZE];
     unsigned int str_idx = 0;                           // GPS sentence buffer
     char ch;                                            // Received character
@@ -56,7 +64,7 @@ int main (void) {
     unsigned char hour, minute, sec, year, day, mon;    // Time and date
     float latitude, longitude;				// Latitude and Longitude
 	
-    /* ---------------- Initilizing fuctions ------------------- */
+    /* ----------------------- Initilizing fuctions -------------------------- */
     Hardware_Setup();               // Initialize common IO
     initLCD();                      // Local real time display
     uart4_init(38400, NO_PARITY);   // Uart Output to the PC
@@ -64,9 +72,9 @@ int main (void) {
     seg7_init();                    // Displays seconds only
     led_flag = 1;
 	
-    /* ------------------ Main while loop ---------------------- */
+    /* ------------------------- Main while loop ----------------------------- */
     while (1) {
-	/* ------- Code that deals with all UART output -------- */
+		/* -------------- Code that deals with all UART output --------------- */
         do {
             rx_flag = getcU2(&ch);  // Poll for character received
         } while (!rx_flag);        
@@ -77,7 +85,7 @@ int main (void) {
             str_idx = 0;            // Reset index for new line
             invLED0();              // Toggle message marker
         }
-	/* ----------------------------------------------------- */
+		/* ------------------------------------------------------------------- */
 
         str_buf[str_idx++] = ch;     // Add new character to buffer
         if (ch == '\n') {            // Look for new line character
@@ -88,11 +96,11 @@ int main (void) {
                                &minute, &sec, &year, &day, &mon);
                 
                 // Testing gave (4644.006347, 11700.389648)
-		// ddmm.mmmm and dddmm.mmmm for lat and long
+				// ddmm.mmmm and dddmm.mmmm for lat and long
                 currLat = 4644.006347;
                 currLng = 11700.389648;
                 
-	        // Truncates all but the decimal
+	        	// Truncates all but the decimal
                 int latDegrees = currLat / 100.0; 
                 int lngDegrees = currLng / 100.0;
                                 
@@ -100,11 +108,78 @@ int main (void) {
                 int latMin1 = fmod(currLat, 100);
                 int lngMin1 = fmod(currLng, 100);
 		    
-		printf("Lat: %f, Lng: %f\n\r", lat, lng); // UART Output
+				printf("Lat: %f, Lng: %f\n\r", lat, lng); // UART Output
             }
         }
     }
     return EXIT_FAILURE; // Code execution should never get to this statement 
+}
+
+/* ---------------------------- powerMotors() --------------------------------
+ @ Syntax
+    static void powerMotors(float leftMotor, float rightMotor);
+ @ Description
+    This function powers the left motor to |a| % and the right motor to |b| %
+    of their total power.
+ @ Parameters
+    @ param1 : a float from the range [-100, 100], where (-) values indicate
+    	       backwards power (i.e. reverse). Power level of the left motor
+    @ param2 : a float from the range [-100, 100], where (-) values indicate
+    	       backwards power (i.e. reverse). Power level of the right motor
+ @ Return Value
+    None
+  ---------------------------------------------------------------------------- */
+void powerMotors(float leftMotor, float rightMotor) {
+    /* Needs Implementation */
+}
+
+/* --------------------------- changeHeading() -------------------------------
+ @ Syntax
+ 	int changeHeading(Position currPos, Position desPos, float precision);
+ @ Description
+    This function turns the boat towards the desired latitude and longitude
+ @ Parameters
+    @ param1 : a Position structure that contains the current latitude,
+			   longitude, and heading
+    @ param2 : a Position structure that contains the desired latitude,
+	 	       longitude, and heading
+	@ param3 : a float representing how precise we want our heading to be.
+	           A degree value (i.e. how far off our current heading and angle
+			   should be)
+ @ Return Value
+    1 : Successfully rotated the boat towards the desired location
+	0 : The boat is still not at its desired heading, continue rotating 
+  ---------------------------------------------------------------------------- */
+int changeHeading(Position currPos, Position desPos, float precision) {
+	float deltaLat  = desPos.latitude  - currPos.latitude;
+	float deltaLong = desPos.longitude - currPos.longitude;
+	
+	float angleToRotate = -90; // Initialize to -90 to account for possible 0 denom.
+	if (deltaLong != 0)
+		angleToRotate = 180 / 3.141592654 * atan(deltaLat / deltaLong);
+	
+	/* Shift the rotation angle to the GPS scale */
+	if (deltaLat > 0 && deltaLong > 0)
+		angleToRotate = -(90 - angleToRotate);
+	else if (deltaLat > 0 && deltaLong < 0)
+		angleToRotate = -angleToRotate;
+	else if (deltaLat < 0 && deltaLong > 0)
+		angleToRotate = angleToRotate - 90;
+	else
+		angleToRotate = angleToRotate + 90;
+	
+	/* Account for other denominator of zero cases */
+	angleToRotate = (deltaLong == 0 && deltaLat > 0) ? -90 : (deltaLong == 0 && deltaLat < 0) ? 90 : angleToRotate;
+	
+	// If we're within the margin of our desired precision, exit
+	if (abs(currPos.heading - angleToRotate) < precision)
+		return 1;
+	else if ((currPos.heading - angleToRotate) < 0)
+		powerMotors(-100, 100);
+	else
+		powerMotors(100, -100);
+	
+	return 0; // Return 0 so long as we're not at the proper heading
 }
 
 /* ------------------------------ set_gps() ----------------------------------
@@ -116,8 +191,8 @@ int main (void) {
  @ Parameters
     None
  @ Return Value
-    0: No new message has been recieved
-    1: A new message has been received
+    0 : No new message has been recieved
+    1 : A new message has been received
   ---------------------------------------------------------------------------- */
 int set_gps () {
     int new_msg = 0;    // Flag message has been set
@@ -196,6 +271,7 @@ int calc_ck_sum(char *str) {
     } while ((*str != 0x00) && (stop_flag == 0)); // End of string or "*" 
     return cksum;
 } // End of calc_ck_sum
+
 /* --------------------------- decode_gps_msg() ------------------------------
   @ Syntax
      decode_gps_msg(char *str, BYTE *hour, BYTE *min, BYTE *sec,
