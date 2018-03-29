@@ -8,7 +8,7 @@ For those have not yet used Github, I recommend reading through [this](https://g
 
 2. I've also posted a walkthrough of sorts you should all read [here](https://docs.google.com/document/d/1drxDmMMY8L0Jcg8FvCODpBT69w2KSG8qKTnTIxLXedo/edit?usp=sharing "Google Doc Walkthrough").
 
---
+---
 
 Before adding any new code / functions, or submitting pull requests in general, take a look at the style I'm using in the `main.c` file.
 
