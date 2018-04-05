@@ -1,7 +1,5 @@
 /* ------------------- Assignment of glboal variables ------------------------ */
 
-#include <math.h>
-#include <iostream>
 #include "Variableslist.c"  //struct containing all universal, non-temp variables
 
 #ifndef _MAIN_H    // Guard against multiple inclusion 
