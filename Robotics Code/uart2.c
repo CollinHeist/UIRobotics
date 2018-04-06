@@ -54,17 +54,15 @@ void uart2_init(unsigned int baud, int parity) {
 
 /* ------------------------------ putcU2 ----------------------------------
  @ Syntax
-    BOOL putcU2( int c);
- @ Keyworks
-    UART, character
+    BOOL putcU2(int c);
  @ Description
     Send single character to UART4. Waits while UART4 is busy (buffer full) and
     then sends a single byte to UART1
- @ Parameter
-    @ param1: character to send
+ @ Parameters
+    @ param1 : character to send
  @ Return Value
-    TRUE = new character sent
-    FALSE = character not sent
+    1 : new character sent
+    0 : character not sent
  @ Remarks
     This function will not block if space is not available in the transmit buffer
   -------------------------------------------------------------------------- */
@@ -85,34 +83,34 @@ int putcU2(int ch) {
  @ Description
     Sends a NULL terminates text string to UART2 with CR and LF appended
  @ Parameter
-    @ param1: pointer to text string
+    @ param1 : pointer to text string
  @ Return Value
-    Logical TRUE
+    1 : Always returns 1
  @ Remarks
     This function will block until space is available in the transmit buffer
   -------------------------------------------------------------------------- */
 int putsU2(const char *s) {
     BOOL ch_sent;
-    while(*s) {
+    while (*s) {
         do { ch_sent = putcU2(*s); }
 	while (ch_sent ==  0);
         s++;
     }
-    do { ch_sent = putcU2( '\r'); } while(!ch_sent);
-    do { ch_sent = putcU2( '\n'); } while(!ch_sent);
+    do { ch_sent = putcU2('\r'); } while(!ch_sent);
+    do { ch_sent = putcU2('\n'); } while(!ch_sent);
     return 1;
 } /* End of putsU4 */
 
 /* ------------------------------ getcU2 ----------------------------------
  @ Sytnax
-    int getcU2( char *ch);
+    int getcU2(char *ch);
  @ Desciption
     Checks for a new character to arrive to the UART4 serial port.
  @ Parameter
-    @ param1: character pointer to character variable
+    @ param1 : character pointer to character variable
  @ Return value
-    TRUE = new character received
-    FALSE = No new character
+    1 = new character received
+    0 = No new character
  @ Remarks
     This function does not block for no character received
   -------------------------------------------------------------------------- */
@@ -140,7 +138,7 @@ int getcU2(char *ch) {
 
 /* ------------------------------ getstrU2 ----------------------------------
  @ Syntax
-    int getstrU2( char *s, unsigned int len );
+    int getstrU2(char *s, unsigned int len );
  @ Description
     This function assembles a line of text until the number of characters
     assembled exceed the buffer length or an ASCII CR control character is
@@ -149,11 +147,11 @@ int getcU2(char *ch) {
     filtered out.  The returned string has the CR character removed and a NULL
     character appended to terminate the text string.
  @ Parameters
-    @ param1: character pointer to string
-    @ param1: integer maximum string length
+    @ param1 : character pointer to string
+    @ param1 : integer maximum string length
  @ Return Value
-    TRUE = EOL signals received return character 
-    FALSE = waiting for end of line
+    1 = EOL signals received return character 
+    0 = waiting for end of line
  @ Remarks
     It is presumed that the buffer pointer or the buffer length does not change
     after the initial call asking to receive a new line of text. This function
@@ -177,12 +175,12 @@ int getstrU2(char *s, unsigned int len) {
     }
 	
     //  Check for character received
-    if(!(getcU2(&ch))) { return 0; }
+    if (!(getcU2(&ch))) { return 0; }
     else {
         *p1 = ch;                   // Save new character in string buffer
         switch (ch) {               // Test for control characters
             case BACKSPACE:
-                if (p1>p2) {
+                if (p1 > p2) {
                     putcU2(' ');    // overwrite the last character
                     putcU2(BACKSPACE);
                     buf_len++;
@@ -199,7 +197,7 @@ int getstrU2(char *s, unsigned int len) {
                 buf_len--;          // decrement length counter
         }
     }
-    if( buf_len == 0 || eol) {      // Check for buffer full or end of line
+    if (buf_len == 0 || eol) {      // Check for buffer full or end of line
         *p1 = '\0';                 // add null terminate the string
         return 1;                   // Set EOL flag 
     }
