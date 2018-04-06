@@ -96,11 +96,11 @@ int main (void) {
                                &minute, &sec, &year, &day, &mon);
                 
                 // Testing gave (4644.006347, 11700.389648)
-				// ddmm.mmmm and dddmm.mmmm for lat and long
+		// ddmm.mmmm and dddmm.mmmm for lat and long
                 currLat = 4644.006347;
                 currLng = 11700.389648;
                 
-	        	// Truncates all but the decimal
+	        // Truncates all but the decimal
                 int latDegrees = currLat / 100.0; 
                 int lngDegrees = currLng / 100.0;
                                 
