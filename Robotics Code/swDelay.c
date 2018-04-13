@@ -22,12 +22,12 @@
 #include "swDelay.h"
 /* ------------------------------ msDelay -----------------------------------
  @ Syntax
-    void msDelay(unsigned int mS);
+    msDelay(unsigned int mS);
  @ Description
     This is a millisecond delay function uses the core time to set the base
     millisecond delay period. Delay periods of zero are permitted. 
  @ Parameters
-    @ param1: mS - the number of milliseconds to delay
+    @ param1 : mS - the number of milliseconds to delay
  @ Return Value
     None
  @ Notes
@@ -35,17 +35,17 @@
     interrupt service routines in preemptive systems.
  ---------------------------------------------------------------------------- */
 void msDelay(unsigned int mS) {
-unsigned int tWait, tStart;
+	unsigned int tWait, tStart;
     tStart = ReadCoreTimer();
     tWait = (CORE_MS_TICK_RATE * mS);
     while ((ReadCoreTimer()- tStart) < tWait); // wait for the time to pass
-} /* End of DelayMs */
+}
 
 /* ------------------------------ usDelay -----------------------------------
  @ Syntax
-    void usDelay(unsigned int us);
+    usDelay(unsigned int us);
  @ Parameters
-    @ param1: us - the number of microseconds to delay
+    @ param1 : us - the number of microseconds to delay
  @ Descriptions
    This is a microsecond delay function that will repeat a specified number of times.  
  @ Return Value
@@ -59,13 +59,13 @@ void usDelay(unsigned int us) {
     tStart = ReadCoreTimer();
     tWait = (CORE_MS_TICK_RATE * us / 1000);
     while ((ReadCoreTimer() - tStart) < tWait); // wait for the time to pass
-} /* End of DelayUs */
+}
 
 /* ------------------------------ nsDelay -----------------------------------
  @ Syntax
-    void nsDelay(unsigned int ns);
+    nsDelay(unsigned int ns);
  @ Parameter
-    @ param1: ns - the number of 10's of microseconds to delay
+    @ param1 : ns - the number of 10's of microseconds to delay
  @ Keywords
     delay, ns, microseconds, software delay, core timer
  @ Description
@@ -82,7 +82,7 @@ void nsDelay(unsigned int ns) {
     tStart = ReadCoreTimer();
     tWait = (CORE_MS_TICK_RATE * ns / 10000);
     while ((ReadCoreTimer() - tStart) < tWait); // wait for the time to pass
-} /* End of DelayUs */
+}
 
 /* ------------------------------ periodMs -----------------------------------
  @ Syntax
@@ -91,7 +91,7 @@ void nsDelay(unsigned int ns) {
     This is a non-blocking millisecond delay function that can be use for
     periodic activation of code.
  @ Parameter
-    @ param1: int msec - the number of milliseconds to delay
+    @ param1 : int msec - the number of milliseconds to delay
  @ Return Value
     integer - delay in progress TURE / FALSE
  @ Notes
@@ -104,11 +104,11 @@ int PeriodMs(unsigned int msec) {
     static int delay_in_progross_flag = FALSE;
     static unsigned int tWait, tStart;
     if (delay_in_progross_flag == 0) {          // New Period
-	tStart = ReadCoreTimer();               // Capture starting time
+	tStart = ReadCoreTimer();                   // Capture starting time
         tWait = (CORE_MS_TICK_RATE * msec);     // Compute delay period
         delay_in_progross_flag = TRUE;          // Set operation flag
     }
     if ((ReadCoreTimer() - tStart) >= tWait)    // Check if period is over
         delay_in_progross_flag = FALSE;
     return delay_in_progross_flag;
-} /* End of PeriodMs */
+}
