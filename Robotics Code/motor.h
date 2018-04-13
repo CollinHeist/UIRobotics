@@ -28,7 +28,5 @@
     // Function Declarations
 	void initRC(void);
 	void set_RC(int ch, int ctrl);
-	void check_switches(void);
 	int runMotor(int channel, int position);
-
 #endif
