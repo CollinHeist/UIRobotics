@@ -29,4 +29,5 @@
 	void initRC(void);
 	void set_RC(int ch, int ctrl);
 	int runMotor(int channel, int position);
+    int powerMotors(int[] leftChannel, int[] rightChannel, float duration);
 #endif
