@@ -13,9 +13,8 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "comm_lib.h"
 #include "swDelay.h"
-#include "RC.h"
+#include "motor.h"
 
 /* ----------------------------- runMotor() ----------------------------------
   @ Syntax
@@ -49,13 +48,11 @@ int runMotor(int channel, int position) {
             unsigned int rc_pwm = RC_MIN + (pos * RC_SPAN / 100); 
             switch (channel) {
                 case 1:
-                    rc[0] = pos;
                     RC_1(rc_pwm); // Update RC channel position
                     //DelayMs(750); // Wait .75 seconds and send another pulse
                     //RC_1(rc_pwm);
                     return 1;
                 case 2:
-                    rc[1] = pos;
                     RC_2(rc_pwm); // Update RC channel position
                     //DelayMs(750); // Wait .75 seconds and send another pulse
                     //RC_2(rc_pwm);
@@ -91,8 +88,8 @@ int runMotor(int channel, int position) {
   ---------------------------------------------------------------------------- */
 int powerMotors(int[] leftMotor, int[] rightMotor, float duration) {
 	/* -- Throw an error code if the passed values are incorrectly bounded --- */
-	if (sizeof(leftMotor)  / sizeof(leftMotor[0] != 2  || 
-        sizeof(rightMotor) / sizeof(rightMotor[0] != 2 ||
+	if (sizeof(leftMotor)  / sizeof(leftMotor[0]) != 2  || 
+        sizeof(rightMotor) / sizeof(rightMotor[0]) != 2 ||
         duration <= 0) { return 0; }
 	
 	/* ----------------- Start and wait time - in milliseconds --------------- */
