@@ -39,7 +39,6 @@ typedef struct { // A custom structure that holds all relevant position data
 
 /* ---------------------------- Function Declarations ------------------------ */
 
-void powerMotors(float leftMotor, float rightMotor);
 int changeHeading(Position currPos, Position desPos, float precision);
 int set_gps(void);
 int calc_ck_sum(char *str);
@@ -178,9 +177,9 @@ int changeHeading(Position currPos, Position desPos, float precision) {
 	// If we're within the margin of our desired precision, exit
 	if (abs(currPos.heading - angleToRotate) < precision)
 		return 1;
-	else if ((currPos.heading - angleToRotate) < 0)
+	else if ((currPos.heading - angleToRotate) < 0) // Turn left
 		powerMotors(-100, 100, 3);
-	else
+	else // Turn right
 		powerMotors(100, -100, 3);
 	
 	return 0; // Return 0 so long as we're not at the proper heading
