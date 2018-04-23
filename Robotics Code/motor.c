@@ -5,7 +5,6 @@
   ---------------------------------------------------------------------------- */
   
 /* -------------------------- Project Include Files -------------------------- */
-#include "config_bits.h"    // Processor configuration
 #include "hardware.h"       // Platform declarations
 
 #include <plib.h>
@@ -38,24 +37,21 @@
          not between -100 and 100.
   ---------------------------------------------------------------------------- */
 int runMotor(int channel, int position) {
-    initRC();			// Initialize RC channel output pins
-	DelayMs(125);		// Wait an eighth of a second
+	msDelay(125);		// Wait an eighth of a second
 	    
     /* ------- Make sure the provided RC Channel and position are valid ------ */
-    unsigned int pos = position + 100 / 2; // Scale the % range to the PWM range
+    unsigned int pos = (position + 100) / 2; // Scale the % range to the PWM range
     if (channel >= 1 && channel <= NRC)	{ 
         if (pos >= 0 && pos <= 100) {
-            unsigned int rc_pwm = RC_MIN + (pos * RC_SPAN / 100); 
+            int rc_pwm = RC_MIN + (pos * RC_SPAN / 100); 
             switch (channel) {
                 case 1:
                     RC_1(rc_pwm); // Update RC channel position
                     //DelayMs(750); // Wait .75 seconds and send another pulse
-                    //RC_1(rc_pwm);
                     return 1;
                 case 2:
                     RC_2(rc_pwm); // Update RC channel position
                     //DelayMs(750); // Wait .75 seconds and send another pulse
-                    //RC_2(rc_pwm);
                     return 1;
             }
         }
@@ -70,7 +66,9 @@ int runMotor(int channel, int position) {
   @ Summary
      Public function that should be called by outside code, powers each
 	 of the two motors at the specified power levels for the specified
-	 duration. This code assumes that the left motor is on the first channel
+	 duration. This code powers the motors for the provided time and then
+	 turns off the motors at the end of that time.
+	 This code assumes that the left motor is on the first channel
   @ Parameters
      param1 : A array of length 2, where [0] is the channel of the left
 	          motor, and [1] is the power level, between -100% and 100%,
@@ -83,15 +81,9 @@ int runMotor(int channel, int position) {
   @ Returns
      1 : Both of the motors were powered successfully. No errors from runMotor().
 	 0 : Error code. One or both of the motors were unable to be powered at the
-	     provided levels for the provided time, OR the provided input arrays
-		 were not the proper dimensions.
+	     provided levels for the provided time.
   ---------------------------------------------------------------------------- */
-int powerMotors(int[] leftMotor, int[] rightMotor, float duration) {
-	/* -- Throw an error code if the passed values are incorrectly bounded --- */
-	if (sizeof(leftMotor)  / sizeof(leftMotor[0]) != 2  || 
-        sizeof(rightMotor) / sizeof(rightMotor[0]) != 2 ||
-        duration <= 0) { return 0; }
-	
+int powerMotors(int leftMotor[], int rightMotor[], float duration) {
 	/* ----------------- Start and wait time - in milliseconds --------------- */
 	unsigned int tWait, tStart;
 	tStart = ReadCoreTimer();
