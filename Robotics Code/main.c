@@ -39,7 +39,6 @@ typedef struct { // A custom structure that holds all relevant position data
 
 /* ---------------------------- Function Declarations ------------------------ */
 
-void powerMotors(float leftMotor, float rightMotor);
 int changeHeading(Position currPos, Position desPos, float precision);
 int set_gps(void);
 int calc_ck_sum(char *str);
@@ -62,14 +61,14 @@ int main (void) {
     char ch;                                            // Received character
     int rx_flag;                                        // Character ready
     unsigned char hour, minute, sec, year, day, mon;    // Time and date
-    float latitude, longitude;				// Latitude and Longitude
+    float latitude, longitude;							// Latitude and Longitude
 	
     /* ----------------------- Initilizing fuctions -------------------------- */
     Hardware_Setup();               // Initialize common IO
     initLCD();                      // Local real time display
+	initRC();						// Initialize the RC pins for PWM output
     uart4_init(38400, NO_PARITY);   // Uart Output to the PC
     uart2_init(9600, NO_PARITY);    // GPS 
-    seg7_init();                    // Displays seconds only
     led_flag = 1;
 	
     /* ------------------------- Main while loop ----------------------------- */
@@ -96,11 +95,11 @@ int main (void) {
                                &minute, &sec, &year, &day, &mon);
                 
                 // Testing gave (4644.006347, 11700.389648)
-		// ddmm.mmmm and dddmm.mmmm for lat and long
+				// ddmm.mmmm and dddmm.mmmm for lat and long
                 currLat = 4644.006347;
                 currLng = 11700.389648;
                 
-	        // Truncates all but the decimal
+	        	// Truncates all but the decimal
                 int latDegrees = currLat / 100.0; 
                 int lngDegrees = currLng / 100.0;
                                 
@@ -113,26 +112,6 @@ int main (void) {
         }
     }
     return EXIT_FAILURE; // Code execution should never get to this statement 
-}
-
-/* ---------------------------- powerMotors() --------------------------------
- @ Syntax
-    powerMotors(float leftMotor, float rightMotor, float duration);
- @ Description
-    This function powers the left motor to |a|% and the right motor to |b|%
-    of their total power.
- @ Parameters
-    @ param1 : a float from the range [-100, 100], where (-) values indicate
-    	       backwards power (i.e. reverse). Power level of the left motor
-    @ param2 : a float from the range [-100, 100], where (-) values indicate
-    	       backwards power (i.e. reverse). Power level of the right motor
-    @ param3 : a float that represents how long we want the motors to be
-               powered for. Represented in seconds.
- @ Return Value
-    None
-  ---------------------------------------------------------------------------- */
-void powerMotors(float leftMotor, float rightMotor, float duration) {
-    /* Needs Implementation */
 }
 
 /* --------------------------- changeHeading() -------------------------------
@@ -178,10 +157,16 @@ int changeHeading(Position currPos, Position desPos, float precision) {
 	// If we're within the margin of our desired precision, exit
 	if (abs(currPos.heading - angleToRotate) < precision)
 		return 1;
-	else if ((currPos.heading - angleToRotate) < 0)
-		powerMotors(-100, 100, 3);
-	else
-		powerMotors(100, -100, 3);
+	else if ((currPos.heading - angleToRotate) < 0) { // Turn left
+		int left[]  = {1, -100};
+		int right[] = {2,  100};
+		powerMotors(left, right, 3);
+	}
+	else { // Turn right
+		int left[]  = {1,  100};
+		int right[] = {2, -100};
+		powerMotors(left, right, 3);
+	}
 	
 	return 0; // Return 0 so long as we're not at the proper heading
 }
@@ -232,7 +217,7 @@ int set_gps () {
         sprintf(gps_msg2,"%s%X\r\n", gps_msg1, cksum);
         // printf("\n\r%s", gps_msg2);
         putsU2(gps_msg2);
-	// Debounce push button switch
+		// Debounce push button switch
         do { msDelay(10); } while (BTND());
         new_msg = 1;
     }
@@ -306,7 +291,7 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
     char lcd_str[17];
     char roll_back = 0;
 
-    #ifdef USE_RTCC         // Not available on Basys X3 - requires 32KHz crystal
+    #ifdef USE_RTCC     // Not available on Basys X3 - requires 32KHz crystal
 	rtccTime     tm;    // RTCC time structure
 	rtccDate     dt;    // RTCC date structure
     #endif
@@ -347,10 +332,7 @@ int decode_gps_msg(char *str, float * retLat, float * retLng, unsigned char *hou
                 &utc, &lat, &NS, &lng, &EW, &pos_fix, &sats,
                 &hdop, &alt, &alt_units, &geo_sep, &geo_units ,&cksum);
     }
-    
-    // Make a struct of lat and longitude 
-    
-    
+        
     // Assign data if one of three specific sentences
     if ((memcmp(msg, "$GPRMC", 6) == 0) ||
         (memcmp(msg, "$GPGGA", 6) == 0) ||
