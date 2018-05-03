@@ -16,7 +16,7 @@
 int16_t led_value = 0;
 BOOL led_flag = 0;
 
-/* ------------------------------- seg7_init() -------------------------------
+/* -----------------------------. seg7_init() ---------------------------------
   @ Syntax
      seg7_init();
   @ Description
@@ -37,11 +37,10 @@ void seg7_init(void) {
     DIGITS_OFF();
     clr_dsp();
     
-//  This interrupts signals when to switch LED digits
-// Configure Timer 1 using internal clock, 1:8 pre-scale   
+    /* -------- This interrupts signals when to switch the LED digits -------- */
     OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_8, T1_TICK);
     mT1SetIntPriority(1);      // Set Timer 1 group priority level 1
-    mT1SetIntSubPriority(1);	// Set Timer 1 subgroup priority level 1 
+    mT1SetIntSubPriority(1);   // Set Timer 1 subgroup priority level 1 
     mT1IntEnable(1);           // Enable T1 interrupts 
     
     led_flag = 1;
@@ -59,24 +58,17 @@ void seg7_init(void) {
     led_flag = 0;
 }
 
-/** 
-  @Function
-    * void clr_dsp(void);
-  @Summary
-    * Turns off all LED segments 
-  @Description
-    * All 7 LEDs are set to zero.
-  @Precondition
-    * LED IO pins have been initialized as outputs
-  @Parameters
-    * None    
-  @Returns
-    * None
-  @Remarks
-    * None
- */
-void clr_dsp(void)
-{
+/* ------------------------------- clr_dsp() ---------------------------------
+  @ Syntax
+     clr_dsp();
+  @ Description
+     Turns off all segments of the LEDs.
+  @ Parameters
+     None
+  @ Returns
+     None
+  ---------------------------------------------------------------------------- */
+void clr_dsp (void) {
     SEG_CA(0);      
     SEG_CB(0);
     SEG_CC(0);
@@ -87,25 +79,20 @@ void clr_dsp(void)
     SEG_DP(0);
 }
 
-/** 
-  @Function
-    * void set_digit(int dsp, int value);
-  @Summary
-    * Turns off all LED segments 
-  @Description
-    * All 7 LEDs are set to zero.
-  @Precondition
-    * LED IO pins have been initialized as outputs
-  @Parameters
-    * 1: Display digit
-    * 2: Display value   
-  @Returns
-    * None
-  @Remarks
-    * Digital display anode controls are active low.
- */
-void set_digit(int dsp, int value)
-{
+/* ------------------------------ set_digit()  -------------------------------
+  @ Syntax
+     set_digit(int dsp, int value);
+  @ Description
+     Turn on the passed display [0, 3] of the seven-segment display to the passed
+     character. Uses the DIG_AN#() functions that are active-low. If a non-accepted
+     display value is passed, then all the LEDs are turned off.
+  @ Parameters
+     @ param1 : integer number of which LED to turn on. Expects 0, 1, 2, or 3
+     @ param2 : integer value to display to the passed LED.
+  @ Returns
+     None
+  ---------------------------------------------------------------------------- */
+void set_digit(int dsp, int value) {
     dsp_digit(value);       // Set LED cathodes according to segment number
     switch (dsp) {
         case 0:
@@ -140,28 +127,18 @@ void set_digit(int dsp, int value)
     }
 }
 
-/** 
-  @Function
-* void dsp_digit(int value);
-
-  @Summary
-    *  Single digit LED display
-  @Description
-    * Turns on specific LEDs segments to display the value in decimal format.
-  @Precondition
-    * LED IO pins have been initialized as outputs
-  @Parameters
-    * int - value to be displayed    
-  @Returns
-    * None
-  @Remarks
-    * Each value is displayed using a macro that consists of multiple C 
-    * statements.
- */
-void dsp_digit(int value)
-{
-    switch(value)
-    {      
+/* ------------------------------ dsp_digit()  -------------------------------
+  @ Syntax
+     dsp_digit(9);
+  @ Description
+     Turns on the necessary LED segments to display the required digit.
+  @ Parameters
+     @ param1 : integer value to be displayed at the LEDs.
+  @ Returns
+     None
+  ---------------------------------------------------------------------------- */
+void dsp_digit (int value) {
+    switch (value) {      
         case 0:
             SEG_LED0
             break;
@@ -193,109 +170,88 @@ void dsp_digit(int value)
             SEG_LED9
             break;
         case -1:
-            SEG_NEG     // generate negative sign
+            SEG_NEG    // generate negative sign
             break;            
         default:
             SEG_OFF    // Blank the display
     }
 }
 
-/** 
-  @Function
-* void led_number(int value);
-  @Summary
-    * Display 4 digit decimal number
-  @Description
-    * A value of -999 through 9999 is displayed on the 4 digit 7 segment 
-    * display. Leading zero blanking is used.
-  @Precondition
-    * LED IO pins have been initialized as outputs 
-  @Parameters
-    * int - value to be displayed in the range -999 to +9999
-    * None    
-  @Returns
-    * None
-  @Remarks
-    * Each value is displayed using a macro that consists of multiple C 
-    * statements. This function must be call frequently to keep the numbers
-    * visible to the viewer. 
- */
-void led_number(int value)
-{
-int d1, d2, d3, d4, dz = 0;         // Segment values and display zero flag
+/* ----------------------------- led_number()  -------------------------------
+  @ Syntax
+     led_number(int value);
+  @ Description
+     Displays any number between [-999, 9999] on the 7-segment display with leading zero.
+  @ Parameters
+     @ param1 : Value to be displayed. Ranged between -999 and 9999.
+  @ Returns
+     None
+  ---------------------------------------------------------------------------- */
+void led_number (int value) {
+    int d1, d2, d3, d4, dz = 0;     // Segment values and display zero flag
     
-    if(value<10000)                 // Test for less than maximum positive
-    {
-        if((value < 0) && ( value > -1000)) // Test maximum negative
-        {
-            value = -value;         // Negate value to make positive
-            d4 = -1;                // Assign digit 4 to negative 1
-        }
-        else
-        {
-            d4 = value/1000;        // Isolate 1000's digit
-            value = value % 1000;   // Save remainder
-        }
-        d3 = value/100;             // Isolate 100's digit
-        value = value % 100;        // Save remainder
-        d2 = value/10;              // Isolate 10's digit
-        value = value % 10;         // Save remainder
-        d1 = value;                 // Isolate units digit
+    /* --------- Test that the value is not greater than the maximum --------- */
+    if (value < 10000) {
+        value = ((value < 0) && (value > -1000)) ? -value : value % 1000;
+        d4    = ((value < 0) && (value > -1000)) ? -1     : value / 1000;
+//        if ((value < 0) && (value > -1000)) {
+//            value = -value;         // Negate value to make positive
+//            d4 = -1;                // Assign digit 4 to negative 1
+//        }
+//        else {
+//            d4 = value / 1000;      // Isolate 1000's digit
+//            value = value % 1000;   // Save remainder
+//        }
+        d3    = value / 100;          // Isolate 100's digit
+        value = value % 100;          // Save remainder
+        d2    = value / 10;           // Isolate 10's digit
+        value = value % 10;           // Save remainder
+        d1    = value;                // Isolate units digit
 
-        if(d4)                      // Test for non zero
-        {
+        if (d4) {
             set_digit(3, d4);       // If non zero or minus sign - display digit
-            if(d4>0)
+            if (d4 > 0)
                 dz = 1;             // Set display zero flag
         }
         else
             set_digit(3, 0xFF);     // If leading zero - blank digit
-        DelayUs(DIG_DLY);
+        
+        DelayUs(DIG_DLY);           // Give the board time to turn on the display
 
-        if(d3 || dz == 1)           // Display if nonzero or dz flag is set
-        {
+        if (d3 || dz == 1) {        // Display if nonzero or dz flag is set
             set_digit(2, d3);
             dz = 1;                 // Set display zero flag
         }
         else
             set_digit(2, 0xFF);     // If leading zero - blank digit
-        DelayUs(DIG_DLY);
+        
+        DelayUs(DIG_DLY);           // Give the board time to turn on the display
 
-        if(d2 || dz == 1)           // Display if nonzero or dz flag is set
-        {
+        if (d2 || dz == 1) {        // Display if nonzero or dz flag is set
             set_digit(1, d2);       // Set display zero flag
         }
         else
             set_digit(1, 0xFF);     // If leading zero - blank digit
+        
         DelayUs(DIG_DLY);
         set_digit(0, d1);           // Display trailing zeros
         DelayUs(DIG_DLY);
 
-/* Blank the display */        
         DIGITS_OFF(); 
     }
 }
 
-/** 
-  @Function
-* void test_7seg_leds(void);
-  @Summary
-    * A display test sequence for the 4 digit seven segment display
-  @Description
-    * Each of the 7 LED segments A through F are displayed on digit 0. The the 
-    * number "8" is shifted from eft to right on the display 
-  @Precondition
-    * LED IO pins have been initialized as outputs 
-  @Parameters
-    * None    
-  @Returns
-    * None
-  @Remarks
-    * Each segment is displayed using a macro that consists of multiple C 
-    * statements as defined in led7.h.
- */
-void test_7seg_leds(void)
-{
+/* -------------------------- test_7seg_leds() -------------------------------
+  @ Syntax
+     test_7seg_leds();
+  @ Description
+     Cycles each of the 7-segments (A-F) are displayed. Then shifted left to right.
+  @ Parameters
+     None
+  @ Returns
+     None
+  ---------------------------------------------------------------------------- */
+void test_7seg_leds (void) {
     DIG_AN0(0);
     SEG_CA(1);
     DelayMs(100);
@@ -326,66 +282,48 @@ void test_7seg_leds(void)
     DIG_AN3(1);   
 }
 
-/* T1Interrupt Function Description *****************************************
- * SYNTAX:          void T1Interrupt(void);
- * KEYWORDS:        Timer1 interrupt service routine
- * DESCRIPTION:     Updates the 4 digit 7 segment display according to the value
- *                  set for the global variable "led_value". The display can be
- *                  controlled by setting led_flag to 0 for off or 1 for on.
- *          
- * PARAMETERS:      None
- * RETURN VALUE:    None
- *
- * NOTES:           Calls function "set_digit" and "clr_dsp".
- * END DESCRIPTION **********************************************************/
-void __ISR( _TIMER_1_VECTOR, IPL1SOFT) T1Interrupt(void)
-{
-static int led_disp = 3;            // Seven-segment LED digit display index
-static int led_digit;               // Seven-segment LED digit display value
-static int ms_cntr = 2;
+/* ------------------------------- __ISR() ----------------------------------
+  @ Syntax
+     T1Interrupt();
+  @ Description
+     Updates the 4-digit 7-segment display according to the value set in the
+     global variable "led_value." This can be toggled by setting led_flag to 0 or 1.
+  @ Parameters
+     None
+  @ Returns
+     None
+  ---------------------------------------------------------------------------- */
+void __ISR( _TIMER_1_VECTOR, IPL1SOFT) T1Interrupt(void) {
+    static int led_disp = 3;        // Seven-segment LED digit display index
+    static int led_digit;           // Seven-segment LED digit display value
+    static int ms_cntr = 2;
 
-    if(--ms_cntr<=0)                // Measure out 2 tenths of a second 
-    {
+    if (--ms_cntr <= 0) {           // Measure out 2 tenths of a second 
         ms_cntr = 2;
-        if(led_flag && (led_value<10000) && (led_value > -1000))
-        {
-            switch(led_disp)    // Determine the display digit
-            {
+        if (led_flag && (led_value < 10000) && (led_value > -1000)) {
+            switch (led_disp) {     // Determine the display digit
                 case 0:
-                    led_digit = abs(led_value) % 10;        // Units digit
+                    led_digit = abs(led_value) % 10;           // Units digit
                     break;
                 case 1:
-                    led_digit = (abs(led_value) % 100)/10;  // Tens digit
+                    led_digit = (abs(led_value) % 100) / 10;   // Tens digit
                     break;
                 case 2:
-                    led_digit = (abs(led_value) % 1000)/100;    // 100s digit
+                    led_digit = (abs(led_value) % 1000) / 100; // 100s digit
                     break;
                 case 3:
-                    if((led_value < 0) && ( led_value > -1000)) // Test maximum neg.
-                    {
-                        led_digit = -1;           // Assign digit 4 to negative 1
-                    }
-                    else
-                    {
-                        led_digit = led_value/1000;         // 1K digit
-                    }
+                    led_digit = ((led_value < 0) && (led_value > -1000)) ? -1 : led_value / 1000;
             }
             set_digit(led_disp, led_digit);       // Display digit value
-            if(--led_disp < 0)                    // Update display index modulo 4
-            {
+            if (--led_disp < 0) {                 // Update display index modulo 4
                 led_disp = 3;
             }
         }
-        else
-        {
+        else {
             DIGITS_OFF();
             clr_dsp();
         }
     }
     
-    mT1ClearIntFlag(); 	/* clear T2Interrupt flag */
-} /* End of T1Interrupt ISR */
-
-/* *****************************************************************************
- End of File
- */
+    mT1ClearIntFlag();
+}
