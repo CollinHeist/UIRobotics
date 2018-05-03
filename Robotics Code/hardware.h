@@ -1,3 +1,4 @@
+/* ----- Guard against multiple-inclusion | Define a few macro functions ----- */
 #define DEBUG
 #define RC
 
@@ -44,7 +45,8 @@
 #else
     #define BTNcfgIn()  ( BTNLcfgIn(),BTNRcfgIn(),BTNUcfgIn(),BTNDcfgIn(),BTNCcfgIn() )
 #endif
-// COnfigure slide switches
+    // COnfigure slide switches
+    /* ------------------------ Configure slide switches --------------------- */
     #define SW0cfg()    TRISFbits.TRISF3 = 1 
     #define SW1cfg()    TRISFbits.TRISF5 = 1 
     #define SW2cfg()    TRISFbits.TRISF4 = 1 
@@ -148,9 +150,9 @@
     /*                    set AN2 and AN4 as analog inputs */
     #define ADC_PARAM5    ENABLE_AN2_ANA | ENABLE_AN4_ANA
 
-/* Based upon setting in config_bits.h These directly influence timed
- * events using the Tick module.  They also are used for UART I2C, and SPI
- * baud rate generation. */
+    /* Based upon setting in config_bits.h These directly influence timed
+     * events using the Tick module.  They also are used for UART I2C, and SPI
+     * baud rate generation. */
     /* -----------------------------------------------------------------------
        Based upon settings in config_bits.h, these influence timed events
        using the Tick module. These are used for UART I2C, and SPI Baud
@@ -164,6 +166,6 @@
 
     #define CORE_MS_TICK_RATE	 (unsigned int) (GetCoreClock()/1000UL)
 
+    /* ---------------------- Public Function declarations ------------------- */
+    void Hardware_Setup(void);
 #endif
-
-void Hardware_Setup(void);
