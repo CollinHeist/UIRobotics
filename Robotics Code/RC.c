@@ -15,8 +15,10 @@
 #include "RC.h"
 
 /* --------------------------- Public global variables ----------------------- */
+/* -------- The 'extern' keyword variables are initalized in comm_lib -------- */
 extern BOOL lineRdy;
-extern char uartRxBuffer[];
+extern char uartRxBuffer;
+/* -- These are predefined paths to the channel of the left and right motor -- */
 unsigned int LEFT_MOTOR  = 1;
 unsigned int RIGHT_MOTOR = 2;
 typedef struct {
@@ -34,20 +36,18 @@ int main(void) {
 	Hardware_Setup();	    // Initialize common Cerebot hardware
 	uart4_init(38400, NO_PARITY);				// Initialize UART
 	initRC();				// Initialize RC channel output pins
-	DelayMs(2000);			// Wait a second
-	printf("Enter servo channel and position\n\r");
+	DelayMs(2000);			// Wait two seconds
+	printf("\n\rEnter servo channel and position\n\r");
 	while (1) {
+        /* ------------- lineRdy is set to True inside of comm_lib -----------
+           ----- upon end line detection inside the UART channel (PuTTY) ----- */
         if (lineRdy) {
             sscanf(uartRxBuffer,"%d %d %d %d", &leftCh, &leftPercent, &rightCh, &rightPercent);
            
+            /* -- Runs the motors at the specified percentages for 2 seconds - */
             powerMotors(leftCh, leftPercent, rightCh, rightPercent, 2);		
             lineRdy = FALSE;
     	}
-        else {
-            sscanf(uartRxBuffer,"%d %d %d %d", &leftCh, &leftPercent, &rightCh, &rightPercent);
-            
-            lineRdy = TRUE;
-        }
 	}
 	return (EXIT_FAILURE);		// The program should never get to this
 }
@@ -79,7 +79,6 @@ int powerMotors (int leftCh, float leftPercent, int rightCh, float rightPercent,
     /* ------ Verify that the passed values are within a suitable range ------ */
     if (leftCh >= 1 && rightCh >= 1 && leftCh <= NRC && rightCh <= NRC) {
         if (leftPercent >= -100 && rightPercent >= -100 && leftPercent <= 100 && rightPercent <= 100) {
-            printf("Left (%d %d) | Right (%d %d)", leftCh, leftPercent, rightCh, rightPercent);
             /* ---------- Scale the percentage between -100% and 100% -------- */
             float leftPos  = (leftPercent  + 100.0) / 2.0;
             float rightPos = (rightPercent + 100.0) / 2.0;
@@ -151,9 +150,9 @@ int changeHeading(Position currPos, Position desPos, float precision) {
 	if (abs(currPos.heading - angleToRotate) < precision)
 		return 1;
 	else if ((currPos.heading - angleToRotate) < 0) // Left Turn
-		powerMotors(LEFT_MOTOR, -100, RIGHT_MOTOR, 100, 1);
-	else                                            // Turn Right
-		powerMotors(LEFT_MOTOR, 100, RIGHT_MOTOR, -100, 1);
+		powerMotors(LEFT_MOTOR, -100, RIGHT_MOTOR, 100, .5);
+	else // Turn Left
+		powerMotors(LEFT_MOTOR, 100, RIGHT_MOTOR, -100, .5);
 	
 	return 0; // Return 0 so long as we're not at the proper heading
 }
