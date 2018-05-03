@@ -1,7 +1,6 @@
-/* ------------------- Hardware and Common Libarary Includes ----------------- */
+/* ------------------- Hardware and Common Library Includes ------------------ */
 #include "hardware.h"
 #include <plib.h>
-
 
 /* ---------------------------- Hardware_Setup() -----------------------------
   @ Summary
