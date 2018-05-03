@@ -17,8 +17,8 @@
 	#define RC_SPAN		(RC_MAX - RC_MIN)
 	#define RC_CENTER   (RC_MIN + (RC_SPAN / 2))
 
-    /* --------------------- Public Function Declarations -------------------- */
-	void initRC(void);
-	void set_RC(int ch, int ctrl);
+    /* ---------------------- Public Function declarations ------------------- */
+    void initRC(void);
+    void set_RC(int ch, int ctrl);
     int powerMotors (int leftCh, float leftPercent, int rightCh, float rightPercent, float duration);
 #endif
