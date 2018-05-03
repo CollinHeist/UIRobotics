@@ -1,52 +1,18 @@
-/* ************************************************************************** */
-/** Descriptive File Name
+/* --------------------- Guard Against Multiple Inclusions ------------------- */
+#ifndef _LED7_H_
+    #define _LED7_H_
 
-  @ Author
-    Richard Wall
- 
-  @ Date
-    May 28, 2016
+    #include "hardware.h"
+    #include <plib.h>
+    #include <stdint.h>
+    /* -----------------------------------------------------------------------
+       This file defines the port and pin assignments for the 7 segment LED 
+       displays.  Macros are used extensively to implement abstraction of the
+       bit-bang control required because the segment LEDs are not assigned to
+       contiguous pins on a single port.
+       ----------------------------------------------------------------------- */
 
-  @Company
-    Digilent
-
-  @File Name
-    LED7.h
-
-  @Summary
-    Four Digit - Seven segment display constants.
-
-  @Description
-    Defines the IO pins and decimal digit output for a seven segment display.
- */
-/* ************************************************************************** */
-
-#ifndef _LED7_H_    /* Guard against multiple inclusion */
-#define _LED7_H_
-
-/* ************************************************************************** */
-/* ************************************************************************** */
-/* Section: Included Files                                                    */
-/* ************************************************************************** */
-/* ************************************************************************** */
-
-#include "hardware.h"
-#include <plib.h>
-#include <stdint.h>
-
-    /* ************************************************************************** */
-    /* ************************************************************************** */
-    /* Section: Constants                                                         */
-    /* ************************************************************************** */
-    /* ************************************************************************** */
-
-    /*  This file defines the port and pin assignments for the 7 segment LED 
-     * displays.  Macros are used extensively to implement abstraction of the
-     * bit-bang control required because the segment LEDs are not assigned to
-     * contiguous pins on a single port.  
-     */
-
-// Configure the PIC32 pins for 7 segment LED outputs
+    /* --------- Configure the PIC32 Pins for 7-segment LED outputs ---------- */
 	#define CAcfg()    TRISGbits.TRISG12 = 0
 	#define CBcfg()    TRISAbits.TRISA14 = 0
 	#define CCcfg()    TRISDbits.TRISD6 = 0
@@ -56,7 +22,7 @@
 	#define CGcfg()    TRISDbits.TRISD13 = 0
 	#define DPcfg()    TRISGbits.TRISG14 = 0
 
-// Macros that set the PIC32 pins as digital outputs for LED Digit display 
+    /* ---- Macros for setting the PIC32 Pins as Digital outputs for LEDs ---- */
     #define AN0cfg()   (TRISBbits.TRISB12 = 0, ANSELBbits.ANSB12 = 0)   // RB12
     #define AN1cfg()   (TRISBbits.TRISB13 = 0, ANSELBbits.ANSB13 = 0)   // RB13
     #define AN2cfg()   TRISAbits.TRISA9 = 0    // RA9
@@ -69,7 +35,7 @@
                         CGcfg(), DPcfg(), AN0cfg(), AN1cfg(), AN2cfg(),\
                         AN3cfg() )
 
-// Controls the ON and OFF state of LED segments. LED segments are active low.
+    /* -- Macro controls for the ON/OFF state of the LEDs. Active low LEDs --- */
     #define SEG_CA(b);  {if(b) LATGCLR = BIT_12; else LATGSET = BIT_12;}  //RG12
     #define SEG_CB(b);  {if(b) LATACLR = BIT_14; else LATASET = BIT_14;}  //RA14
     #define SEG_CC(b);  {if(b) LATDCLR = BIT_6;  else LATDSET = BIT_6; }  //RD5
@@ -99,35 +65,13 @@
     #define DIGITS_OFF(); {DIG_AN0(1); DIG_AN1(1); DIG_AN2(1); DIG_AN3(1);}
 
     #define DIG_DLY     100
-    #define T1_TICK ((GetPeripheralClock()/8000)-1) // 1 millisecond used by Timer 1
+    #define T1_TICK ((GetPeripheralClock() / 8000) - 1) // 1 millisecond used by Timer 1
 
-    /* ************************************************************************** */
-    /** Descriptive Constant Name
-
-      @Summary
-     Seven segment display definition and control macros.
-      
-      @Description
-       LED segment control definitions require individual bit control. "SET_xx"
-       operators declare the segment pins as outputs. "SEG_xx" and "DIG_xx" 
-       operators assign values either "0" or "1" to the outputs.  "SEG_xx" 
-       operators control the LED segments and "DIG_ANx" select the display 
-       digit. Digits are selected by asserting the digit anode low.
-        
-       Reference: https://en.wikipedia.org/wiki/Seven-segment_display  
-     */
-// *****************************************************************************
-// *****************************************************************************
-// Section: Interface Functions
-// *****************************************************************************
-// *****************************************************************************
-
-#endif /* _LED7_H_ */
-
-/* -------------------------- Public file declarations ----------------------- */
-void seg7_init(void);
-void clr_dsp(void);     /* Turns off all LED segments (blanks display) */
-void set_digit(int dsp, int value); /* Sets Segment LEDS and activates digit */
-void dsp_digit(int dsp); /* Sets segment LEDs for specific value */
-void led_number(int value); /* Displays a value (0 - 9999) */
-void test_7seg_leds(void);  /* Seven segment display test sequence */
+    /* ---------------------- Public Function declarations ------------------- */
+    void seg7_init(void);
+    void clr_dsp(void);
+    void set_digit(int dsp, int value);
+    void dsp_digit(int dsp);
+    void led_number(int value);
+    void test_7seg_leds(void);
+#endif
