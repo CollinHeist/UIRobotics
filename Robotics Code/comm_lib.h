@@ -11,12 +11,11 @@
     #define ODD_PARITY      1
     #define EVEN_PARITY     2
 
+    /* ---------------------- Public Function declarations ------------------- */
+    void uart4_init(unsigned int baud, int parity);
+    void _mon_putc(char c);
+    BOOL putcU4(int c);
+    BOOL getcU4(char *ch);
+    int putsU4(const char *s);
+    int getstrU4(char *s, unsigned int len);
 #endif
-
-/* ----------------------- Public Function Declarations ---------------------- */
-void uart4_init(unsigned int baud, int parity);
-void _mon_putc(char c);
-BOOL putcU4(int c);
-BOOL getcU4(char *ch);
-int putsU4(const char *s);
-int getstrU4(char *s, unsigned int len );
