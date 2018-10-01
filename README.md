@@ -1,16 +1,37 @@
 ## University of Idaho - Robotics Club
 ---
-#### This Github repository is where we'll be keep the final version of our code used to run the Autonomous Boat.
----
-For those have not yet used Github, I recommend reading through [this](https://guides.github.com/activities/hello-world/ "Github Walkthrough") quick introduction.
-
-1. `/Robotics Code/` is the main _project_ file for the board. You can download that folder and directly open it as a project file in MPLAB X
-
-2. I've also posted a walkthrough of sorts you should all read [here](https://docs.google.com/document/d/1drxDmMMY8L0Jcg8FvCODpBT69w2KSG8qKTnTIxLXedo/edit?usp=sharing "Google Doc Walkthrough").
-
+#### This branch holds the working code for the XBee-Project, posted by Dr. Wall
 ---
 
-Before adding any new code / functions, or submitting pull requests in general, take a look at the style I'm using in the `main.c` file.
+Here are which files I'd like each of us to work on, ignore the /Robotics Code/ folder.
+* Aaron:
+  1. `comm_lib.c`
+  2. `hardware.c`
+  3. `led7.h`
+  4. `switches.c`
+* Collin:
+  1. `comm_lib.h`
+  2. `hardware.h`
+  3. `RC-GPS.c`
+  4. `switches.h`
+* Damon:
+  1. `GPS.c`
+  2. `LCDlib.c`
+  3. `RC-GPS.h`
+* Dylan:
+  1. `config_bits.h`
+  2. `LDClib.h`
+  3. `swDelay.c`
+* Sam:
+  1. `GPS.h`
+  2. `led7.c`
+  3. `swDelay.h`
+  
+The purpose of this branch is to merge only the necessary code to our __existing__ project folder. So to do this, go through your assigned file and create a pull request of the necessary code into whatever file you'd like. If there is already existing file, like `hardware.h` for example, just add whatever parts are necessary or __submit a pull request of what should be added and we can review it for bugs with Dr. Wall__.
+
+---
+
+Before adding any new code / functions, or submitting pull requests in general, take a look at the style I'm using in the `main.c` file of the Robotics Code folder.
 
 * In general, we want __every function and major block of code__ to be commented, so that we are not constantly playing explaining either the functionality, usage, or purpose of each other's code.
 
