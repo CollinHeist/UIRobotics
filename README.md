@@ -11,7 +11,6 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
   5. `LDClib.h`
   6. `MAG3110.c`
   7. `newxc32_header.h`
-  8. `TMP03.c`
 * Collin:
   1. `AD22100.h`
   2. `DHT.c`
@@ -20,6 +19,7 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
   5. `led7.c`
   6. `MAG3110.h`
   7. `RC.c`
+  8. `GPS_I2C.h`
 * Damon:
   1. `comm_lib.c`
   2. `DHT.h`
@@ -30,21 +30,19 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
   7. `RC.h`
 * Dylan:
   1. `comm_lib.h`
-  2. `GPS_I2C.h`
+  2. `swDelay.c`
   3. `hardware.h`
   4. `i2c_lib.h`
-  5. `mag.c`
-  6. `main.h`
-  7. `swDelay.c`
+  5. `main.h`
 * Sam:
   1. `compass.c`
   2. `GPS_UART.c`
   3. `hardware.h`
   4. `LCDlib.c`
-  5. `mag.h`
-  6. `map.c`
-  7. `swDelay.h`
-  8. `TMP03.h`
+  5. `map.c`
+  6. `swDelay.h`
+  7. `TMP03.h`
+  8. `TMP03.c`
 
 ---
 
