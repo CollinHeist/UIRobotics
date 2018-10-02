@@ -1,12 +1,50 @@
 ## University of Idaho - Robotics Club
 ---
-#### This Github repository is where we'll be keep the final version of our code used to run the Autonomous Boat.
+#### This Github repository is where we'll be working version of Dr. Wall's code for the peripherals. These are to be merged with the master section of code.
 ---
-For those have not yet used Github, I recommend reading through [this](https://guides.github.com/activities/hello-world/ "Github Walkthrough") quick introduction.
-
-1. `/Robotics Code/` is the main _project_ file for the board. You can download that folder and directly open it as a project file in MPLAB X
-
-2. I've also posted a walkthrough of sorts you should all read [here](https://docs.google.com/document/d/1drxDmMMY8L0Jcg8FvCODpBT69w2KSG8qKTnTIxLXedo/edit?usp=sharing "Google Doc Walkthrough").
+Here are which files I'd like each of us to work on, ignore the /Robotics Code/ folder.
+* Aaron:
+  1. `AD22100.c`
+  2. `config_bits.h`
+  3. `GPS_UART.h`
+  4. `I2C_lib_.c`
+  5. `LDClib.h`
+  6. `MAG3110.c`
+  7. `newxc32_header.h`
+  8. `TMP03.c`
+* Collin:
+  1. `AD22100.h`
+  2. `DHT.c`
+  3. `GPS-I2C.c`
+  4. `I2C_lib_.h`
+  5. `led7.c`
+  6. `MAG3110.h`
+  7. `RC.c`
+* Damon:
+  1. `comm_lib.c`
+  2. `DHT.h`
+  3. `hardware.c`
+  4. `i2c_lib.c`
+  5. `led7.h`
+  6. `main.c`
+  7. `RC.h`
+* Dylan:
+  1. `comm_lib.h`
+  2. `GPS_I2C.h`
+  3. `hardware.h`
+  4. `i2c_lib.h`
+  5. `mag.c`
+  6. `main.h`
+  7. `swDelay.c`
+* Sam:
+  1. `compass.c`
+  2. `GPS_UART.c`
+  3. `hardware.h`
+  4. `LCDlib.c`
+  5. `mag.h`
+  6. `map.c`
+  7. `swDelay.h`
+  8. `TMP03.h`
 
 ---
 
