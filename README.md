@@ -1,6 +1,6 @@
 ## University of Idaho - Robotics Club
 ---
-#### This Github repository is where we'll be keep the final version of our code used to run the Autonomous Boat.
+#### This Github repository is where we'll be working version of Dr. Wall's code for the peripherals. These are to be merged with the master section of code.
 ---
 Here are which files I'd like each of us to work on, ignore the /Robotics Code/ folder.
 * Aaron:
