@@ -1,0 +1,66 @@
+/* 
+** RC.txt
+** Professor Richard Wall
+** Department of Electrical and Computer Engineering
+** University of Idaho
+** Moscow, ID 83844-1023
+** rwall@uidaho.edu
+**
+** Date:	November 26, 2012
+**
+** Test program for the 4 channel Servo Motor using
+** the Cerebot PIC32 MXck.
+**
+** See RC.txt
+*/
+
+PIC32 RC Controller General Notes:
+
+This project supports either the standard 8 data bit LCD interface 
+using JB and JC or the 4 data bit 4x20 LCD interface using only JC.  
+The project also provides for serial communications at 19200 BAUD. 
+Any RC channel can be set by entering two number as "1 55". The first
+value is the channel number (0 - 7) and the second the position 
+(0 - 100).  A position setting of 50 is the neutral position.
+
+Project specific notes:
+
+The current version of this project only supports 4 servos 
+but can be easily expanded by adding states to the "set_RC" function
+and adding to the RC channel pin macros define in RC.h.
+
+This project uses a single timer interrupt to generate all 8 channel
+outputs. The Timer1 interrupt period is set for 10 microseconds. This 
+provides for 1% position resolution. As written, the configuration 
+sets the PIC32 core frequency for 40 MHz and the peripheral bus 
+clock to 10 MHz. 
+
+The CONU1 code provides for a non-blocking get string function.  The 
+maximum string size for this function is 80 characters. A buffer must be 
+passed to this function that has a length of up to the 80 character limit. 
+The character string is terminated with either a LF or CR character. When
+the terminating character is detected, the captured character string is 
+copied to the array supplied to the function with a NULL termination in
+place of the LF or CR character. Until the terminal LF or CR is detected, 
+the function returns 0. Once the LF or CR has been detected, the function
+returns the number of characters in the string.  
+
+The code as written has been tested for 8 RC channels.  
+
+References:
+
+Digilent PIC32 MX7ck
+http://www.digilentinc.com/Products/Detail.cfm?NavPath=2,396,986&Prod=CEREBOT-MX7CK
+
+Digilent RC PMod data sheet
+http://www.digilentinc.com/Products/Detail.cfm?Prod=PMOD-CON3
+
+2x16 LCD data sheet
+http://www.digilentinc.com/Products/Detail.cfm?NavPath=2,401,609&Prod=PMOD-CLP
+
+4x20 LCD data sheet
+http://www.kyocera-display.com/SiteImages/PartList/SPEC/51847ad%C3%A9%C3%A0.pdf
+
+HiTec Servo motors
+http://www.hitecrcd.com/support/faqs/faqs/servos/general-servos/index.html
+
