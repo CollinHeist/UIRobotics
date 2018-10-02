@@ -1,16 +1,35 @@
 ## University of Idaho - Robotics Club
 ---
-#### This Github repository is where we'll be keep the final version of our code used to run the Autonomous Boat.
----
-For those have not yet used Github, I recommend reading through [this](https://guides.github.com/activities/hello-world/ "Github Walkthrough") quick introduction.
-
-1. `/Robotics Code/` is the main _project_ file for the board. You can download that folder and directly open it as a project file in MPLAB X
-
-2. I've also posted a walkthrough of sorts you should all read [here](https://docs.google.com/document/d/1drxDmMMY8L0Jcg8FvCODpBT69w2KSG8qKTnTIxLXedo/edit?usp=sharing "Google Doc Walkthrough").
-
+#### This branch holds the working code for the RC-GPS-Project, posted by Dr. Wall
 ---
 
-Before adding any new code / functions, or submitting pull requests in general, take a look at the style I'm using in the `main.c` file.
+Here are which files I'd like each of us to work on, ignore the /Robotics Code/ folder.
+* Aaron:
+  1. `LDClib.c`
+  2. `main.h`
+  3. `uart4.c`
+* Collin:
+  1. `LDClib.h`
+  2. `swDelay.c`
+  3. `uart4.h`
+* Damon:
+  1. `config_bits.h`
+  2. `led7.c`
+  3. `swDelay.h`
+* Dylan:
+  1. `hardware.c`
+  2. `led7.h`
+* Sam:
+  1. `hardware.h`
+  2. `main.c`
+  3. `uart2.h`
+  4. `uart2.c`
+  
+The purpose of this branch is to merge only the necessary code to our __existing__ project folder. So to do this, go through your assigned file and create a pull request of the necessary code into whatever file you'd like. If there is already existing file, like `hardware.h` for example, just add whatever parts are necessary or __submit a pull request of what should be added and we can review it for bugs with Dr. Wall__.
+
+---
+
+Before adding any new code / functions, or submitting pull requests in general, take a look at the style I'm using in the `main.c` file of the Robotics Code folder.
 
 * In general, we want __every function and major block of code__ to be commented, so that we are not constantly playing explaining either the functionality, usage, or purpose of each other's code.
 
