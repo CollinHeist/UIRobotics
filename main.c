@@ -32,20 +32,19 @@ float angle;
 static void initialize_nav_sens(void);
 
 /* ----------------------------------------------------------- */
-int main(void)
-{
-char lcdstr[40];	// Local LCD display buffers
-I2C_RESULT i2cFlag;
-int len = 255;
-int pkt_len = 0;
-int x,y,z;
-int hour, min, sec;
-float heading = 0.0;
+int main(void) {
+	char lcdstr[40];	// Local LCD display buffers
+	I2C_RESULT i2cFlag;
+	int len = 255;
+	int pkt_len = 0;
+	int x,y,z;
+	int hour, min, sec;
+	float heading = 0.0;
 
 	Hardware_Setup();       // Initialize common hardware
-    initialize_nav_sens();
-	while(1)
-	{
+    initialize_nav_sens();	// This function initializes the uart4
+	uart2_init(9600, NO_PARITY);
+	while (1) {
 //        length = distance(lat1, lon1, lat2, lon2, 'K');
 
     	clrLCD();				// Clear hello messages
