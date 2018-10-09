@@ -1,19 +1,3 @@
-/* 
-** main.c
-** Richard Wall
-** 
-** rwall@gold.uidaho.edu
-**
-** November 24, 2012
- * March 3, 2017 - ported to PIC32MX370 for the Basys MX3 
- * October 1, 2018
-**
-** Test program for the 4 channel Servo Motor using
-** the BAsysMX370.
-**
-** See 
-*/
-
 #include "config_bits.h"    // Processor configuration
 #include "hardware.h"       // Platform declarations
 
@@ -26,12 +10,13 @@
 // Included files for platform 
 #include "LCDlib.h"
 #include "led7.h"
-#include "comm_lib.h"
+// #include "comm_lib.h" 	// Name change
+#include "uart2.h"
 #include "swDelay.h"
 #include "main.h"
 #include "DHT.h"
-#include "TMP03.h"
-#include "GPS_I2C.h"
+// #include "TMP03.h"		// Not used
+// #include "GPS_I2C.h"		// Not used
 #include "MAG3110.h"
 
 float temp1;
