@@ -5,44 +5,38 @@
 Here are which files I'd like each of us to work on, ignore the /Robotics Code/ folder.
 * Aaron:
   1. `AD22100.c`
-  2. `config_bits.h`
-  3. ~~`GPS_UART.h`~~
-  4. `I2C_lib_.c`
-  5. `LDClib.h`
-  6. `MAG3110.c`
-  7. `newxc32_header.h`
+  2. `hardware.c`
+  3. `i2c_lib.h`
+  4. `MAG3110.c`
+  5. `RC.c` - Keep in mind our RC.c file in the `master` branch is our main, so implement accordingly
 * Collin:
-  1. `AD22100.h`
-  2. ~~`DHT.c`~~
-  3. `GPS-I2C.c`
-  4. `I2C_lib_.h`
-  5. `led7.c`
-  6. `MAG3110.h`
-  7. `RC.c`
-  8. `GPS_I2C.h`
-* Damon:
-  1. `comm_lib.c`
-  2. `DHT.h`
-  3. `hardware.c`
-  4. `i2c_lib.c`
-  5. `led7.h`
-  6. `main.c`
-  7. `RC.h`
-* Dylan:
-  1. `comm_lib.h`
-  2. `swDelay.c`
-  3. `hardware.h`
-  4. `i2c_lib.h`
-  5. `main.h`
-* Sam:
-  1. `compass.c`
-  2. ~~`GPS_UART.c`~~
-  3. `hardware.h`
+  1. ~~`AD22100.h`~~ - __Finished__
+  2. `hardware.h`
+  3. ~~`GPS-I2C.c`~~ - __Finished__
   4. `LCDlib.c`
-  5. ~~`map.c`~~
-  6. `swDelay.h`
-  7. ~~`TMP03.h`~~
-  8. ~~`TMP03.c`~~
+  5. `MAG3110.h`
+  6. `RC.h`
+  7. `swDelay.c`
+  8. `swDelay.h`
+* Damon:
+  1. `compass.c`
+  2. `I2C_lib_.c`
+  3. `LCDlib.h`
+  4. `main.c` - For this one, keep in mind our 'main' file in the `master` branch is RC.c
+  5. `uart2.c`
+* Dylan:
+  1. `config_bits.h`
+  2. `I2C_lib_.h`
+  3. `led7.h`
+  4. `main.h`
+  5. `uart2.h`
+* Sam:
+  1. `GPS_I2C.h`
+  2. `i2c_lib.c`
+  3. `led7.c`
+  4. `newxc32_header.h`
+  5. `uart4.c`
+  6. `uart4.h`
 
 ---
 
