@@ -12,6 +12,7 @@
 #include "led7.h"
 // #include "comm_lib.h" 	// Name change
 #include "uart2.h"
+#include "uart4.h"
 #include "swDelay.h"
 #include "main.h"
 #include "DHT.h"
