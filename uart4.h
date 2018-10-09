@@ -1,15 +1,10 @@
-/*********************************  comm.h **********************************
- * Author:      Richard Wall
- * Date:        June 23, 2016
-*****************************************************************************/
-
 #ifndef __MX370_COMM_H__
 
     #define __MX370_COMM_H__
-    #define _UART4
+    #define _UART4_
 #endif
 
-#ifndef __COMM_H__
+#ifndef __UART4__
 
     #define __COMM_M__
     #define BACKSPACE       0x08
