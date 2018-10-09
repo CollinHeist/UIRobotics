@@ -9,7 +9,7 @@
 #include "hardware.h"	/* Has info regarding the PB clock */
 #include <plib.h>
 #include <stdio.h>              /* Required for printf */
-#include "comm_lib.h"
+#include "uart4.h"
 
 /* uart4_init FUNCTION DESCRIPTION *************************************
  * SYNTAX:          void uart1_init(unsigned int baud, int parity);
