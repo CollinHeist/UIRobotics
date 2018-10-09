@@ -4,9 +4,9 @@
     #define _UART4_
 #endif
 
-#ifndef __UART4__
+#ifndef __UART4_H__
 
-    #define __COMM_M__
+    #define __UART4_H__
     #define BACKSPACE       0x08
     #define NO_PARITY       0
     #define ODD_PARITY      1
