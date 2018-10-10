@@ -16,8 +16,8 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
   4. ~~`LCDlib.c`~~ - __Finished__
   5. `MAG3110.h`
   6. `RC.h`
-  7. `swDelay.c`
-  8. `swDelay.h`
+  7. ~~`swDelay.c`~~ - __Finished__
+  8. ~~`swDelay.h`~~ - __Finished__
 * Damon:
   1. `compass.c`
   2. `I2C_lib_.c`
