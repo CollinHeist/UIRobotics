@@ -14,7 +14,7 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
   2. ~~`hardware.h`~~ - __Finished__
   3. ~~`GPS-I2C.c`~~ - __Finished__
   4. ~~`LCDlib.c`~~ - __Finished__
-  5. `MAG3110.h`
+  5. ~~`MAG3110.h`~~ - __Finished__
   6. ~~`RC.h`~~ - __Finished__
   7. ~~`swDelay.c`~~ - __Finished__
   8. ~~`swDelay.h`~~ - __Finished__
