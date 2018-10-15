@@ -22,30 +22,31 @@
     #define BTNC_bit    BIT_0   // RF0
 
     #define BNTL()      PORTBbits.RB0  // PORTReadBits(IOPORT_B, BTNL_bit)
-#ifndef RC
-    #define BNTR()      PORTBbits.RB8  // PORTReadBits(IOPORT_B, BTNR_bit) - RC1
-    #define BNTD()      PORTAbits.RA15 // PORTReadBits(IOPORT_A, BTND_bit) - RC2
-#endif
+	#ifndef RC
+		#define BNTR()      PORTBbits.RB8  // PORTReadBits(IOPORT_B, BTNR_bit) - RC1
+		#define BNTD()      PORTAbits.RA15 // PORTReadBits(IOPORT_A, BTND_bit) - RC2
+	#endif
     #define BNTU()      PORTBbits.RB1  // PORTReadBits(IOPORT_B, BTNU_bit)
     #define BNTC()      PORTFbits.RF0  // PORTReadBits(IOPORT_F, BTNC_bit)
 
-#ifdef RC
-    #define BTNRcfgOut()  PORTSetPinsDigitalOut(IOPORT_B, BTNR_bit)   // Analog Input pin
-    #define BTNDcfgOut()  PORTSetPinsDigitalOut(IOPORT_A, BTND_bit)   // RA5
-#else
-    #define BTNRcfgIn()  PORTSetPinsDigitalIn(IOPORT_B, BTNR_bit)   // Analog Input pin
-    #define BTNDcfgIn()  PORTSetPinsDigitalIn(IOPORT_A, BTND_bit)   // RA5
-#endif
-    #define BTNCcfgIn()   PORTSetPinsDigitalIn(IOPORT_F, BTNC_bit)    // RF0 
+	#ifdef RC
+		#define BTNRcfgOut()  PORTSetPinsDigitalOut(IOPORT_B, BTNR_bit)		// Analog Input pin
+		#define BTNDcfgOut()  PORTSetPinsDigitalOut(IOPORT_A, BTND_bit)		// RA5
+	#else
+		#define BTNRcfgIn()  PORTSetPinsDigitalIn(IOPORT_B, BTNR_bit)		// Analog Input pin
+		#define BTNDcfgIn()  PORTSetPinsDigitalIn(IOPORT_A, BTND_bit)   	// RA5
+	#endif
+    #define BTNCcfgIn()   PORTSetPinsDigitalIn(IOPORT_F, BTNC_bit)    		// RF0
 
-#define BTNUcfgIn()  (PORTSetPinsDigitalIn(IOPORT_B, BTNU_bit), CNPDBbits.CNPDB1 = 1) // RB0 With pulldown//  - Analog Input pin
-    #define BTNLcfgIn()  (PORTSetPinsDigitalIn(IOPORT_B, BTNL_bit), CNPDBbits.CNPDB0 = 1) // RB1 With pulldown//  - Analog Input pin
-#ifdef DEBUG
-    #define BTNcfgIn()  ( BTNRcfgIn(),BTNDcfgIn(),BTNCcfgIn() )
-#else
-    #define BTNcfgIn()  ( BTNLcfgIn(),BTNRcfgIn(),BTNUcfgIn(),BTNDcfgIn(),BTNCcfgIn() )
-#endif
-    // COnfigure slide switches
+	#define BTNUcfgIn()  (PORTSetPinsDigitalIn(IOPORT_B, BTNU_bit), CNPDBbits.CNPDB1 = 1) // RB0 With pulldown - Analog Input pin
+    #define BTNLcfgIn()  (PORTSetPinsDigitalIn(IOPORT_B, BTNL_bit), CNPDBbits.CNPDB0 = 1) // RB1 With pulldown - Analog Input pin
+	
+	#ifdef DEBUG
+		#define BTNcfgIn()  (BTNRcfgIn(),BTNDcfgIn(),BTNCcfgIn())
+	#else
+		#define BTNcfgIn()  (BTNLcfgIn(),BTNRcfgIn(),BTNUcfgIn(),BTNDcfgIn(),BTNCcfgIn())
+	#endif
+
     /* ------------------------ Configure slide switches --------------------- */
     #define SW0cfg()    TRISFbits.TRISF3 = 1 
     #define SW1cfg()    TRISFbits.TRISF5 = 1 
@@ -134,7 +135,8 @@
     #define invLED6()   PORTToggleBits(IOPORT_A, LED6_bit)
     #define invLED7()   PORTToggleBits(IOPORT_A, LED7_bit)
 	
-
+// Ask Dr. Wall about this. In the newest code's hardware.h this is all commented out
+/* 
     /*                 Turn module on | output integer  | trigger mode auto | enable auto sample */
     #define ADC_PARAM1  ADC_MODULE_ON | ADC_FORMAT_INTG | ADC_CLK_AUTO | ADC_AUTO_SAMPLING_ON
 
@@ -149,6 +151,7 @@
  
     /*                    set AN2 and AN4 as analog inputs */
     #define ADC_PARAM5    ENABLE_AN2_ANA | ENABLE_AN4_ANA
+*/
 
     /* Based upon setting in config_bits.h These directly influence timed
      * events using the Tick module.  They also are used for UART I2C, and SPI
@@ -162,10 +165,14 @@
     #define GetSystemClock()     (80000000UL)	/* Hz */
     #define GetCoreClock()       (GetSystemClock()/2)
     #define GetPeripheralClock() (GetSystemClock()/8)
-    #define SYSTEM_FREQ          GetSystemClock()
+    #define SYSTEM_FREQ           GetSystemClock()
 
     #define CORE_MS_TICK_RATE	 (unsigned int) (GetCoreClock()/1000UL)
-
-    /* ---------------------- Public Function declarations ------------------- */
-    void Hardware_Setup(void);
+	
+	unsigned int millisec = 0;
 #endif
+
+/* ---------------------- Public Function declarations ----------------------- */
+void Hardware_Setup(void);
+unsigned int millis(void);
+void initTimer1(void);
