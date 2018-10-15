@@ -27,7 +27,7 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
 * Dylan:
   1. ~~`config_bits.h`~~ - __Finished__, Collin
   2. ~~`I2C_lib_.h`~~ - __Finished__, Collin
-  3. ~~`led7.h`~~ - __Finished, Collin__
+  3. ~~`led7.h`~~ - __Finished__, Collin
   4. `main.h`
   5. `uart2.h`
 * Sam:
