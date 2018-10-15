@@ -13,27 +13,27 @@
        ----------------------------------------------------------------------- */
 
     /* --------- Configure the PIC32 Pins for 7-segment LED outputs ---------- */
-	#define CAcfg()    TRISGbits.TRISG12 = 0
-	#define CBcfg()    TRISAbits.TRISA14 = 0
-	#define CCcfg()    TRISDbits.TRISD6 = 0
-	#define CDcfg()    TRISGbits.TRISG13 = 0
-	#define CEcfg()    TRISGbits.TRISG15 = 0
-	#define CFcfg()    TRISDbits.TRISD7 = 0
-	#define CGcfg()    TRISDbits.TRISD13 = 0
-	#define DPcfg()    TRISGbits.TRISG14 = 0
+	#define CAcfg()		TRISGbits.TRISG12 = 0
+	#define CBcfg()		TRISAbits.TRISA14 = 0
+	#define CCcfg()		TRISDbits.TRISD6  = 0
+	#define CDcfg()		TRISGbits.TRISG13 = 0
+	#define CEcfg()		TRISGbits.TRISG15 = 0
+	#define CFcfg()		TRISDbits.TRISD7  = 0
+	#define CGcfg()		TRISDbits.TRISD13 = 0
+	#define DPcfg()		TRISGbits.TRISG14 = 0
 
     /* ---- Macros for setting the PIC32 Pins as Digital outputs for LEDs ---- */
-    #define AN0cfg()   (TRISBbits.TRISB12 = 0, ANSELBbits.ANSB12 = 0)   // RB12
-    #define AN1cfg()   (TRISBbits.TRISB13 = 0, ANSELBbits.ANSB13 = 0)   // RB13
-    #define AN2cfg()   TRISAbits.TRISA9 = 0    // RA9
-    #define AN3cfg()   TRISAbits.TRISA10 = 0   // RA10
+    #define AN0cfg()	(TRISBbits.TRISB12 = 0, ANSELBbits.ANSB12 = 0)	// RB12
+    #define AN1cfg()	(TRISBbits.TRISB13 = 0, ANSELBbits.ANSB13 = 0)	// RB13
+    #define AN2cfg()	TRISAbits.TRISA9   = 0	// RA9
+    #define AN3cfg()	TRISAbits.TRISA10  = 0	// RA10
 
 
-    #define DIG_DLY     100
+    #define DIG_DLY		100
 
-    #define Seg7cfg()  (CAcfg(), CBcfg(), CCcfg(), CDcfg(), CEcfg(), CFcfg(),\
-                        CGcfg(), DPcfg(), AN0cfg(), AN1cfg(), AN2cfg(),\
-                        AN3cfg() )
+    #define Seg7cfg()	(CAcfg(), CBcfg(), CCcfg(), CDcfg(), CEcfg(), CFcfg(),\
+						 CGcfg(), DPcfg(), AN0cfg(), AN1cfg(), AN2cfg(),\
+						 AN3cfg())
 
     /* -- Macro controls for the ON/OFF state of the LEDs. Active low LEDs --- */
     #define SEG_CA(b);  {if(b) LATGCLR = BIT_12; else LATGSET = BIT_12;}  //RG12
@@ -64,10 +64,10 @@
     #define SEG_OFF  {SEG_CA(0); SEG_CB(0);SEG_CC(0);SEG_CD(0);SEG_CE(0);SEG_CF(0);SEG_CG(0);SEG_DP(0);}
     #define DIGITS_OFF(); {DIG_AN0(1); DIG_AN1(1); DIG_AN2(1); DIG_AN3(1);}
 
-    #define DIG_DLY     100
-    #define T1_TICK ((GetPeripheralClock() / 8000) - 1) // 1 millisecond used by Timer 1
+    #define DIG_DLY 	100
+    #define T1_TICK 	((GetPeripheralClock() / 8000) - 1) // 1 millisecond used by Timer 1
 
-    /* ---------------------- Public Function declarations ------------------- */
+    /* ---------------------- Public function declarations ------------------- */
     void seg7_init(void);
     void clr_dsp(void);
     void set_digit(int dsp, int value);
