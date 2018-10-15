@@ -25,7 +25,7 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
   4. `main.c` - For this one, keep in mind our 'main' file in the `master` branch is RC.c
   5. `uart2.c`
 * Dylan:
-  1. `config_bits.h`
+  1. ~~`config_bits.h`~~ - __Finished, Collin__
   2. `I2C_lib_.h`
   3. `led7.h`
   4. `main.h`
