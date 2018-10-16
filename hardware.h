@@ -199,36 +199,9 @@ http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20
 
 #endif	// _BASYS_MX3A_ 
 
-void Hardware_Setup(void);
-    // *****************************************************************************
-    /**
-      @Function
-        void initTimer1(void); 
-
-      @Summary
-        Initializes TImer 1 for PWM operation.
-
-      @Description
-
-      @Precondition
-        None
-
-      @Parameters
-        None
-    
-      @Returns
-        None
-
-      @Remarks
-        Assumes PCLK set for 10MHz 
-
-      @Example
-        @code
-        initTimer1();
-     */
+	I2C_RESULT Hardware_Setup(void);
 
    
     unsigned int millis(void);
     void initTimer1(void);
-//	void initTimer2(void);
     
