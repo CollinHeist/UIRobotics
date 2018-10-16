@@ -28,7 +28,9 @@
 #include "swDelay.h"
 #include "I2C_lib.h"
 
-#include <plib.h>
+#ifdef WF32
+    #include <plib.h>
+#endif
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -111,18 +113,18 @@ int actualClock;
     actualClock = I2CSetFrequency(i2c_port,GetPeripheralClock(),speed);
     if ( abs(actualClock-speed) > speed/10 )
     {
+        printf("I2C setup error\n\r");
         printf("Clock frequency (%d) error exceeds 10\%\r\n",\
                (unsigned int) actualClock);
-        i2cFlag = FALSE;
+        i2cFlag = I2C_ERROR;
     }
     else
     {
-        printf("I2C%d clock frequency = %ld Hz\n", i2c_port+1,\
-                (unsigned int) actualClock);
-        i2cFlag = TRUE;
-    }
-    
-    I2CEnable(i2c_port, TRUE);
+        printf("I2C%d setup complete\n\r", i2c_port+1);
+        printf("I2C clock frequency = %ld Hz\n\r", (unsigned int) actualClock);
+        I2CEnable(i2c_port, TRUE);
+        i2cFlag = I2C_SUCCESS;
+    }   
     return i2cFlag;
 }
 
@@ -177,33 +179,41 @@ int                 dataIndex = 0;
 I2C_RESULT          i2c_result = I2C_SUCCESS;   // Status of I2C action
 BOOL                okay;
 
-    okay = StartTransfer(i2c_port, TRUE); // TRUE - repeated start \
+//    okay = StartTransfer(i2c_port, TRUE); // TRUE - repeated start
+    okay = StartTransfer(i2c_port, FALSE);  // FALSE - Not repeated start
     if((i2c_result == I2C_SUCCESS) && okay)
     {
         I2C_FORMAT_7_BIT_ADDRESS(SlaveAddress, DeviceAddress, I2C_READ);
-        if(!TransmitOneByte( i2c_port, SlaveAddress.byte ))
+        okay = TransmitOneByte( i2c_port, SlaveAddress.byte );
+        if(!okay)
         {
-            if(!I2CByteWasAcknowledged(i2c_port))
+            printf("I2C error - ");
+            okay = I2CByteWasAcknowledged(i2c_port);
+            if(!okay)
             {
-                printf("Error: Sent byte was not acknowledged\n");
-                i2c_result = I2C_ERROR;
+                printf("Sent byte was not acknowledged\n\r");
             }
+            else
+            {
+                printf("\n\r");
+            }
+            i2c_result = I2C_ERROR;
         }
         dataIndex = 0;  /* Reset the data array index */
     }
 /* Read all but the last byte with ACK bit set */
-	while((dataIndex < *len-1) && (i2c_result == I2C_SUCCESS))
+	while((dataIndex < (*len)-1) && (i2c_result == I2C_SUCCESS))
 	{
             i2c_result |=  ReceiveOneByte(i2c_port, &str[dataIndex++] , TRUE);
 	}
 /* Read the last byte without ACK bit set */
     if(i2c_result == I2C_SUCCESS)
     {
-        i2c_result |= ReceiveOneByte(i2c_port, &str[dataIndex], FALSE );
+        i2c_result |= ReceiveOneByte(i2c_port, &str[dataIndex++], FALSE );
     }
    
     StopTransfer(i2c_port); /* Terminate the EEPROM transfer */
-    *len = dataIndex + 1; 
+    *len = dataIndex;     
     return i2c_result;
 }
 
@@ -228,7 +238,6 @@ I2C_RESULT I2CReadRegs(I2C_MODULE i2c_port, BYTE DeviceAddress,
 {
 BYTE                header[3];
 I2C_7_BIT_ADDRESS   SlaveAddress;
-//BYTE                data_byte;
 int                 headerIndex = 0;
 int                 dataIndex = 0;
 I2C_RESULT          i2c_result;
