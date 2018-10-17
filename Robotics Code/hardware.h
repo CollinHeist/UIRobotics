@@ -3,48 +3,48 @@
 #define RC
 
 #ifndef _SUPPRESS_PLIB_WARNING
-    #define _SUPPRESS_PLIB_WARNING
+	#define _SUPPRESS_PLIB_WARNING
 #endif
 
 #ifndef _DISABLE_OPENADC10_CONFIGPORT_WARNING
-    #define  _DISABLE_OPENADC10_CONFIGPORT_WARNING
+	#define  _DISABLE_OPENADC10_CONFIGPORT_WARNING
 #endif
 
 #ifndef _BASYS_MX3A_
-    #define _BASYS_MX3A_
+	#define _BASYS_MX3A_
 
-    #include <plib.h>
-    /* ------ Macros to configure PIC pins as inputs for button sensors ------ */
-    #define BTNL_bit    BIT_0   // RB0  - only functional in stand alone mode
-    #define BTNR_bit    BIT_8   // RB8  - RC1
-    #define BTND_bit    BIT_15  // RA15 - RC2
-    #define BTNU_bit    BIT_1   // RB1  - only functional in stand alone mode
-    #define BTNC_bit    BIT_0   // RF0
+	#include <plib.h>
+	/* ------ Macros to configure PIC pins as inputs for button sensors ------ */
+	#define BTNL_bit    BIT_0   // RB0  - only functional in stand alone mode
+	#define BTNR_bit    BIT_8   // RB8  - RC1
+	#define BTND_bit    BIT_15  // RA15 - RC2
+	#define BTNU_bit    BIT_1   // RB1  - only functional in stand alone mode
+	#define BTNC_bit    BIT_0   // RF0
 
-    #define BNTL()      PORTBbits.RB0  // PORTReadBits(IOPORT_B, BTNL_bit)
-#ifndef RC
-    #define BNTR()      PORTBbits.RB8  // PORTReadBits(IOPORT_B, BTNR_bit) - RC1
-    #define BNTD()      PORTAbits.RA15 // PORTReadBits(IOPORT_A, BTND_bit) - RC2
-#endif
-    #define BNTU()      PORTBbits.RB1  // PORTReadBits(IOPORT_B, BTNU_bit)
-    #define BNTC()      PORTFbits.RF0  // PORTReadBits(IOPORT_F, BTNC_bit)
+	#define BNTL()      PORTBbits.RB0  // PORTReadBits(IOPORT_B, BTNL_bit)
+	#ifndef RC
+		#define BNTR()      PORTBbits.RB8  // PORTReadBits(IOPORT_B, BTNR_bit) - RC1
+		#define BNTD()      PORTAbits.RA15 // PORTReadBits(IOPORT_A, BTND_bit) - RC2
+	#endif
+	#define BNTU()      PORTBbits.RB1  // PORTReadBits(IOPORT_B, BTNU_bit)
+	#define BNTC()      PORTFbits.RF0  // PORTReadBits(IOPORT_F, BTNC_bit)
 
-#ifdef RC
-    #define BTNRcfgOut()  PORTSetPinsDigitalOut(IOPORT_B, BTNR_bit)   // Analog Input pin
-    #define BTNDcfgOut()  PORTSetPinsDigitalOut(IOPORT_A, BTND_bit)   // RA5
-#else
-    #define BTNRcfgIn()  PORTSetPinsDigitalIn(IOPORT_B, BTNR_bit)   // Analog Input pin
-    #define BTNDcfgIn()  PORTSetPinsDigitalIn(IOPORT_A, BTND_bit)   // RA5
-#endif
+	#ifdef RC
+		#define BTNRcfgOut()  PORTSetPinsDigitalOut(IOPORT_B, BTNR_bit)   // Analog Input pin
+		#define BTNDcfgOut()  PORTSetPinsDigitalOut(IOPORT_A, BTND_bit)   // RA5
+	#else
+		#define BTNRcfgIn()  PORTSetPinsDigitalIn(IOPORT_B, BTNR_bit)   // Analog Input pin
+		#define BTNDcfgIn()  PORTSetPinsDigitalIn(IOPORT_A, BTND_bit)   // RA5
+	#endif
     #define BTNCcfgIn()   PORTSetPinsDigitalIn(IOPORT_F, BTNC_bit)    // RF0 
 
-#define BTNUcfgIn()  (PORTSetPinsDigitalIn(IOPORT_B, BTNU_bit), CNPDBbits.CNPDB1 = 1) // RB0 With pulldown//  - Analog Input pin
-    #define BTNLcfgIn()  (PORTSetPinsDigitalIn(IOPORT_B, BTNL_bit), CNPDBbits.CNPDB0 = 1) // RB1 With pulldown//  - Analog Input pin
-#ifdef DEBUG
-    #define BTNcfgIn()  ( BTNRcfgIn(),BTNDcfgIn(),BTNCcfgIn() )
-#else
-    #define BTNcfgIn()  ( BTNLcfgIn(),BTNRcfgIn(),BTNUcfgIn(),BTNDcfgIn(),BTNCcfgIn() )
-#endif
+	#define BTNUcfgIn()  (PORTSetPinsDigitalIn(IOPORT_B, BTNU_bit), CNPDBbits.CNPDB1 = 1) // RB0 With pulldown//  - Analog Input pin
+	    #define BTNLcfgIn()  (PORTSetPinsDigitalIn(IOPORT_B, BTNL_bit), CNPDBbits.CNPDB0 = 1) // RB1 With pulldown//  - Analog Input pin
+	#ifdef DEBUG
+	    #define BTNcfgIn()  ( BTNRcfgIn(),BTNDcfgIn(),BTNCcfgIn() )
+	#else
+	    #define BTNcfgIn()  ( BTNLcfgIn(),BTNRcfgIn(),BTNUcfgIn(),BTNDcfgIn(),BTNCcfgIn() )
+	#endif
     // COnfigure slide switches
     /* ------------------------ Configure slide switches --------------------- */
     #define SW0cfg()    TRISFbits.TRISF3 = 1 
@@ -166,6 +166,10 @@
 
     #define CORE_MS_TICK_RATE	 (unsigned int) (GetCoreClock()/1000UL)
 
-    /* ---------------------- Public Function declarations ------------------- */
-    void Hardware_Setup(void);
+    unsigned int millisec = 0;
 #endif
+
+/* ---------------------- Public Function declarations ----------------------- */
+I2C_RESULT Hardware_Setup(void);
+unsigned int millis(void);
+void initTimer1(void);
