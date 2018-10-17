@@ -5,17 +5,17 @@
 Here are which files I'd like each of us to work on, ignore the /Robotics Code/ folder.
 * Aaron:
   1. `AD22100.c`
-  2. `hardware.c`
+  2. `hardware.c` - __Updated__
   3. `i2c_lib.h`
   4. `MAG3110.c`
-  5. `RC.c` - Keep in mind our RC.c file in the `master` branch is our main, so implement accordingly
+  5. `RC.c` - __Updated__, Keep in mind our RC.c file in the `master` branch is our main, so implement accordingly
 * Collin:
   1. ~~`AD22100.h`~~ - __Finished__
-  2. ~~`hardware.h`~~ - __Finished__
-  3. ~~`GPS-I2C.c`~~ - __Finished__
+  2. `hardware.h` - __Need to redo__
+  3. `GPS-I2C.c` - __Need to redo__
   4. ~~`LCDlib.c`~~ - __Finished__
   5. ~~`MAG3110.h`~~ - __Finished__
-  6. ~~`RC.h`~~ - __Finished__
+  6. `RC.h` - __Need to redo__
   7. ~~`swDelay.c`~~ - __Finished__
   8. ~~`swDelay.h`~~ - __Finished__
 * Damon:
@@ -32,7 +32,7 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
   5. `uart2.h`
 * Sam:
   1. `GPS_I2C.h`
-  2. `i2c_lib.c`
+  2. `i2c_lib.c` - __Updated__
   3. `led7.c`
   4. `newxc32_header.h`
   5. `uart4.c`
