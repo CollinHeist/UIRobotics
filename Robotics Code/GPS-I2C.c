@@ -102,8 +102,8 @@ I2C_RESULT ReportGPS (int show) {
 		pkt_len = GPS_DECODE_RMC(gpsStr);
 		if (show) {
 			hour = (gps.utc_time / 10000);
-			min = (gps.utc_time - hour*10000)/100;
-			sec = (gps.utc_time - (hour*10000 + min*100));
+			min = (gps.utc_time - hour * 10000) / 100;
+			sec = (gps.utc_time - (hour * 10000 + min * 100));
 			hour -= 7;
 			if (hour < 0)
 				hour += 24;        
