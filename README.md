@@ -12,7 +12,7 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
 * Collin:
   1. ~~`AD22100.h`~~ - __Finished__
   2. ~~`hardware.h`~~ - __Finished__
-  3. `GPS-I2C.c` - __Need to redo__
+  3. ~~`GPS-I2C.c`~~ - __Finished__
   4. ~~`LCDlib.c`~~ - __Finished__
   5. ~~`MAG3110.h`~~ - __Finished__
   6. `RC.h` - __Need to redo__
