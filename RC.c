@@ -63,9 +63,8 @@
     Any additional remarks
  */
 int rc[NRC];                    // Array of RC Channel position Range = 0-100
-//char BLANK_LINE[] = "                    ";
-//int switch_flag = TRUE;                 // Force LCD update after reset
-//int button_flag;
+int rc_set[NRC];
+
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -151,27 +150,18 @@ PARAMETERS:		None are allowed for an ISR
 RETURN VALUE:  	None are allowed for an ISR
 Notes:			This function cannot be called from any other function.
 END DESCRIPTION **********************************************************/
-void __ISR(_TIMER_1_VECTOR, IPL2SOFT) Timer1Handler(void)
+void rcUpdate(void)
 {
 static int channel = 0;			// Channel index 0<= channel NRC
 static int rc_state = 0;		// Initial signal state
 static int rc1, rc2;            // Signal period timers
-static ms = 0;
+int i;
 
-/* 1 millisecond counter */
-    mT1ClearIntFlag();			// clear the interrupt flag
-    ms++;
-    if(ms>=0)
-    {
-        millisec++;
-        ms = 0;
-    }
-    
 /* RC output control */
 	switch(rc_state)
 	{
 		case 0:		// Initial high period - rc1 through rc4 are set here
-            set_RC(channel, TRUE);	// Turn channel on
+            rc_output(channel, TRUE);	// Turn channel on
             rc1 = RC_MIN + rc[channel];	// Compute on time
             if(rc1 > RC_MAX)
                 rc1 = RC_MAX;
@@ -183,7 +173,7 @@ static ms = 0;
 		case 1:
             if(--rc1 <= 0)	// Count down cycle ON time
             {
-                set_RC(channel, FALSE);	// Turn channel off
+                rc_output(channel, FALSE);	// Turn channel off
                 rc_state++;
             }
 			break;
@@ -192,14 +182,19 @@ static ms = 0;
             {
                 rc_state = 0;		// Reset state counter
                 channel = (channel +1) % NRC;  // Next channel
+                for(i=0; i< NRC; i++)
+                {
+                    rc[i] = rc_set[i];
+                }
             }
+            break;
         default:
             rc_state = 0;
 	}
 }
 
 /* START FUNCTION DESCRIPTION ********************************************
-SYNTAX:			void set_RC(int ch, int ctrl);
+SYNTAX:			void rc_output(int ch, int ctrl);
 KEYWORDS:		RC, control, output
 DESCRIPTION:   	This function sets the RC channel specified by "ch" to the 
 				the condition specified by "ctrl". Using macros to define the
@@ -212,7 +207,30 @@ Notes:			Switch-case can be expanded to accommodate  additional
 				channels.  Most systems are limited to 10 channels
 END DESCRIPTION **********************************************************/
 
-void set_RC(int ch, int ctrl)
+void set_rc(int rc1, int rc2, int rc3, int rc4)
+{
+	rc_set[0] = rc1;
+	rc_set[1] = rc2;
+	rc_set[2] = rc3;
+	rc_set[3] = rc4;
+}
+
+
+/* START FUNCTION DESCRIPTION ********************************************
+SYNTAX:			void rc_output(int ch, int ctrl);
+KEYWORDS:		RC, control, output
+DESCRIPTION:   	This function sets the RC channel specified by "ch" to the 
+				the condition specified by "ctrl". Using macros to define the
+				IO pin allows the developer to specify an arbitrary processor
+				pin to each RC channel.
+PARAMETER1:		channel number
+PARAMETER2:		control - OFF - 0,  ON - 1  
+RETURN VALUE:  	None
+Notes:			Switch-case can be expanded to accommodate  additional 
+				channels.  Most systems are limited to 10 channels
+END DESCRIPTION **********************************************************/
+
+void rc_output(int ch, int ctrl)
 {
 	switch(ch)
 	{
@@ -245,6 +263,12 @@ NOTES:			See RC.h for pin definitions
 END DESCRIPTION **********************************************************/
 void initRC(void)
 {
+int i;
+    for(i=0; i< NRC; i++)
+    {
+        rc[i] = 0;                    // Array of RC Channel position Range = 0-100
+        rc_set[i] = 0;
+    }
 	cfgRC1();		// Set RC pins for output
 	cfgRC2();		
 	cfgRC3();		
@@ -253,6 +277,7 @@ void initRC(void)
     RC_2(0);   
     RC_3(0);   
     RC_4(0);   
+    
 }
 
 /* *****************************************************************************
