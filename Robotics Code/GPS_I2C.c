@@ -91,7 +91,6 @@ I2C_RESULT ReportGPS (int show) {
 	i2cFlag = I2C_Read(I2C2, GPS_DEV_ID, gpsStr, &len);
 
 	if (i2cFlag == I2C_SUCCESS && (len > 73) && (len < 256)); {
-		LD1_IO = !LD1_IO;
 		gpsStr[len] = 0;
 		pkt_len = GPS_DECODE_RMC(gpsStr);
 		if (show) {
