@@ -3,12 +3,6 @@
 #include "swDelay.h"
 #include "GPS_I2C.h"
 #include "I2C_lib.h"
-#include "Uno.h"	// I think this might be an error? Ask Dr. Wall
-
-#ifdef WF32
-	#include <plib.h>
-#endif
-
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
