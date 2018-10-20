@@ -20,16 +20,14 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
   8. ~~`swDelay.h`~~ - __Finished__
 * Damon:
   1. `compass.c`
-  2. `I2C_lib_.c`
-  3. `LCDlib.h`
-  4. `main.c` - For this one, keep in mind our 'main' file in the `master` branch is RC.c
-  5. `uart2.c`
+  2. `LCDlib.h`
+  3. `main.c` - For this one, keep in mind our 'main' file in the `master` branch is RC.c
+  4. `uart2.c`
 * Dylan:
   1. ~~`config_bits.h`~~ - __Finished__, Collin
-  2. ~~`I2C_lib_.h`~~ - __Finished__, Collin
-  3. ~~`led7.h`~~ - __Finished__, Collin
-  4. `main.h`
-  5. `uart2.h`
+  2. ~~`led7.h`~~ - __Finished__, Collin
+  3. `main.h`
+  4. `uart2.h`
 * Sam:
   1. `GPS_I2C.h`
   2. `i2c_lib.c` - __Updated__
