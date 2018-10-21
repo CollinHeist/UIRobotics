@@ -21,7 +21,7 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
 * Damon:
   1. ~~`compass.c`~~ - __Finished__
   2. ~~`LCDlib.h`~~ - __Finished__
-  3. ~~~`main.c`~~~ - __Finished__
+  3. ~~`main.c`~~ - __Finished__
   4. ~~`uart2.c`~~ - __Finished__
 * Dylan:
   1. ~~`config_bits.h`~~ - __Finished__, Collin
