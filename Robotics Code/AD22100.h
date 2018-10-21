@@ -26,7 +26,7 @@
     // Do not assign channels to scan
     #define ADC_PARAM5  SKIP_SCAN_ALL
     
-    #define ADCMAX        1023
+    #define ADCMAX	1023
 
     #define OpenADC10G(config1, config2, config3, configport, configscan) (mPORTGSetPinsAnalogIn(configport), AD1CSSL = ~(configscan), AD1CON3 = (config3), AD1CON2 = (config2), AD1CON1 = (config1) )
 
