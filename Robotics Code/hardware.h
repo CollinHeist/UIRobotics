@@ -22,31 +22,34 @@
     #define BTNC_bit    BIT_0   // RF0
 
     #define BNTL()      PORTBbits.RB0  // PORTReadBits(IOPORT_B, BTNL_bit)
-#ifndef RC
-    #define BNTR()      PORTBbits.RB8  // PORTReadBits(IOPORT_B, BTNR_bit) - RC1
-    #define BNTD()      PORTAbits.RA15 // PORTReadBits(IOPORT_A, BTND_bit) - RC2
-#endif
-    #define BNTU()      PORTBbits.RB1  // PORTReadBits(IOPORT_B, BTNU_bit)
+	
+	#ifndef RC
+    	#define BNTR()      PORTBbits.RB8  // PORTReadBits(IOPORT_B, BTNR_bit) - RC1
+    	#define BNTD()      PORTAbits.RA15 // PORTReadBits(IOPORT_A, BTND_bit) - RC2
+	#endif
+    
+	#define BNTU()      PORTBbits.RB1  // PORTReadBits(IOPORT_B, BTNU_bit)
     #define BNTC()      PORTFbits.RF0  // PORTReadBits(IOPORT_F, BTNC_bit)
 
-#ifdef RC
-    #define BTNRcfgOut()  PORTSetPinsDigitalOut(IOPORT_B, BTNR_bit)   // Analog Input pin
-    #define BTNDcfgOut()  PORTSetPinsDigitalOut(IOPORT_A, BTND_bit)   // RA5
-#else
-    #define BTNRcfgIn()  PORTSetPinsDigitalIn(IOPORT_B, BTNR_bit)   // Analog Input pin
-    #define BTNDcfgIn()  PORTSetPinsDigitalIn(IOPORT_A, BTND_bit)   // RA5
-#endif
-    #define BTNCcfgIn()   PORTSetPinsDigitalIn(IOPORT_F, BTNC_bit)    // RF0 
+	#ifdef RC
+    	#define BTNRcfgOut()  PORTSetPinsDigitalOut(IOPORT_B, BTNR_bit)   // Analog Input pin
+    	#define BTNDcfgOut()  PORTSetPinsDigitalOut(IOPORT_A, BTND_bit)   // RA5
+	#else
+    	#define BTNRcfgIn()  PORTSetPinsDigitalIn(IOPORT_B, BTNR_bit)   // Analog Input pin
+    	#define BTNDcfgIn()  PORTSetPinsDigitalIn(IOPORT_A, BTND_bit)   // RA5
+	#endif
+    
+	#define BTNCcfgIn()   PORTSetPinsDigitalIn(IOPORT_F, BTNC_bit)    // RF0 
 
-#define BTNUcfgIn()  (PORTSetPinsDigitalIn(IOPORT_B, BTNU_bit), CNPDBbits.CNPDB1 = 1) // RB0 With pulldown//  - Analog Input pin
+	#define BTNUcfgIn()  (PORTSetPinsDigitalIn(IOPORT_B, BTNU_bit), CNPDBbits.CNPDB1 = 1) // RB0 With pulldown//  - Analog Input pin
     #define BTNLcfgIn()  (PORTSetPinsDigitalIn(IOPORT_B, BTNL_bit), CNPDBbits.CNPDB0 = 1) // RB1 With pulldown//  - Analog Input pin
-#ifdef DEBUG
-    #define BTNcfgIn()  ( BTNRcfgIn(),BTNDcfgIn(),BTNCcfgIn() )
-#else
-    #define BTNcfgIn()  ( BTNLcfgIn(),BTNRcfgIn(),BTNUcfgIn(),BTNDcfgIn(),BTNCcfgIn() )
-#endif
-    // COnfigure slide switches
-    /* ------------------------ Configure slide switches --------------------- */
+	#ifdef DEBUG
+    	#define BTNcfgIn()  ( BTNRcfgIn(),BTNDcfgIn(),BTNCcfgIn() )
+	#else
+    	#define BTNcfgIn()  ( BTNLcfgIn(),BTNRcfgIn(),BTNUcfgIn(),BTNDcfgIn(),BTNCcfgIn() )
+	#endif
+
+	/* ------------------------ Configure slide switches --------------------- */
     #define SW0cfg()    TRISFbits.TRISF3 = 1 
     #define SW1cfg()    TRISFbits.TRISF5 = 1 
     #define SW2cfg()    TRISFbits.TRISF4 = 1 
@@ -135,19 +138,19 @@
     #define invLED7()   PORTToggleBits(IOPORT_A, LED7_bit)
 	
 
-    /*                 Turn module on | output integer  | trigger mode auto | enable auto sample */
+    //                 Turn module on | output integer  | trigger mode auto | enable auto sample
     #define ADC_PARAM1  ADC_MODULE_ON | ADC_FORMAT_INTG | ADC_CLK_AUTO | ADC_AUTO_SAMPLING_ON
 
-    /*                    ADC ref external | disable offset test    | disable scan mode | perform 2 samples | use dual buffers | use alternate mode */
+    //                    ADC ref external | disable offset test    | disable scan mode | perform 2 samples | use dual buffers | use alternate mode
     #define ADC_PARAM2  ADC_VREF_AVDD_AVSS | ADC_OFFSET_CAL_DISABLE | ADC_SCAN_OFF | ADC_SAMPLES_PER_INT_2 | ADC_ALT_BUF_ON | ADC_ALT_INPUT_ON
 
-    /*                    use ADC internal clock | set sample time */
+    //                    use ADC internal clock | set sample time
     #define ADC_PARAM3  ADC_CONV_CLK_INTERNAL_RC | ADC_SAMPLE_TIME_15
 
-    /* Do not assign channels to scan */
+    // Do not assign channels to scan
     #define ADC_PARAM4    SKIP_SCAN_ALL
  
-    /*                    set AN2 and AN4 as analog inputs */
+    //                    set AN2 and AN4 as analog inputs
     #define ADC_PARAM5    ENABLE_AN2_ANA | ENABLE_AN4_ANA
 
     /* Based upon setting in config_bits.h These directly influence timed
