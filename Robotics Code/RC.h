@@ -1,28 +1,30 @@
-#ifndef _RC_H
+#ifndef _RC_H_
 	#define _RC_H
 
-	/* ----------- Macros for configuring RC pins as Digital Outputs --------- */
-    #define cfgRC1()    PORTSetPinsDigitalOut(IOPORT_D, BIT_9)	// Wall has 4
-    #define cfgRC2()    PORTSetPinsDigitalOut(IOPORT_D, BIT_11) // 8
+	// We might need these? Old format, not sure if we're using it
+	// #define cfgRC2()    do {PORTSetPinsDigitalOut(IOPORT_B, BIT_8); RPB8R = 0x0B;} while(0)  // BTNR - OC5
+	// #define cfgRC1()    do {PORTSetPinsDigitalOut(IOPORT_A, BIT_15); RPA15R = 0x0B;} while(0) // BTND - OC4
+	#define cfgRC1()    PORTSetPinsDigitalOut(IOPORT_D, BIT_9)	// Wall has 4
+	#define cfgRC2()    PORTSetPinsDigitalOut(IOPORT_D, BIT_11) // 8
 	#define cfgRC3()    PORTSetPinsDigitalOut(IOPORT_D, BIT_10) // 7
-    #define cfgRC4()    PORTSetPinsDigitalOut(IOPORT_D, BIT_8)  // 6
+	#define cfgRC4()    PORTSetPinsDigitalOut(IOPORT_D, BIT_8)  // 6
 
-    /* -------------------- RC Channel pin assignment macros ----------------- */
+	/* -------------------- RC Channel pin assignment macros ----------------- */
 	#define RC_1(a)     LATDbits.LATD9  = a
 	#define RC_2(a) 	LATDbits.LATD11 = a
-	#define RC_3(a) 	LATDbits.LATD10 = a
-	#define RC_4(a) 	LATDbits.LATD8  = a
+	#define RC_3(a)		LATDbits.LATD10 = a
+	#define RC_4(a)		LATDbits.LATD8  = a
 
-	#define NRC		4		// Number of RC channels
+	#define NRC			4		// Number of RC channels
 
-    /* --------- RC Setting Range - How wide the PWM Signal should be -------- */
-    #define RC_MIN		100
-	#define RC_MAX		200
+	/* --------- RC Setting Range - How wide the PWM Signal should be -------- */
+	#define RC_MIN		100
+	#define	RC_MAX		200
 	#define RC_SPAN		100
 
-    /* ---------------------- Public Function declarations ------------------- */
-    void initRC(void);
-    void rc_output(int ch, int ctrl);
-    void rcUpdate(void);
-    void set_rc(int ch, int ctrl);
+	/* ---------------------- Public Function declarations ------------------- */
+	void initRC(void);
+	void rc_output(int ch, int ctrl);
+	void rcUpdate(void);
+	void set_rc(int ch, int ctrl);
 #endif
