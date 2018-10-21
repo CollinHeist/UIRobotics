@@ -19,10 +19,10 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
   7. ~~`swDelay.c`~~ - __Finished__
   8. ~~`swDelay.h`~~ - __Finished__
 * Damon:
-  1. `compass.c`
-  2. `LCDlib.h`
-  3. `main.c` - For this one, keep in mind our 'main' file in the `master` branch is RC.c
-  4. `uart2.c`
+  1. ~~`compass.c`~~ - __Finished__
+  2. ~~`LCDlib.h`~~ - __Finished__
+  3. ~~~`main.c`~~~ - __Finished__
+  4. ~~`uart2.c`~~ - __Finished__
 * Dylan:
   1. ~~`config_bits.h`~~ - __Finished__, Collin
   2. ~~`led7.h`~~ - __Finished__, Collin
