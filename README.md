@@ -30,7 +30,7 @@ Here are which files I'd like each of us to work on, ignore the /Robotics Code/ 
   4. `uart2.h`
 * Sam:
   1. ~~`GPS_I2C.h`~~ - __Finished__, Collin
-  2. `i2c_lib.c` - __Updated__
+  2. ~~`i2c_lib.c`~~ - __Finished__, Collin
   3. `led7.c`
   4. ~~`newxc32_header.h`~~ - __Finished__, Collin
   5. `uart4.c`
