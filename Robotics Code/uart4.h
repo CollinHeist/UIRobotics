@@ -24,7 +24,7 @@
 /* --------------------------- Function declarations ------------------------- */
 void uart4_init(unsigned int baud, int parity);
 void _mon_putc(char c);
-BOOL putcU4(int c);
+BOOL putcU4(int ch);
 BOOL getcU4(char *ch);
 int putsU4(const char *s); 
 int getstrU4(char *s, unsigned int len);
