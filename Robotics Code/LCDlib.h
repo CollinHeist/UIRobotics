@@ -7,7 +7,7 @@
 #ifndef __LCDLIB_H__
 	#define __LCDLIB_H__
 
-	#define LCD_DATAbits		0x0ff
+	#define LCD_DATAbits	0x0ff
 	#define LCD_DB0	 		(1 << 0)
 	#define LCD_DB1	 		(1 << 1)
 	#define LCD_DB2	 		(1 << 2)
