@@ -1,7 +1,7 @@
+/* ------------------- Hardware and Common Library Includes ------------------ */
 #include "hardware.h"
 #include <plib.h>
 #include "AD22100.h"
-
 
 float ad22100;
 
