@@ -8,11 +8,11 @@
 #include <stdint.h>
 
 /* -------------------------- Function Prototyping --------------------------- */
-static BOOL StartTransfer( I2C_MODULE i2c_port, BOOL restart );
+static BOOL StartTransfer(I2C_MODULE i2c_port, BOOL restart);
 static BYTE calc_ck_sum(char *str);
-static  I2C_RESULT ReceiveOneByte( I2C_MODULE i2c_port, BYTE *data, BOOL ack );
-static BOOL TransmitOneByte( I2C_MODULE i2c_port, BYTE data );
-static void StopTransfer( I2C_MODULE i2c_port );
+static  I2C_RESULT ReceiveOneByte(I2C_MODULE i2c_port, BYTE *data, BOOL ack);
+static BOOL TransmitOneByte(I2C_MODULE i2c_port, BYTE data);
+static void StopTransfer(I2C_MODULE i2c_port);
 
 /* --------------------------------- I2C_Init --------------------------------
  @ Summary
