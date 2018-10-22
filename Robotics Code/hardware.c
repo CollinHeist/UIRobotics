@@ -1,16 +1,13 @@
 /* ------------------- Hardware and Common Library Includes ------------------ */
 #include "hardware.h"
 #include <plib.h>
-#include <stdint.h>		// For uint32_t definition
+#include <stdint.h>	// For uint32_t definition
 #include <stdbool.h>	// For true/false definition
 #include <xc.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "swDelay.h"
-#include "i2c_lib.h"
-#include "Uno.h"
-#include "UART1.h"
 #include "i2c_lib.h"
 #include "GPS_I2C.h"
 #include "MAG3110.h"
