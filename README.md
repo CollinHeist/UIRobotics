@@ -4,11 +4,11 @@
 ---
 Here are which files I'd like each of us to work on, ignore the /Robotics Code/ folder.
 * Aaron:
-  1. `AD22100.c`
-  2. `hardware.c` - __Updated__
-  3. `i2c_lib.h`
+  1. ~~`AD22100.c`~~ - __Finished__
+  2. ~~`hardware.c`~~ - __Finished__
+  3. ~~`i2c_lib.h`~~ - __Finished__
   4. `MAG3110.c`
-  5. `RC.c` - __Updated__, Keep in mind our RC.c file in the `master` branch is our main, so implement accordingly
+  5. ~~`RC.c`~~ - __Finished__
 * Collin:
   1. ~~`AD22100.h`~~ - __Finished__
   2. ~~`hardware.h`~~ - __Finished__
