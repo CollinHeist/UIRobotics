@@ -21,8 +21,10 @@ BOOL led_flag = 0;
      seg7_init();
   @ Description
      The assigned PIC32 IO pins are assigned as outputs and the digit LED 
-     anodes are set to zero. This function initializes all the 7-segment IO
-     pins as outputs.
+     anodes are set to zero
+  @ Summary
+     This function initializes all the 7-segment IO pins as outputs.
+  @ Usage   
      This should be called at the beginning of the main project.
   @ Parameters
      None
@@ -81,13 +83,15 @@ void clr_dsp (void) {
 
 /* ------------------------------ set_digit()  -------------------------------
   @ Syntax
-     set_digit(int dsp, int value);
-  @ Description
+     set_digit(int , int );
+  @ Summary
+     Turn on a number of the four 7-segment displays and dislay the provided integer.
+  @ Discription
      Turn on the passed display [0, 3] of the seven-segment display to the passed
      character. Uses the DIG_AN#() functions that are active-low. If a non-accepted
      display value is passed, then all the LEDs are turned off.
   @ Parameters
-     @ param1 : integer number of which LED to turn on. Expects 0, 1, 2, or 3
+     @ param1 : integer-number of which LED to turn on. Expects 0, 1, 2, or 3
      @ param2 : integer value to display to the passed LED.
   @ Returns
      None
@@ -129,11 +133,11 @@ void set_digit(int dsp, int value) {
 
 /* ------------------------------ dsp_digit()  -------------------------------
   @ Syntax
-     dsp_digit(9);
+     dsp_digit( int );
   @ Description
      Turns on the necessary LED segments to display the required digit.
   @ Parameters
-     @ param1 : integer value to be displayed at the LEDs.
+     @ param1 : integer value to be displayed by the LEDs.
   @ Returns
      None
   ---------------------------------------------------------------------------- */
@@ -179,7 +183,7 @@ void dsp_digit (int value) {
 
 /* ----------------------------- led_number()  -------------------------------
   @ Syntax
-     led_number(int value);
+     led_number(int);
   @ Description
      Displays any number between [-999, 9999] on the 7-segment display with leading zero.
   @ Parameters
