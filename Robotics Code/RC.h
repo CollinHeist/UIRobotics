@@ -1,19 +1,17 @@
-#ifndef _RC_H_
-	#define _RC_H
+#ifndef __RC_H__
+	#define __RC_H__
 
 	// We might need these? Old format, not sure if we're using it
-	// #define cfgRC2()    do {PORTSetPinsDigitalOut(IOPORT_B, BIT_8); RPB8R = 0x0B;} while(0)  // BTNR - OC5
-	// #define cfgRC1()    do {PORTSetPinsDigitalOut(IOPORT_A, BIT_15); RPA15R = 0x0B;} while(0) // BTND - OC4
-	#define cfgRC1()    PORTSetPinsDigitalOut(IOPORT_D, BIT_9)	// Wall has 4
-	#define cfgRC2()    PORTSetPinsDigitalOut(IOPORT_D, BIT_11) // 8
-	#define cfgRC3()    PORTSetPinsDigitalOut(IOPORT_D, BIT_10) // 7
-	#define cfgRC4()    PORTSetPinsDigitalOut(IOPORT_D, BIT_8)  // 6
+	#define cfgRC1()    PORTSetPinsDigitalOut(IOPORT_D, BIT_4)	// Was 9
+	#define cfgRC2()    PORTSetPinsDigitalOut(IOPORT_G, BIT_8)	// D-11
+	#define cfgRC3()    PORTSetPinsDigitalOut(IOPORT_G, BIT_7)	// D-10
+	#define cfgRC4()    PORTSetPinsDigitalOut(IOPORT_G, BIT_6)	// D-8
 
 	/* -------------------- RC Channel pin assignment macros ----------------- */
-	#define RC_1(a)     LATDbits.LATD9  = a
-	#define RC_2(a) 	LATDbits.LATD11 = a
-	#define RC_3(a)		LATDbits.LATD10 = a
-	#define RC_4(a)		LATDbits.LATD8  = a
+	#define RC_1(a)     LATDbits.LATD4  = a	// Was 9
+	#define RC_2(a) 	LATDbits.LATD8 = a	// 11
+	#define RC_3(a)		LATDbits.LATD7 = a	// 10
+	#define RC_4(a)		LATDbits.LATD6  = a	// 8
 
 	#define NRC			4		// Number of RC channels
 
