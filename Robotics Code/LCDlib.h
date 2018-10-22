@@ -7,7 +7,7 @@
 #ifndef __LCDLIB_H__
 	#define __LCDLIB_H__
 
-	#define LCD_DATAbits 	0x0ff
+	#define LCD_DATAbits		0x0ff
 	#define LCD_DB0	 		(1 << 0)
 	#define LCD_DB1	 		(1 << 1)
 	#define LCD_DB2	 		(1 << 2)
@@ -64,21 +64,21 @@
 	#define getLCD()		readLCD(LCDDATA) 
 
 	// Write a single BYTE to the display, takes ~50us
-	#define cmdLCD(c)		{ waitLCD(); writeLCD(LCDCMD, (c)) }
+	#define cmdLCD(c)		{ waitLCD(); writeLCD(LCDCMD, (c)); }
 
 	// Clear the LCD entirely, takes about 1,750us
-	#define clrLCD()		{ waitLCD(); writeLCD(LCDCMD, 1); DelayUs(2000) }
+	#define clrLCD()		{ waitLCD(); writeLCD(LCDCMD, 1); DelayUs(2000); }
 
 	// Put the cursor at the left of the screen, takes about 1,750s
-	#define homeLCD()		{ waitLCD(); writeLCD(LCDCMD, 2); DelayUs(1750) }
+	#define homeLCD()		{ waitLCD(); writeLCD(LCDCMD, 2); DelayUs(1750); }
 
 	// Set the cursor position, must be between 0 and 31
-	#define gotoLCD(p)		{ waitLCD(); (p >= 16) ? writeLCD(LCDCMD, ((p + 0x30) | LCD_DDRAM)) : writeLCD(LCDCMD, (p | LCD_DDRAM)) }
+	#define gotoLCD(p)		{ waitLCD(); (p >= 16) ? writeLCD(LCDCMD, ((p + 0x30) | LCD_DDRAM)) : writeLCD(LCDCMD, (p | LCD_DDRAM)); }
 
 	// Set address pointer for CGRAM
-	#define setLCDG(a)		waitLCD(); writeLCD(LCDCMD, (a & 0x3F) | 0x40)
+	#define setLCDG(a)		{ waitLCD(); writeLCD(LCDCMD, (a & 0x3F) | 0x40); }
 	// Set address pointer for DDRAM
-	#define setLCDC(a)		waitLCD(); writeLCD(LCDCMD, (a & 0x7F) | 0x80)
+	#define setLCDC(a)		{ waitLCD(); writeLCD(LCDCMD, (a & 0x7F) | 0x80); }
 
 	/* ---------------------- Public Function declarations ------------------- */
 	void initLCD(void);
