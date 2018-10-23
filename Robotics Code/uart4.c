@@ -140,10 +140,10 @@ BOOL getcU4(char *ch) {
     This function will block until space is available in the transmit buffer
   -------------------------------------------------------------------------- */
 int putsU4(const char *s) {
-    BOOL ch_sent;
+    BOOL ch_sent;	//Sending character string,
     while(*s) {
-        do { ch_sent = putcU4(*s++); }
-	while(ch_sent ==  FALSE);
+        do { ch_sent = putcU4(*s++); }//moving along the string (s++)
+	while(ch_sent ==  FALSE);	//until it reaches the end
     }
     do { ch_sent = putcU4('\r'); } while(!ch_sent);
     do { ch_sent = putcU4('\n'); } while(!ch_sent);
