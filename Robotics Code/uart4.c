@@ -18,16 +18,17 @@
 
 /* --------------------------- uart4_init ----------------------------------
  @ Syntax
-    void uart4_init(unsigned int baud, int parity);
+    void uart4_init(unsigned int, int);
  @ Summary
-    UART 4 initialization and character and string I/O.
+    UART 4 initialization
  @ Description
     UART initialization can be set for any BAUD rate using EVEN, ODD, or NO 
     parity. Character and string input functions are non blocking functions.
     The serial interface uses UART channel 4.
  @ Parameters
     @ param1: integer Baud rate
-    @ param2: integer (parity, NO_PARITY, ODD_PARITY, or EVEN_PARITY)
+    @ param2: integer (parity, NO_PARITY, ODD_PARITY, or EVEN_PARITY) 
+    - the different parity, NO_Parity.... are all predefined values within the uart4.h file
  @ Return Value
     None
  @ Remarks
@@ -60,7 +61,7 @@ void uart4_init(unsigned int baud, int parity) {
 
 /* --------------------------- _mon_putc -----------------------------------
  @ Syntax
-    void _mon_putc(char c);
+    void _mon_putc(char);
  @ Description
     Sets up serial port to function as console for printf. Used only by system.
  @ Parameters 
@@ -78,12 +79,12 @@ void _mon_putc(char c) {
 
 /* ------------------------------ putcU4 -----------------------------------
  @ Syntax
-    BOOL putU4( int c);
+    BOOL putU4( int );
  @ Description
     Send single character to UART4. Waits while UART4 is busy 
     (buffer full) and then sends a single byte to UART1
  @ Parameter
-    @ param1: character to send
+    @ param1: character to send (in Ascii)
  @ Return Value
     TRUE = new character sent
     FALSE = character not sent
@@ -104,7 +105,7 @@ BOOL done = FALSE;
 
 /* ------------------------------ getcU4 -----------------------------------
  @ Syntax
-    BOOL getcU4(char *ch);
+    BOOL getcU4(char*);
  @ Description
     Checks for a new character to arrive to the UART4 serial port.
  @ Parameter
@@ -128,13 +129,13 @@ BOOL getcU4(char *ch) {
 
 /* ------------------------------ putsU4 -----------------------------------
  @ Syntax
-    int putsU4(const char *s);
+    int putsU4(const char*);
  @ Description
-    Sends a NULL terminates text string to UART4 with CR and LF appended
+    Sends a NULL terminates text string to UART4 with CR and LF (line breaks) appended
  @ Parameter
     @ param1: pointer to text string
  @ Return Value
-    Logical TRUE
+    Logical TRUE (aka 1)
  @ Remarks
     This function will block until space is available in the transmit buffer
   -------------------------------------------------------------------------- */
@@ -151,7 +152,7 @@ int putsU4(const char *s) {
 
 /* ------------------------------ getstrU4 ---------------------------------
  @ Syntax
-    int getstrU4(char *s, unsigned int len );
+    int getstrU4(char*, unsigned int);
  @ Desciption
     This function assembles a line of text until the number of characters
     assembled exceed the buffer length or an ASCII CR control character is
