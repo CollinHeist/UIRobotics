@@ -1,7 +1,6 @@
 #ifndef __RC_H__
 	#define __RC_H__
 
-	// We might need these? Old format, not sure if we're using it
 	#define cfgRC1()    PORTSetPinsDigitalOut(IOPORT_D, BIT_4)	// Was 9
 	#define cfgRC2()    PORTSetPinsDigitalOut(IOPORT_G, BIT_8)	// D-11
 	#define cfgRC3()    PORTSetPinsDigitalOut(IOPORT_G, BIT_7)	// D-10
