@@ -319,7 +319,7 @@ static BOOL StartTransfer(I2C_MODULE i2c_port, BOOL restart) {
  	This function only works if a transfer has been initialized / started.
  	This is also implemented with a blocking I2C routine
   ---------------------------------------------------------------------------- */
-static void StopTransfer( 2C_MODULE i2c_port) {
+static void StopTransfer(I2C_MODULE i2c_port) {
 	I2C_STATUS  i2c_status;
 
 	// Send the STOP sequence
