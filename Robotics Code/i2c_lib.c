@@ -80,7 +80,7 @@ I2C_RESULT I2C_Write(I2C_MODULE i2c_port, BYTE DeviceAddress, BYTE *str, int *le
 	/* -------------- Send the stop bit, ending the I2C transfer ------------- */
 	StopTransfer(i2c_port); // Terminate the EEPROM transfer
 
-	i2c_result = okay ? I2C_SUCCESS : I2C_ERROR
+	i2c_result = okay ? I2C_SUCCESS : I2C_ERROR;
 
 	*len = dataIndex; 
 	return i2c_result;
