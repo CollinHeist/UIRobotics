@@ -18,7 +18,6 @@ unsigned int millisec;	// Global millisecond counter
 /* -------------------------- Function Prototyping --------------------------- */
 static void initTimer1(void);
 static I2C_RESULT WF32_Setup(void);
-static void blinkLED(void);
 
 /* ----------------------------- Hardware_Setup ------------------------------
   @ Summary
@@ -151,45 +150,4 @@ void __ISR(_TIMER_1_VECTOR, IPL2SOFT) Timer1Handler(void) {
   ---------------------------------------------------------------------------*/
 unsigned int millis(void) {
 	return millisec;
-}
-
-/* ----------------------------- blinkLED() ----------------------------
-  @ Summary
-	 Sequentially turns on all hardware LEDs.
-  @ Parameters
-	 None
-  @ Returns
-	 None
-  ---------------------------------------------------------------------------*/
-static void blinkLED(void) {
-	LED1_IO = 0;		// Reset WF32 LEDs to off
-	LED2_IO = 0;
-	LED3_IO = 0;
-	LED4_IO = 0;
-	LD1_IO  = 0;		// Reset Uno LEDs to off
-	LD2_IO  = 0;
-	LD3_IO  = 0;
-	LD4_IO  = 0;
-
-	/* ------------- Get the current state of the on-board LEDs -------------- */
-	LED1_IO = !LED1_IO;
-	LD1_IO  = !LD1_IO;
-	DelayMs(100);
-	LED2_IO = !LED2_IO;
-	LD2_IO  = !LD2_IO;
-	DelayMs(100);
-	LED3_IO = !LED3_IO;
-	LD3_IO  = !LD3_IO;
-	DelayMs(100);
-	LED4_IO = !LED4_IO;
-	LD4_IO  = !LD4_IO;
-	DelayMs(100);
-	LED1_IO = 0;		// Reset WF32 LEDs to off
-	LED2_IO = 0;
-	LED3_IO = 0;
-	LED4_IO = 0;
-	LD1_IO  = 0;		// Reset Uno LEDs to off
-	LD2_IO  = 0;
-	LD3_IO  = 0;
-	LD4_IO  = 0;
 }
