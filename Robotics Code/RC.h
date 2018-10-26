@@ -1,16 +1,33 @@
 #ifndef __RC_H__
 	#define __RC_H__
 
-	#define cfgRC1()    PORTSetPinsDigitalOut(IOPORT_D, BIT_4)	// Was 9
-	#define cfgRC2()    PORTSetPinsDigitalOut(IOPORT_G, BIT_8)	// D-11
-	#define cfgRC3()    PORTSetPinsDigitalOut(IOPORT_G, BIT_7)	// D-10
-	#define cfgRC4()    PORTSetPinsDigitalOut(IOPORT_G, BIT_6)	// D-8
+	/* ----------------- Necessary system include statements ----------------- */
+	/* ------------- Hardware and Processor Initialization Includes -------------- */
+	#include "config_bits.h"
+	#include "hardware.h"
+
+	/* -------------------------- XC32 Public Libraries -------------------------- */
+	#include <plib.h>
+	#include <string.h>
+	#include <stdio.h>
+	#include <stdint.h>
+	#include <Math.h>
+
+	/* ----------------------- Project-specific include files -------------------- */
+	#include "uart2.h"
+	#include "uart4.h" 
+	#include "swDelay.h"
+
+	#define cfgRC1()	PORTSetPinsDigitalOut(IOPORT_D, BIT_9)	// Wall has 4
+	#define cfgRC2()	PORTSetPinsDigitalOut(IOPORT_D, BIT_11) // 8
+	#define cfgRC3()	PORTSetPinsDigitalOut(IOPORT_D, BIT_10) // 7
+	#define cfgRC4()	PORTSetPinsDigitalOut(IOPORT_D, BIT_8)  // 6
 
 	/* -------------------- RC Channel pin assignment macros ----------------- */
-	#define RC_1(a)     LATDbits.LATD4  = a	// Was 9
-	#define RC_2(a) 	LATDbits.LATD8 = a	// 11
-	#define RC_3(a)		LATDbits.LATD7 = a	// 10
-	#define RC_4(a)		LATDbits.LATD6  = a	// 8
+	#define RC_1(a)		LATDbits.LATD9  = a
+	#define RC_2(a)		LATDbits.LATD11 = a
+	#define RC_3(a)		LATDbits.LATD10 = a
+	#define RC_4(a)		LATDbits.LATD8  = a
 
 	#define NRC			4		// Number of RC channels
 
@@ -19,7 +36,7 @@
 	#define	RC_MAX		200
 	#define RC_SPAN		100
 
-	/* ---------------------- Public Function declarations ------------------- */
+	/* ---------------------- Public Function Declarations ------------------- */
 	void initRC(void);
 	void rc_output(int ch, int ctrl);
 	void rcUpdate(void);
