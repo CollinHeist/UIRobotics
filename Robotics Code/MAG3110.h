@@ -1,5 +1,5 @@
-#ifndef SFE_MAG3110_h
-	#define SFE_MAG3110_h
+#ifndef __MAG3110_H__
+	#define __MAG3110_H__
 
 	/* ----------------- Necessary system include statements ----------------- */
 	#include "hardware.h"
@@ -32,7 +32,7 @@
 
 	/* ------------------------- Commands & Settings ------------------------- */
 	/* ------------ The structure for this is DATARATE_OVERSAMPLE ------------ */
-	#define MAG3110_DR_OS_80_16 		0x00	// i.e. | 80 Hz data rate, 16 oversample ratio
+	#define MAG3110_DR_OS_80_16 		0x00	// 80 Hz data rate, 16 oversample ratio
 	#define MAG3110_DR_OS_40_32 		0x08
 	#define MAG3110_DR_OS_20_64 		0x10
 	#define MAG3110_DR_OS_10_128		0x18
@@ -86,10 +86,15 @@
 	#define MAG3110_Y_AXIS 				3
 	#define MAG3110_Z_AXIS 				5
 
-	BOOL MAG3110_initialize(void);
+    /* -------------------- Public Variable Declarations --------------------- */
+	BOOL error;
+	float x_scale;
+	float y_scale;
+	BOOL calibrated;
   
 	/* --------------------- Public Method Declarations ---------------------- */
-	BYTE 	   MAG3110_readRegister(BYTE address);
+	BOOL       MAG3110_initialize(void);
+    BYTE 	   MAG3110_readRegister(BYTE address);
 	I2C_RESULT MAG3110_writeRegister(BYTE address, BYTE value);
 	BOOL 	   MAG3110_dataReady(void);
 	I2C_RESULT MAG3110_readMag(int* x, int* y, int* z);
@@ -114,11 +119,4 @@
 	I2C_RESULT MAG3110_calibrate(void);
 	I2C_RESULT MAG3110_exitCalMode(void);
 	I2C_RESULT MAG3110_reset(void);
-
-	/* -------------------- Public Variable Declarations --------------------- */
-	BOOL error;
-	float x_scale;
-	float y_scale;
-	BOOL calibrated;
- 
 #endif
