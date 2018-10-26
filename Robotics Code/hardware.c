@@ -1,29 +1,16 @@
 /* ------------------- Hardware and Common Library Includes ------------------ */
 #include "hardware.h"
-#include <plib.h>
-#include <stdint.h>	// For uint32_t definition
-#include <stdbool.h>	// For true/false definition
-#include <xc.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "swDelay.h"
-#include "i2c_lib.h"
-#include "GPS_I2C.h"
-#include "MAG3110.h"
-#include "RC.h"
-
-unsigned int millisec;	// Global millisecond counter
 
 /* -------------------------- Function Prototyping --------------------------- */
 static void initTimer1(void);
 static I2C_RESULT WF32_Setup(void);
+static void blinkLED(void);
 
 /* ----------------------------- Hardware_Setup ------------------------------
   @ Summary
 	 Initializes PIC32 pins commonly used for IO on the Trainer processor 
 	 board such as the slide switches, push buttons, and LEDs. It 
-	 requires that “confib_bits” is included in the project.
+	 requires that ?confib_bits? is included in the project.
   @ Parameters
 	 None
   @ Returns
@@ -47,11 +34,11 @@ I2C_RESULT Hardware_Setup(void) {
 	if (i2cFlag == I2C_SUCCESS) {
 		// Reset GPS
 		PORTSetPinsDigitalOut(IOPORT_A, BIT_14);
-		LATAbits.LATA14 = 1;
-		DelayMs(100);
-		LATAbits.LATA14 = 0;
-		DelayMs(100);
-		LATAbits.LATA14 = 1;
+//		LATAbits.LATA14 = 1;
+//		DelayMs(100);
+//		LATAbits.LATA14 = 0;
+//		DelayMs(100);
+//		LATAbits.LATA14 = 1;
 		DelayMs(100);
 		
 		len = 255;
@@ -84,6 +71,7 @@ I2C_RESULT Hardware_Setup(void) {
 	if (MAG3110_isCalibrated()) {
 		printf("Magnetometer is calibrated\n\r");
 	}
+
 	return i2cFlag;
 }
 
@@ -133,7 +121,6 @@ void __ISR(_TIMER_1_VECTOR, IPL2SOFT) Timer1Handler(void) {
 		onesec--;
 		if (onesec <= 0) {
 			onesec = 10000;
-			LD3_IO = !LD3_IO;
 		}
 	}
 
