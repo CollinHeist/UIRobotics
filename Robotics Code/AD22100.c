@@ -1,9 +1,4 @@
-/* ------------------- Hardware and Common Library Includes ------------------ */
-#include "hardware.h"
-#include <plib.h>
 #include "AD22100.h"
-
-float ad22100;
 
 /* ------------------------------- init_ad22100 ------------------------------
   @ Summary
@@ -51,14 +46,14 @@ void read_ad22100(float *t1, float *t2)  {
 	adc2 = ReadADC10(offset + 1);
 
 	/* -------------------- Convert the first ADC Channel -------------------- */
-	v1    = ((adc1 * 3.3) / ADCMAX);
-	v2    = v1 - 1.4025;
+	v1	  = ((adc1 * 3.3) / ADCMAX);
+	v2	  = v1 - 1.4025;
 	tempC = v2 * 44.444;
 	*t1   = ((tempC * 9) / 5) + 32;
 
 	/* -------------------- Convert the second ADC Channel ------------------- */
-	v1    = ((adc2 * 3.3) / ADCMAX);
-	v2    = v1 - 1.4025;
+	v1	  = ((adc2 * 3.3) / ADCMAX);
+	v2	  = v1 - 1.4025;
 	tempC = v2 * 44.444;
 	*t2   = ((tempC * 9) / 5) + 32;
 }
