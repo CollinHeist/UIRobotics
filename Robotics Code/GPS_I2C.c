@@ -1,11 +1,4 @@
-/* ------------------- Hardware and Common Library Includes ------------------ */
-#include "hardware.h"
-#include "swDelay.h"
 #include "GPS_I2C.h"
-#include "I2C_lib.h"
-#include <string.h>
-#include <stdio.h>
-#include <stdint.h>
 
 /* ------------------------------- setGPS_RMC --------------------------------
   @ Summary
@@ -13,7 +6,7 @@
   @ Parameters
 	 None
   @ Returns
-	 I2C_result : I believe this is a flag ensuring the communication was successful
+	 I2C_result : A flag ensuring the communication was successful
   ---------------------------------------------------------------------------- */
 I2C_RESULT setGPS_RMC(void) {
 	I2C_RESULT i2cFlag;
@@ -22,6 +15,8 @@ I2C_RESULT setGPS_RMC(void) {
 		i2cFlag = sendMTKpacket(PMTK_SET_NMEA_OUTPUT_RMCONLY);
 		DelayMs(MAXWAITSENTENCE);
 	} while (dly);
+	
+	return i2cFlag;
 }
 
 /* ----------------------------- GPS_DECODE_RMC ------------------------------
@@ -30,7 +25,7 @@ I2C_RESULT setGPS_RMC(void) {
   @ Description
 	 The struct in GPS_I2C.h has values filled upon function call
   @ Parameters
-	 param1 : String read from the GPS that is to be parsed
+	 @ param1 : String read from the GPS that is to be parsed
   @ Returns
 	 int : How long the parsed communication was
   ---------------------------------------------------------------------------- */
@@ -53,7 +48,6 @@ int GPS_DECODE_RMC(BYTE *str) {
 						   &gps.utc_time,&gps.status,&gps.lat,&gps.ns,&gps.lon,\
 						   &gps.ew,&gps.speed,&gps.angle,&gps.date,&gps.mode,\
 						   &gps.cksum);
-				invLED7();
 			}
 			else {
 				printf("%s --> %d \n\r", s2, len - 1);
@@ -61,6 +55,7 @@ int GPS_DECODE_RMC(BYTE *str) {
 			}
 		}
 	}
+	
 	return len;
 }
 
@@ -70,7 +65,7 @@ int GPS_DECODE_RMC(BYTE *str) {
   @ Description
 	 Function for actually filling a struct with GPS results
   @ Parameters
-	 param1 : Boolean on whether or not to output each GPS read
+	 @ param1 : Boolean on whether or not to output each GPS read
   @ Returns
 	 I2C_RESULT : Struct to fill with GPS results
   ---------------------------------------------------------------------------- */
@@ -80,7 +75,7 @@ I2C_RESULT ReportGPS (int show) {
 	static int hour, min, sec;
 	int pkt_len = 0;
 
-	DelayMs(5);	// Give GPS time to up load new buffer
+	DelayMs(5);	 // Give GPS time to up load new buffer
 	len = MAX_PACKET_SIZE;
 	i2cFlag = I2C_Read(I2C2, GPS_DEV_ID, gpsStr, &len);
 
@@ -93,20 +88,20 @@ I2C_RESULT ReportGPS (int show) {
 			sec = (gps.utc_time - (hour * 10000 + min * 100));
 			hour -= 7;
 			if (hour < 0)
-				hour += 24;
+				hour += 24;		
 			printf("Time: %2d:%2d:%2d  LAT:%f  LON:%f\n\r",\
 					hour, min, sec, gps.lon, gps.lat);
 		}
 	}
-
-	return i2cFlag;
+		
+	return i2cFlag;   
 }
 
 /* ------------------------------ sendMTKpacket ------------------------------
   @ Summary
 	 Writes a provided char[] packet to the GPS over I2C
   @ Parameters
-	 param1 : Character array to be sent to the GPS - Max of 255 characters
+	 @ param1 : Character array to be sent to the GPS - Max of 255 characters
   @ Returns
 	 I2C_RESULT : Either an error or success flag from the GPS, if write was sucessful
   ---------------------------------------------------------------------------- */
@@ -121,9 +116,10 @@ I2C_RESULT sendMTKpacket (char *packet) {
 		i2cFlag = I2C_ERROR;
 	}
 	else {
-		printf("GPS command: %s", packet );
+		printf("GPS command: %s", packet);
 		i2cFlag = I2C_Write(I2C2, GPS_DEV_ID, packet, &len);
 	}
 	DelayMs(MAXWAITSENTENCE);
+	
 	return i2cFlag;
 }
