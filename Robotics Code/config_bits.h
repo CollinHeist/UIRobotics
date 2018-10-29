@@ -1,10 +1,10 @@
 /* --------------------- Guard Against Multiple Inclusions ------------------- */
-#ifndef _CONFIG_BITS_H
-	#define _CONFIG_BITS_H
+#ifndef __CONFIG_BITS_H__
+	#define __CONFIG_BITS_H__
 
 	/* ------------- PIC32MX370F512L Configuration Bit Settings -------------- */
-
 	#include <xc.h>
+
 	/* ------------------------------- DEVCFG1 ------------------------------- */
 	#pragma config FSRSSEL  = PRIORITY_7	// Shadow Register Set Priority Select (SRS Priority 7)
 	#pragma config PMDL1WAY = OFF			// Peripheral Module Disable Configuration (Allow multiple reconfigurations)
