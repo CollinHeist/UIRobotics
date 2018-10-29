@@ -1,23 +1,26 @@
 /* ------------------- Hardware and Common Library Includes ------------------ */
 #include "hardware.h"
 
+unsigned int millisec;	// Global millisecond counter
+
 /* -------------------------- Function Prototyping --------------------------- */
 static void initTimer1(void);
 static I2C_RESULT WF32_Setup(void);
-static void blinkLED(void);
 
 /* ----------------------------- Hardware_Setup ------------------------------
   @ Summary
 	 Initializes PIC32 pins commonly used for IO on the Trainer processor 
 	 board such as the slide switches, push buttons, and LEDs. It 
-	 requires that ?confib_bits? is included in the project.
+	 requires that “config_bits” is included in the project.
   @ Parameters
 	 None
   @ Returns
 	 None
+  @ Notes
+  	 This function also initializes the I2C module for 
    --------------------------------------------------------------------------- */
 I2C_RESULT Hardware_Setup(void) {
-	I2C_RESULT i2cFlag;
+	I2C_RESULT i2cFlag_GPS, i2cFlag_MAG;
 	int len;
 	/* -----------------------------------------------------------------------
 		Statement configure cache, wait states and peripheral bus clock
@@ -30,25 +33,27 @@ I2C_RESULT Hardware_Setup(void) {
 	DDPCONbits.JTAGEN = 0;  // Statement is required to use Pin RA0 as IO
 	initRC();
 	initTimer1();
-	i2cFlag = I2C_Init(I2C2, I2C_SPEED_FAST); // I2C_SPEED_STANDARD);
-	if (i2cFlag == I2C_SUCCESS) {
+
+	/* ---------------- Initialize the I2C2 Module - The GPS ----------------- */
+	i2cFlag_GPS = I2C_Init(I2C2, I2C_SPEED_FAST); // I2C_SPEED_STANDARD);
+	if (i2cFlag_GPS == I2C_SUCCESS) {
 		// Reset GPS
 		PORTSetPinsDigitalOut(IOPORT_A, BIT_14);
-//		LATAbits.LATA14 = 1;
-//		DelayMs(100);
-//		LATAbits.LATA14 = 0;
-//		DelayMs(100);
-//		LATAbits.LATA14 = 1;
+		LATAbits.LATA14 = 1;
+		DelayMs(100);
+		LATAbits.LATA14 = 0;
+		DelayMs(100);
+		LATAbits.LATA14 = 1;
 		DelayMs(100);
 		
 		len = 255;
-		i2cFlag = I2C_Read(I2C2, GPS_DEV_ID, gpsStr, &len);
-		if (i2cFlag == I2C_SUCCESS) {
+		i2cFlag_GPS = I2C_Read(I2C2, GPS_DEV_ID, gpsStr, &len);
+		if (i2cFlag_GPS == I2C_SUCCESS) {
 			printf("GPS on line\n\r");
 			
-			i2cFlag = setGPS_RMC();
+			i2cFlag_GPS = setGPS_RMC();
 			
-			if (i2cFlag == I2C_SUCCESS) {
+			if (i2cFlag_GPS == I2C_SUCCESS) {
 				printf("GPS RMC sentence set successfully\n\r");
 			}
 			else {
@@ -63,8 +68,18 @@ I2C_RESULT Hardware_Setup(void) {
 	DelayMs(100);
 	printf("Magnetometer is calibrating\n\r");
 
-	/* --------------------- Calibrate the MAG3110 Device -------------------- */
+	/* --------------- Initialize the I2C1 Module - The MAG3110 -------------- */
+	do {
+		DelayMs(100);
+		i2cFlag_MAG = MAG3110_initialize();
+		if (!i2cFlag_MAG) {
+			printf("Magnetometer not found..\n\r");
+		}
+	} while (!i2cFlag_MAG);
+
+	printf("Magnetometer is calibrating.\n\r");
 	MAG3110_enterCalMode();
+
 	while (MAG3110_isCalibrating()) {
 		MAG3110_calibrate();
 	}
@@ -72,7 +87,7 @@ I2C_RESULT Hardware_Setup(void) {
 		printf("Magnetometer is calibrated\n\r");
 	}
 
-	return i2cFlag;
+	return (i2cFlag_GPS == I2C_SUCCESS && i2cFlag_MAG == I2C_SUCCESS ? I2C_SUCCESS : I2C_ERROR);
 }
 
 /* -------------------------------- initTimer1 -------------------------------
