@@ -3,9 +3,9 @@
 	#define __SW_DELAY_H__
 
 	/* ----------------- Necessary system include statements ----------------- */
-	#include <plib.h>
-
 	#include "hardware.h"
+
+	#include <plib.h>
 
 	/* ---------------------- Public Function declarations ------------------- */
 	void DelayMs(unsigned int mS);
