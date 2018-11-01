@@ -1,7 +1,6 @@
-/* ------------------- Hardware and Common Library Includes ------------------ */
 #include "hardware.h"
 
-unsigned int millisec;	// Global millisecond counter
+unsigned int millisec = 0;
 
 /* -------------------------- Function Prototyping --------------------------- */
 static void initTimer1(void);
@@ -11,7 +10,7 @@ static I2C_RESULT WF32_Setup(void);
   @ Summary
 	 Initializes PIC32 pins commonly used for IO on the Trainer processor 
 	 board such as the slide switches, push buttons, and LEDs. It 
-	 requires that “config_bits” is included in the project.
+	 requires that ?config_bits? is included in the project.
   @ Parameters
 	 None
   @ Returns
