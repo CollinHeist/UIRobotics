@@ -1,4 +1,3 @@
-/* ------------------- Hardware and Common Library Includes ------------------ */
 #include "LCDlib.h"
 
 #define PMDATA  PMDIN 		// Redefinition of the PMP data bit
@@ -36,7 +35,7 @@ void initLCD(void) {
 
 	mPMPOpen(config1, config2, config3, config4); // PMP initialization
 	
-	DelayMs(20);   // Wait for > 20ms
+	DelayMs(20);	// Wait for > 20ms
 	
 	// Initialize the HD44780 display 8-bit init sequence
 	PMPSetAddress(LCDCMD);		// Select command register
@@ -49,8 +48,8 @@ void initLCD(void) {
 	PMPMasterWrite(LCD_CLR);	// Clear display
 	DelayMs(2);					// > 1.6ms
 	
-	PMPMasterWrite(LCD_ENTRY); 	// ON, no cursor, no blink
-	DelayMs(50);			   	// Settling time - not required
+	PMPMasterWrite(LCD_ENTRY);	// ON, no cursor, no blink
+	DelayMs(50);				// Settling time - not required
 }
 
 /* -------------------------------- readLCD() --------------------------------
