@@ -3,15 +3,15 @@
 	#define __LCDLIB_H__
 
 	/* ----------------- Necessary system include statements ----------------- */
+	#include "hardware.h"
+	#include "swDelay.h"
+
 	#include <stdio.h>
 	#include <stdint.h>
 	#include <plib.h>
 
-	#include "swDelay.h"
-	#include "hardware.h"
-
 	/* ----------------- Public Global Variables / Constants ----------------- */
-	#define LCD_DATAbits 	0x0ff
+	#define LCD_DATAbits	0x0ff
 	#define LCD_DB0			(1 << 0)
 	#define LCD_DB1			(1 << 1)
 	#define LCD_DB2			(1 << 2)
@@ -39,7 +39,7 @@
 	#define HLCD			16		// LCD width, 16 characters
 	#define VLCD			2 		// LCD height, 2 rows
 
-	#define LCD_CFG			0x38	// Configuration mode for 8 bit data bus
+	#define LCD_CFG	 		0x38	// Configuration mode for 8 bit data bus
 	#define LCD_ENTRY		0x06	// Block flashing cursor - increment cursor
 	#define LCD_ON			0x0F	// Activate LCD
 	#define LCD_HOME		0x02	// Put cursor in left most position
@@ -49,8 +49,8 @@
 
 	/* ----------------------- LCD Status Definitions ------------------------ */
 	#define LCD_ADDR		0x7F	// Address mask for status register
-	#define LCD_BF	  		0x80	// Busy flag mask for status register
-	#define LCD_BF_bit  	7 		// Busy flag bit for status register
+	#define LCD_BF			0x80	// Busy flag mask for status register
+	#define LCD_BF_bit		7 		// Busy flag bit for status register
 
 	/* -------------------- LCD Address Control Constants -------------------- */
 	#define LCD_DDRAM		0x80	// DD Ram Set Control
