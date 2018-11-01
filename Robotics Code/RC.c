@@ -79,7 +79,7 @@ void set_rc(int rc1, int rc2, int rc3, int rc4) {
   @ Parameters
 	 @ param1 : An integer corresponding to the channel number being addressed				 
 	 @ param2 : An integer that corresponds to what you want the channel to do. 
-			    OFF is 0 and On is 1. 
+				OFF is 0 and On is 1. 
   @ Returns
 	 This function has no return value.
   ---------------------------------------------------------------------------- */
