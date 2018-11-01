@@ -1,4 +1,7 @@
 #include "GPS_I2C.h"
+#define __GPS_I2C_C__
+
+BYTE gpsStr[256] = {0};
 
 /* ------------------------------- setGPS_RMC --------------------------------
   @ Summary
@@ -25,7 +28,7 @@ I2C_RESULT setGPS_RMC(void) {
   @ Description
 	 The struct in GPS_I2C.h has values filled upon function call
   @ Parameters
-	 @ param1 : String read from the GPS that is to be parsed
+	 param1 : String read from the GPS that is to be parsed
   @ Returns
 	 int : How long the parsed communication was
   ---------------------------------------------------------------------------- */
