@@ -74,14 +74,14 @@ int PeriodMs(unsigned int msec) {
 	static int delay_in_progress_flag = FALSE;
 	static unsigned int tWait, tStart;
 
-	if (delay_in_progress_flag == 0) {	   // New Period
+	if (delay_in_progress_flag == 0) {		// New Period
 		tStart = ReadCoreTimer();			// Capture starting time
-		tWait = (CORE_MS_TICK_RATE * msec);  // Compute delay period
-		delay_in_progress_flag = TRUE;	   // Set operation flag
+		tWait = (CORE_MS_TICK_RATE * msec);	// Compute delay period
+		delay_in_progress_flag = TRUE;		// Set operation flag
 	}
 
 	if ((ReadCoreTimer() - tStart) >= tWait) // Check if period is over
-			delay_in_progress_flag = FALSE;
+		delay_in_progress_flag = FALSE;
 	
 	return delay_in_progress_flag;
 }
