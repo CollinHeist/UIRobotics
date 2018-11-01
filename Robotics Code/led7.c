@@ -4,7 +4,7 @@
 int16_t led_value = 0;
 BOOL led_flag = 0;
 
-/* -----------------------------. seg7_init() ---------------------------------
+/* ------------------------------. seg7_init ----------------------------------
   @ Description
 	 The assigned PIC32 IO pins are assigned as outputs and the digit LED 
 	 anodes are set to zero. This function initializes all the 7-segment IO
@@ -53,7 +53,7 @@ void seg7_init(void) {
 	 None
   ---------------------------------------------------------------------------- */
 void clr_dsp (void) {
-	SEG_CA(0);	
+	SEG_CA(0);
 	SEG_CB(0);
 	SEG_CC(0);
 	SEG_CD(0);
@@ -75,7 +75,7 @@ void clr_dsp (void) {
 	 None
   ---------------------------------------------------------------------------- */
 void set_digit(int dsp, int value) {
-	dsp_digit(value);	  // Set LED cathodes according to segment number
+	dsp_digit(value);		// Set LED cathodes according to segment number
 	switch (dsp) {
 		case 0:
 			DIG_AN0(0);
@@ -150,10 +150,10 @@ void dsp_digit (int value) {
 			SEG_LED9
 			break;
 		case -1:
-			SEG_NEG // generate negative sign
-			break;	  
+			SEG_NEG	// generate negative sign
+			break;			
 		default:
-			SEG_OFF // Blank the display
+			SEG_OFF	// Blank the display
 	}
 }
 
@@ -166,53 +166,53 @@ void dsp_digit (int value) {
 	 None
   ---------------------------------------------------------------------------- */
 void led_number (int value) {
-	int d1, d2, d3, d4, dz = 0;  // Segment values and display zero flag
+	int d1, d2, d3, d4, dz = 0;	 // Segment values and display zero flag
 	
 	/* --------- Test that the value is not greater than the maximum --------- */
 	if (value < 10000) {
 		value = ((value < 0) && (value > -1000)) ? -value : value % 1000;
-		d4  = ((value < 0) && (value > -1000)) ? -1	: value / 1000;
-//	if ((value < 0) && (value > -1000)) {
-//	  value = -value;	   // Negate value to make positive
-//	  d4 = -1;		// Assign digit 4 to negative 1
-//	}
-//	else {
-//	  d4 = value / 1000;	  // Isolate 1000's digit
-//	  value = value % 1000;   // Save remainder
-//	}
-		d3  = value / 100;		  // Isolate 100's digit
-		value = value % 100;		  // Save remainder
-		d2  = value / 10;	 // Isolate 10's digit
-		value = value % 10;	 // Save remainder
-		d1  = value;		// Isolate units digit
+		d4	= ((value < 0) && (value > -1000)) ? -1	 : value / 1000;
+//		if ((value < 0) && (value > -1000)) {
+//			value = -value;			// Negate value to make positive
+//			d4 = -1;				// Assign digit 4 to negative 1
+//		}
+//		else {
+//			d4 = value / 1000;		// Isolate 1000's digit
+//			value = value % 1000;	// Save remainder
+//		}
+		d3	= value / 100;			// Isolate 100's digit
+		value = value % 100;		// Save remainder
+		d2	= value / 10;			// Isolate 10's digit
+		value = value % 10;			// Save remainder
+		d1	= value;				// Isolate units digit
 
 		if (d4) {
-			set_digit(3, d4);	  // If non zero or minus sign - display digit
+			set_digit(3, d4);		// If non zero or minus sign - display digit
 			if (d4 > 0)
-				dz = 1;	// Set display zero flag
+				dz = 1;				// Set display zero flag
 		}
 		else
-			set_digit(3, 0xFF);  // If leading zero - blank digit
+			set_digit(3, 0xFF);		// If leading zero - blank digit
 		
-		DelayUs(DIG_DLY);		 // Give the board time to turn on the display
+		DelayUs(DIG_DLY);			// Give the board time to turn on the display
 
 		if (d3 || dz == 1) {		// Display if nonzero or dz flag is set
 			set_digit(2, d3);
-			dz = 1;	 // Set display zero flag
+			dz = 1;					// Set display zero flag
 		}
 		else
-			set_digit(2, 0xFF);  // If leading zero - blank digit
+			set_digit(2, 0xFF);		// If leading zero - blank digit
 		
-		DelayUs(DIG_DLY);		 // Give the board time to turn on the display
+		DelayUs(DIG_DLY);			// Give the board time to turn on the display
 
 		if (d2 || dz == 1) {		// Display if nonzero or dz flag is set
-			set_digit(1, d2);	  // Set display zero flag
+			set_digit(1, d2);		// Set display zero flag
 		}
 		else
-			set_digit(1, 0xFF);  // If leading zero - blank digit
+			set_digit(1, 0xFF);		// If leading zero - blank digit
 		
 		DelayUs(DIG_DLY);
-		set_digit(0, d1);		 // Display trailing zeros
+		set_digit(0, d1);			// Display trailing zeros
 		DelayUs(DIG_DLY);
 
 		DIGITS_OFF(); 
@@ -258,46 +258,46 @@ void test_7seg_leds (void) {
 	DIG_AN3(1);   
 }
 
-/* ------------------------------- __ISR() ----------------------------------
-  @ Description
-	 Updates the 4-digit 7-segment display according to the value set in the
-	 global variable "led_value." This can be toggled by setting led_flag to 0 or 1.
-  @ Parameters
-	 None
-  @ Returns
-	 None
-  ---------------------------------------------------------------------------- */
-void __ISR( _TIMER_1_VECTOR, IPL1SOFT) T1Interrupt(void) {
-	static int led_disp = 3;		// Seven-segment LED digit display index
-	static int led_digit;		 // Seven-segment LED digit display value
-	static int ms_cntr = 2;
-
-	if (--ms_cntr <= 0) {		 // Measure out 2 tenths of a second 
-		ms_cntr = 2;
-		if (led_flag && (led_value < 10000) && (led_value > -1000)) {
-			switch (led_disp) {  // Determine the display digit
-				case 0:
-					led_digit = abs(led_value) % 10;		   // Units digit
-					break;
-				case 1:
-					led_digit = (abs(led_value) % 100) / 10;   // Tens digit
-					break;
-				case 2:
-					led_digit = (abs(led_value) % 1000) / 100; // 100s digit
-					break;
-				case 3:
-					led_digit = ((led_value < 0) && (led_value > -1000)) ? -1 : led_value / 1000;
-			}
-			set_digit(led_disp, led_digit);	// Display digit value
-			if (--led_disp < 0) {			 // Update display index modulo 4
-				led_disp = 3;
-			}
-		}
-		else {
-			DIGITS_OFF();
-			clr_dsp();
-		}
-	}
-	
-	mT1ClearIntFlag();
-}
+///* ------------------------------- __ISR() ----------------------------------
+//  @ Description
+//	 Updates the 4-digit 7-segment display according to the value set in the
+//	 global variable "led_value." This can be toggled by setting led_flag to 0 or 1.
+//  @ Parameters
+//	 None
+//  @ Returns
+//	 None
+//  ---------------------------------------------------------------------------- */
+//void __ISR( _TIMER_1_VECTOR, IPL1SOFT) T1Interrupt(void) {
+//	static int led_disp = 3;		// Seven-segment LED digit display index
+//	static int led_digit;		   // Seven-segment LED digit display value
+//	static int ms_cntr = 2;
+//
+//	if (--ms_cntr <= 0) {		   // Measure out 2 tenths of a second 
+//		ms_cntr = 2;
+//		if (led_flag && (led_value < 10000) && (led_value > -1000)) {
+//			switch (led_disp) {	 // Determine the display digit
+//				case 0:
+//					led_digit = abs(led_value) % 10;		   // Units digit
+//					break;
+//				case 1:
+//					led_digit = (abs(led_value) % 100) / 10;   // Tens digit
+//					break;
+//				case 2:
+//					led_digit = (abs(led_value) % 1000) / 100; // 100s digit
+//					break;
+//				case 3:
+//					led_digit = ((led_value < 0) && (led_value > -1000)) ? -1 : led_value / 1000;
+//			}
+//			set_digit(led_disp, led_digit);	   // Display digit value
+//			if (--led_disp < 0) {				 // Update display index modulo 4
+//				led_disp = 3;
+//			}
+//		}
+//		else {
+//			DIGITS_OFF();
+//			clr_dsp();
+//		}
+//	}
+//	
+//	mT1ClearIntFlag();
+//}
