@@ -2,32 +2,46 @@
 #define DEBUG
 #define RC
 
+// This definition stops unnecessary PLIB warnings from flooding the console
 #ifndef _SUPPRESS_PLIB_WARNING
 	#define _SUPPRESS_PLIB_WARNING
 #endif
 
 #ifndef _DISABLE_OPENADC10_CONFIGPORT_WARNING
-	#define  _DISABLE_OPENADC10_CONFIGPORT_WARNING
+	#define _DISABLE_OPENADC10_CONFIGPORT_WARNING
 #endif
 
-#ifndef _BASYS_MX3A_
-	#define _BASYS_MX3A_
+#ifndef __HARDWARE_H__
+	#define __HARDWARE_H__
+
+	/* ----------------- Necessary system include statements ----------------- */
+	#include "swDelay.h"
+	#include "i2c_lib.h"
+	#include "GPS_I2C.h"
+	#include "MAG3110.h"
+	#include "RC.h"
 
 	#include <plib.h>
-	/* ------ Macros to configure PIC pins as inputs for button sensors ------ */
-	#define BTNL_bit	BIT_0   // RB0  - only functional in stand alone mode
-	#define BTNR_bit	BIT_8   // RB8  - RC1
-	#define BTND_bit	BIT_15  // RA15 - RC2
-	#define BTNU_bit	BIT_1   // RB1  - only functional in stand alone mode
-	#define BTNC_bit	BIT_0   // RF0
+	#include <stdint.h>
+	#include <stdbool.h>
+	#include <xc.h>
+	#include <stdio.h>
+	#include <stdlib.h>
 
-	#define BNTL()		PORTBbits.RB0  // PORTReadBits(IOPORT_B, BTNL_bit)
+	/* ------ Macros to configure PIC pins as inputs for button sensors ------ */
+	#define BTNL_bit	BIT_0		// RB0  - only functional in stand alone mode
+	#define BTNR_bit	BIT_8		// RB8  - RC1
+	#define BTND_bit	BIT_15		// RA15 - RC2
+	#define BTNU_bit	BIT_1 		// RB1  - only functional in stand alone mode
+	#define BTNC_bit	BIT_0		// RF0
+
+	#define BNTL()		PORTBbits.RB0 	// PORTReadBits(IOPORT_B, BTNL_bit)
 	#ifndef RC
-		#define BNTR()	PORTBbits.RB8  // PORTReadBits(IOPORT_B, BTNR_bit) - RC1
-		#define BNTD()	PORTAbits.RA15 // PORTReadBits(IOPORT_A, BTND_bit) - RC2
+		#define BNTR()	PORTBbits.RB8	// PORTReadBits(IOPORT_B, BTNR_bit) - RC1
+		#define BNTD()	PORTAbits.RA15	// PORTReadBits(IOPORT_A, BTND_bit) - RC2
 	#endif
-	#define BNTU()		PORTBbits.RB1  // PORTReadBits(IOPORT_B, BTNU_bit)
-	#define BNTC()		PORTFbits.RF0  // PORTReadBits(IOPORT_F, BTNC_bit)
+	#define BNTU()		PORTBbits.RB1 	// PORTReadBits(IOPORT_B, BTNU_bit)
+	#define BNTC()		PORTFbits.RF0	// PORTReadBits(IOPORT_F, BTNC_bit)
 
 	#ifdef RC
 		#define BTNRcfgOut()	PORTSetPinsDigitalOut(IOPORT_B, BTNR_bit)	// Analog Input pin
@@ -70,9 +84,9 @@
 							(SW4() << 4) + (SW5() << 5) + (SW6() << 6) + (SW7() << 7))
 
 	/* -------------------------- RGB Led Control ---------------------------- */
-	#define RedLED_bit		BIT_2   // RD2
-	#define BluLED_bit		BIT_3   // RD3
-	#define GrnLED_bit		BIT_12  // RD12
+	#define RedLED_bit		BIT_2 	// RD2
+	#define BluLED_bit		BIT_3	// RD3
+	#define GrnLED_bit		BIT_12	// RD12
 	#define RBG_LEDcfg()	(TRISDCLR = RedLED_bit | BluLED_bit | GrnLED_bit, LATDCLR = RedLED_bit | BluLED_bit | GrnLED_bit)
 	#define setRedLED(a);	{ if(a) LATDSET = RedLED_bit; else LATDCLR = RedLED_bit; } 
 	#define setBluLED(a);	{ if(a) LATDSET = BluLED_bit; else LATDCLR = BluLED_bit; } 
@@ -114,7 +128,7 @@
 	#define LED7cfg()		TRISAbits.TRISA7 = 0 	// RA7
 	#define LEDcfg()		(TRISACLR = LED_all_bits, LATACLR = LED_all_bits)
 
-	#define setLED0(a);			{ if(a) LATASET = LED0_bit; else LATACLR = LED0_bit; }	//PORTSetBits(IOPORT_A, LED0_bit)
+	#define setLED0(a);		 { if(a) LATASET = LED0_bit; else LATACLR = LED0_bit; }	//PORTSetBits(IOPORT_A, LED0_bit)
 	#define setLED1(a);			{ if(a) LATASET = LED1_bit; else LATACLR = LED1_bit; }	//PORTSetBits(IOPORT_A, LED1_bit)
 	#define setLED2(a);			{ if(a) LATASET = LED2_bit; else LATACLR = LED2_bit; }	//PORTSetBits(IOPORT_A, LED2_bit)
 	#define setLED3(a);			{ if(a) LATASET = LED3_bit; else LATACLR = LED3_bit; }	//PORTSetBits(IOPORT_A, LED3_bit)
@@ -134,42 +148,23 @@
 	#define invLED6()			PORTToggleBits(IOPORT_A, LED6_bit)
 	#define invLED7()			PORTToggleBits(IOPORT_A, LED7_bit)
 	
-
-	//				 Turn module on | output integer  | trigger mode auto | enable auto sample
-	#define ADC_PARAM1  ADC_MODULE_ON | ADC_FORMAT_INTG | ADC_CLK_AUTO | ADC_AUTO_SAMPLING_ON
-
-	//					ADC ref external | disable offset test	| disable scan mode | perform 2 samples | use dual buffers | use alternate mode
-	#define ADC_PARAM2  ADC_VREF_AVDD_AVSS | ADC_OFFSET_CAL_DISABLE | ADC_SCAN_OFF | ADC_SAMPLES_PER_INT_2 | ADC_ALT_BUF_ON | ADC_ALT_INPUT_ON
-
-	//					use ADC internal clock   | set sample time
-	#define ADC_PARAM3  ADC_CONV_CLK_INTERNAL_RC | ADC_SAMPLE_TIME_15
-
-	// Do not assign channels to scan
-	#define ADC_PARAM4	SKIP_SCAN_ALL
- 
-	//					set AN2 and AN4 as analog inputs
-	#define ADC_PARAM5	ENABLE_AN2_ANA | ENABLE_AN4_ANA
-
-	/* Based upon setting in config_bits.h These directly influence timed
-	 * events using the Tick module.  They also are used for UART I2C, and SPI
-	 * baud rate generation. */
 	/* -----------------------------------------------------------------------
 	   Based upon settings in config_bits.h, these influence timed events
 	   using the Tick module. These are used for UART I2C, and SPI Baud
 	   rate generation
 	   ----------------------------------------------------------------------- */
-	#define XTAL				 (8000000UL) /* 8 MHz Xtal */
-	#define GetSystemClock()	 (80000000UL)	/* Hz */
-	#define GetCoreClock()	   (GetSystemClock()/2)
-	#define GetPeripheralClock() (GetSystemClock()/8)
-	#define SYSTEM_FREQ		  GetSystemClock()
+	#define XTAL					(8000000UL) /* 8 MHz Xtal */
+	#define GetSystemClock()		(80000000UL)
+	#define GetCoreClock()		  (GetSystemClock()/2)
+	#define GetPeripheralClock()	(GetSystemClock()/8)
+	#define SYSTEM_FREQ			 GetSystemClock()
 
-	#define CORE_MS_TICK_RATE	 (unsigned int) (GetCoreClock()/1000UL)
+	#define CORE_MS_TICK_RATE	   (unsigned int)(GetCoreClock() / 1000UL)
 
-	unsigned int millisec = 0;
-#endif
-
-/* ---------------------- Public Function declarations ----------------------- */
-I2C_RESULT Hardware_Setup(void);
-unsigned int millis(void);
-void initTimer1(void);
+	extern unsigned int millisec;
+	
+	/* ---------------------- Public Function Declarations ------------------- */
+	I2C_RESULT Hardware_Setup(void);
+	unsigned int millis(void);
+	static void initTimer1(void);
+#endif	
