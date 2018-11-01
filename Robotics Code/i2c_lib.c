@@ -1,7 +1,6 @@
-/* ------------------- Hardware and Common Library Includes ------------------ */
 #include "i2c_lib.h"
 
-///* -------------------------- Function Prototyping --------------------------- */
+/* -------------------------- Function Prototyping --------------------------- */
 static BOOL StartTransfer(I2C_MODULE i2c_port, BOOL restart);
 static BYTE calc_ck_sum(char *str);
 static I2C_RESULT ReceiveOneByte(I2C_MODULE i2c_port, BYTE *data, BOOL ack);
