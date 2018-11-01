@@ -32,7 +32,7 @@
 
 	/* ------------------------- Commands & Settings ------------------------- */
 	/* ------------ The structure for this is DATARATE_OVERSAMPLE ------------ */
-	#define MAG3110_DR_OS_80_16 		0x00	// 80 Hz data rate, 16 oversample ratio
+	#define MAG3110_DR_OS_80_16 		0x00	// i.e. | 80 Hz data rate, 16 oversample ratio
 	#define MAG3110_DR_OS_40_32 		0x08
 	#define MAG3110_DR_OS_20_64 		0x10
 	#define MAG3110_DR_OS_10_128		0x18
@@ -86,28 +86,28 @@
 	#define MAG3110_Y_AXIS 				3
 	#define MAG3110_Z_AXIS 				5
 
-    /* -------------------- Public Variable Declarations --------------------- */
+	/* -------------------- Public Variable Declarations --------------------- */
 	BOOL error;
 	float x_scale;
 	float y_scale;
 	BOOL calibrated;
   
 	/* --------------------- Public Method Declarations ---------------------- */
-	BOOL       MAG3110_initialize(void);
-    BYTE 	   MAG3110_readRegister(BYTE address);
-	I2C_RESULT MAG3110_writeRegister(BYTE address, BYTE value);
-	BOOL 	   MAG3110_dataReady(void);
-	I2C_RESULT MAG3110_readMag(int* x, int* y, int* z);
-	I2C_RESULT MAG3110_readMicroTeslas(float* x, float* y, float* z);
-	float 	   MAG3110_readHeading(void);
-	I2C_RESULT MAG3110_setDR_OS(BYTE DROS);
-	I2C_RESULT MAG3110_triggerMeasurement();
-	I2C_RESULT MAG3110_rawData(BOOL raw);
-	I2C_RESULT MAG3110_setOffset(BYTE axis, int offset);
-	int 	   MAG3110_readOffset(BYTE axis);
-	I2C_RESULT MAG3110_start(void);
-	I2C_RESULT MAG3110_enterStandby(void);
-	I2C_RESULT MAG3110_exitStandby(void);
+	BOOL		MAG3110_initialize(void);
+	BYTE		MAG3110_readRegister(BYTE address);
+	I2C_RESULT	MAG3110_writeRegister(BYTE address, BYTE value);
+	BOOL		MAG3110_dataReady(void);
+	I2C_RESULT	MAG3110_readMag(int* x, int* y, int* z);
+	I2C_RESULT	MAG3110_readMicroTeslas(float* x, float* y, float* z);
+	float		MAG3110_readHeading(void);
+	I2C_RESULT	MAG3110_setDR_OS(BYTE DROS);
+	I2C_RESULT	MAG3110_triggerMeasurement();
+	I2C_RESULT	MAG3110_rawData(BOOL raw);
+	I2C_RESULT	MAG3110_setOffset(BYTE axis, int offset);
+	int 		MAG3110_readOffset(BYTE axis);
+	I2C_RESULT	MAG3110_start(void);
+	I2C_RESULT	MAG3110_enterStandby(void);
+	I2C_RESULT	MAG3110_exitStandby(void);
 
 	BOOL MAG3110_isActive(void);
 	BOOL MAG3110_isRaw(void);
