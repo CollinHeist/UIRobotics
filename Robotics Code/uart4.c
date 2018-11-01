@@ -95,12 +95,12 @@ BOOL putcU4(int ch) {
 BOOL getcU4(char *ch) {
 	UART_DATA c;
 	BOOL done = FALSE;
-	if(UARTReceivedDataIsAvailable(UART4)) {	// wait for new char to arrive
-		c = UARTGetData(UART4);	// read the char from receive buffer
+	if(UARTReceivedDataIsAvailable(UART4)) {	// Wait for new char to arrive
+		c = UARTGetData(UART4);					// Read the char from receive buffer
 		*ch = (c.data8bit);
-		done = TRUE;		// Return new data available flag
+		done = TRUE;		 					// Return new data available flag
 	}
-	return done;				// Return new data not available flag
+	return done;								// Return new data not available flag
 }
 
 /* ------------------------------ putsU4 -----------------------------------
@@ -148,50 +148,50 @@ int putsU4(const char *s) {
  
   -------------------------------------------------------------------------- */
 int getstrU4(char *s, unsigned int len) {
-	static int eol = TRUE;		// End of input string flag
-	static unsigned int buf_len;// Number of received characters
-	static char *p1;			// copy #1 of the buffer pointer 
-	static char *p2;			// copy #2 of the buffer pointer
-	char ch;					// Received new character
+	static int eol = TRUE;			// End of input string flag
+	static unsigned int buf_len;	// Number of received characters
+	static char *p1;				// copy #1 of the buffer pointer 
+	static char *p2;				// copy #2 of the buffer pointer
+	char ch;						// Received new character
 
-	if (eol) {					// Initial call to function - new line
-								// Make two copies of pointer - one for
-		p1 = s;					// receiving characters and one for marking
-		p2 = s;					// the starting address of the string.  The
-		eol = FALSE;			// second copy is needed for backspacing.
-		buf_len = len;			// Save maximum buffer length
+	if (eol) {						// Initial call to function - new line
+									// Make two copies of pointer - one for
+		p1 = s;	  					// receiving characters and one for marking
+		p2 = s;						// the starting address of the string.  The
+		eol = FALSE;				// second copy is needed for backspacing.
+		buf_len = len;				// Save maximum buffer length
 	}
 
-	if (!(getcU4(&ch))) {		// Check for character received
-		return FALSE;			// Bail out if not 
+	if (!(getcU4(&ch))) {			// Check for character received
+		return FALSE;				// Bail out if not 
 	}
 	else {
-		*p1 = ch;				// Save new character in string buffer
-		putcU4(*p1);			// echo character
-		switch(ch) {			// Test for control characters
+		*p1 = ch;					// Save new character in string buffer
+		putcU4(*p1);				// Echo character
+		switch(ch) {				// Test for control characters
 			case BACKSPACE:
 				if (p1>p2) {
-					putcU4(' ');// overwrite the last character
+					putcU4(' ');	// Overwrite the last character
 					putcU4(BACKSPACE);
 					buf_len++;
-					p1--;		// back off the pointer
+					p1--;			// Back off the pointer
 				}
 				break;
-			case '\r':			// end of line, end loop
-				putcU4('\n');	// add line feed
-				eol = TRUE;		// Mark end of line
+			case '\r':				// End of line, end loop
+				putcU4('\n');		// Add line feed
+				eol = TRUE;			// Mark end of line
 				break;
-			case '\n':			// line feed, ignore it
+			case '\n':				// Line feed, ignore it
 				break;
 			default:
-				p1++;			// increment buffer pointer
-				buf_len--;		// decrement length counter
+				p1++;				// Increment buffer pointer
+				buf_len--;			// Decrement length counter
 		}
 	}
-	if (buf_len == 0 || eol) {	// Check for buffer full or end of line
-		*p1 = '\0';				// add null terminate the string
-		return TRUE;			// Set EOL flag 
+	if (buf_len == 0 || eol) {		// Check for buffer full or end of line
+		*p1 = '\0';	 				// Add null terminate the string
+		return TRUE;				// Set EOL flag 
 	}
 	
-	return FALSE;				// Not EOL
+	return FALSE;			   		// Not EOL
 }
