@@ -5,6 +5,10 @@
 	#include "hardware.h"
 	#include "i2c_lib.h"
 
+	#include <plib.h>
+	#include <math.h>
+	#include <STDIO.h>
+
 	/* -------------------------- MAG3110 Registers -------------------------- */
 	#define MAG3110_I2C_ADDRESS 	0x0E
 	
