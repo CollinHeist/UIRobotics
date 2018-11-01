@@ -3,16 +3,16 @@
 	#define __UART4_H__
 
 	/* ----------------- Necessary system include statements ----------------- */
+	#include "hardware.h"
+
 	#include <plib.h>
 	#include <stdio.h>
 
-	#include "hardware.h"
-
 	/* ----------------- Public Global Variables / Constants ----------------- */
-	#define BACKSPACE	0x08
-	#define NO_PARITY	0
-	#define ODD_PARITY	1
-	#define EVEN_PARITY	2
+	#define BACKSPACE		0x08
+	#define NO_PARITY		0
+	#define ODD_PARITY		1
+	#define EVEN_PARITY		2
 
 	/* ---------------------- Public Function declarations ------------------- */
 	void uart4_init(unsigned int baud, int parity);
