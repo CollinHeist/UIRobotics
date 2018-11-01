@@ -2,22 +2,15 @@
 	#define __RC_H__
 
 	/* ----------------- Necessary system include statements ----------------- */
-	/* ------------- Hardware and Processor Initialization Includes -------------- */
-	#include "config_bits.h"
 	#include "hardware.h"
+	#include "swDelay.h"
 
-	/* -------------------------- XC32 Public Libraries -------------------------- */
 	#include <plib.h>
 	#include <string.h>
 	#include <stdio.h>
 	#include <stdint.h>
 	#include <Math.h>
-
-	/* ----------------------- Project-specific include files -------------------- */
-	#include "uart2.h"
-	#include "uart4.h" 
-	#include "swDelay.h"
-
+	
 	#define cfgRC1()	PORTSetPinsDigitalOut(IOPORT_D, BIT_9)	// Wall has 4
 	#define cfgRC2()	PORTSetPinsDigitalOut(IOPORT_D, BIT_11) // 8
 	#define cfgRC3()	PORTSetPinsDigitalOut(IOPORT_D, BIT_10) // 7
@@ -40,5 +33,5 @@
 	void initRC(void);
 	void rc_output(int ch, int ctrl);
 	void rcUpdate(void);
-	void set_rc(int ch, int ctrl);
+	void set_rc(int rc1, int rc2, int rc3, int rc4);
 #endif
