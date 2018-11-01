@@ -3,13 +3,13 @@
 	#define __I2C_LIB_H__
 
 	/* ----------------- Necessary system include statements ----------------- */
+	#include "hardware.h"
+	#include "swDelay.h"
+
 	#include <plib.h>
 	#include <string.h>
 	#include <stdio.h>
 	#include <stdint.h>
-
-	#include "hardware.h"
-	#include "swDelay.h"
 
 	/* ----------------- Public Global Variables / Constants ----------------- */
 	#define I2C_SPEED_STANDARD		100000
