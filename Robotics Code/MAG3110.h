@@ -5,10 +5,6 @@
 	#include "hardware.h"
 	#include "i2c_lib.h"
 
-	#include <plib.h>
-	#include <math.h>
-	#include <STDIO.h>
-
 	/* -------------------------- MAG3110 Registers -------------------------- */
 	#define MAG3110_I2C_ADDRESS 	0x0E
 	
@@ -90,28 +86,28 @@
 	#define MAG3110_Y_AXIS 				3
 	#define MAG3110_Z_AXIS 				5
 
-	/* -------------------- Public Variable Declarations --------------------- */
+    /* -------------------- Public Variable Declarations --------------------- */
 	BOOL error;
 	float x_scale;
 	float y_scale;
 	BOOL calibrated;
   
 	/* --------------------- Public Method Declarations ---------------------- */
-	BOOL		MAG3110_initialize(void);
-	BYTE		MAG3110_readRegister(BYTE address);
-	I2C_RESULT	MAG3110_writeRegister(BYTE address, BYTE value);
-	BOOL		MAG3110_dataReady(void);
-	I2C_RESULT	MAG3110_readMag(int* x, int* y, int* z);
-	I2C_RESULT	MAG3110_readMicroTeslas(float* x, float* y, float* z);
-	float		MAG3110_readHeading(void);
-	I2C_RESULT	MAG3110_setDR_OS(BYTE DROS);
-	I2C_RESULT	MAG3110_triggerMeasurement();
-	I2C_RESULT	MAG3110_rawData(BOOL raw);
-	I2C_RESULT	MAG3110_setOffset(BYTE axis, int offset);
-	int 		MAG3110_readOffset(BYTE axis);
-	I2C_RESULT	MAG3110_start(void);
-	I2C_RESULT	MAG3110_enterStandby(void);
-	I2C_RESULT	MAG3110_exitStandby(void);
+	BOOL       MAG3110_initialize(void);
+    BYTE 	   MAG3110_readRegister(BYTE address);
+	I2C_RESULT MAG3110_writeRegister(BYTE address, BYTE value);
+	BOOL 	   MAG3110_dataReady(void);
+	I2C_RESULT MAG3110_readMag(int* x, int* y, int* z);
+	I2C_RESULT MAG3110_readMicroTeslas(float* x, float* y, float* z);
+	float 	   MAG3110_readHeading(void);
+	I2C_RESULT MAG3110_setDR_OS(BYTE DROS);
+	I2C_RESULT MAG3110_triggerMeasurement();
+	I2C_RESULT MAG3110_rawData(BOOL raw);
+	I2C_RESULT MAG3110_setOffset(BYTE axis, int offset);
+	int 	   MAG3110_readOffset(BYTE axis);
+	I2C_RESULT MAG3110_start(void);
+	I2C_RESULT MAG3110_enterStandby(void);
+	I2C_RESULT MAG3110_exitStandby(void);
 
 	BOOL MAG3110_isActive(void);
 	BOOL MAG3110_isRaw(void);

@@ -33,8 +33,8 @@ int main(void) {
 	int x, y, z;						// GPS coordinates
 	float heading;						// GPS Heading
 	int timer = millisec;				// Time marker to limit output readings
-
-	/* ---- Initialize all external communications (UART2, UART4, I2C...) ---- */
+    
+    /* ---- Initialize all external communications (UART2, UART4, I2C...) ---- */
 	I2C_RESULT i2c_flag = Hardware_Setup();
 	initialize_nav_sens();
 	// initLCD();
@@ -98,9 +98,9 @@ static void initialize_nav_sens(void) {
 	if (i2cFlag == I2C_SUCCESS) {
 		printf("GPS module online.\n\r");
 	}
-	else {
-		printf("GPS Module not successfully read from.\n\r");
-	}
+    else {
+        printf("GPS Module not successfully read from.\n\r");
+    }
 
 	DelayMs(2000);
 }

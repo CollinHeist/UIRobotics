@@ -8,40 +8,40 @@
 #endif
 
 #ifndef _DISABLE_OPENADC10_CONFIGPORT_WARNING
-	#define _DISABLE_OPENADC10_CONFIGPORT_WARNING
+	#define  _DISABLE_OPENADC10_CONFIGPORT_WARNING
 #endif
 
 #ifndef __HARDWARE_H__
 	#define __HARDWARE_H__
 
-	/* ----------------- Necessary system include statements ----------------- */
-	#include "swDelay.h"
-	#include "i2c_lib.h"
-	#include "GPS_I2C.h"
-	#include "MAG3110.h"
-	#include "RC.h"
-
+    /* ----------------- Necessary system include statements ----------------- */
 	#include <plib.h>
-	#include <stdint.h>
-	#include <stdbool.h>
-	#include <xc.h>
-	#include <stdio.h>
-	#include <stdlib.h>
+    #include <stdint.h>
+    #include <stdbool.h>
+    #include <xc.h>
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    #include "swDelay.h"
+    #include "i2c_lib.h"
+    #include "GPS_I2C.h"
+    #include "MAG3110.h"
+    #include "RC.h"
 
 	/* ------ Macros to configure PIC pins as inputs for button sensors ------ */
-	#define BTNL_bit	BIT_0		// RB0  - only functional in stand alone mode
-	#define BTNR_bit	BIT_8		// RB8  - RC1
-	#define BTND_bit	BIT_15		// RA15 - RC2
-	#define BTNU_bit	BIT_1 		// RB1  - only functional in stand alone mode
-	#define BTNC_bit	BIT_0		// RF0
+	#define BTNL_bit	BIT_0   // RB0  - only functional in stand alone mode
+	#define BTNR_bit	BIT_8   // RB8  - RC1
+	#define BTND_bit	BIT_15  // RA15 - RC2
+	#define BTNU_bit	BIT_1   // RB1  - only functional in stand alone mode
+	#define BTNC_bit	BIT_0   // RF0
 
-	#define BNTL()		PORTBbits.RB0 	// PORTReadBits(IOPORT_B, BTNL_bit)
+	#define BNTL()		PORTBbits.RB0  // PORTReadBits(IOPORT_B, BTNL_bit)
 	#ifndef RC
-		#define BNTR()	PORTBbits.RB8	// PORTReadBits(IOPORT_B, BTNR_bit) - RC1
-		#define BNTD()	PORTAbits.RA15	// PORTReadBits(IOPORT_A, BTND_bit) - RC2
+		#define BNTR()	PORTBbits.RB8  // PORTReadBits(IOPORT_B, BTNR_bit) - RC1
+		#define BNTD()	PORTAbits.RA15 // PORTReadBits(IOPORT_A, BTND_bit) - RC2
 	#endif
-	#define BNTU()		PORTBbits.RB1 	// PORTReadBits(IOPORT_B, BTNU_bit)
-	#define BNTC()		PORTFbits.RF0	// PORTReadBits(IOPORT_F, BTNC_bit)
+	#define BNTU()		PORTBbits.RB1  // PORTReadBits(IOPORT_B, BTNU_bit)
+	#define BNTC()		PORTFbits.RF0  // PORTReadBits(IOPORT_F, BTNC_bit)
 
 	#ifdef RC
 		#define BTNRcfgOut()	PORTSetPinsDigitalOut(IOPORT_B, BTNR_bit)	// Analog Input pin
@@ -84,9 +84,9 @@
 							(SW4() << 4) + (SW5() << 5) + (SW6() << 6) + (SW7() << 7))
 
 	/* -------------------------- RGB Led Control ---------------------------- */
-	#define RedLED_bit		BIT_2 	// RD2
-	#define BluLED_bit		BIT_3	// RD3
-	#define GrnLED_bit		BIT_12	// RD12
+	#define RedLED_bit		BIT_2   // RD2
+	#define BluLED_bit		BIT_3   // RD3
+	#define GrnLED_bit		BIT_12  // RD12
 	#define RBG_LEDcfg()	(TRISDCLR = RedLED_bit | BluLED_bit | GrnLED_bit, LATDCLR = RedLED_bit | BluLED_bit | GrnLED_bit)
 	#define setRedLED(a);	{ if(a) LATDSET = RedLED_bit; else LATDCLR = RedLED_bit; } 
 	#define setBluLED(a);	{ if(a) LATDSET = BluLED_bit; else LATDCLR = BluLED_bit; } 
@@ -128,7 +128,7 @@
 	#define LED7cfg()		TRISAbits.TRISA7 = 0 	// RA7
 	#define LEDcfg()		(TRISACLR = LED_all_bits, LATACLR = LED_all_bits)
 
-	#define setLED0(a);		 { if(a) LATASET = LED0_bit; else LATACLR = LED0_bit; }	//PORTSetBits(IOPORT_A, LED0_bit)
+	#define setLED0(a);         { if(a) LATASET = LED0_bit; else LATACLR = LED0_bit; }	//PORTSetBits(IOPORT_A, LED0_bit)
 	#define setLED1(a);			{ if(a) LATASET = LED1_bit; else LATACLR = LED1_bit; }	//PORTSetBits(IOPORT_A, LED1_bit)
 	#define setLED2(a);			{ if(a) LATASET = LED2_bit; else LATACLR = LED2_bit; }	//PORTSetBits(IOPORT_A, LED2_bit)
 	#define setLED3(a);			{ if(a) LATASET = LED3_bit; else LATACLR = LED3_bit; }	//PORTSetBits(IOPORT_A, LED3_bit)
@@ -148,23 +148,23 @@
 	#define invLED6()			PORTToggleBits(IOPORT_A, LED6_bit)
 	#define invLED7()			PORTToggleBits(IOPORT_A, LED7_bit)
 	
-	/* -----------------------------------------------------------------------
+    /* -----------------------------------------------------------------------
 	   Based upon settings in config_bits.h, these influence timed events
 	   using the Tick module. These are used for UART I2C, and SPI Baud
 	   rate generation
 	   ----------------------------------------------------------------------- */
-	#define XTAL					(8000000UL) /* 8 MHz Xtal */
-	#define GetSystemClock()		(80000000UL)
-	#define GetCoreClock()		  (GetSystemClock()/2)
-	#define GetPeripheralClock()	(GetSystemClock()/8)
-	#define SYSTEM_FREQ			 GetSystemClock()
+	#define XTAL                    (8000000UL) /* 8 MHz Xtal */
+	#define GetSystemClock()        (80000000UL)
+	#define GetCoreClock()          (GetSystemClock()/2)
+	#define GetPeripheralClock()    (GetSystemClock()/8)
+	#define SYSTEM_FREQ             GetSystemClock()
 
-	#define CORE_MS_TICK_RATE	   (unsigned int)(GetCoreClock() / 1000UL)
+	#define CORE_MS_TICK_RATE       (unsigned int)(GetCoreClock() / 1000UL)
 
 	extern unsigned int millisec;
-	
-	/* ---------------------- Public Function Declarations ------------------- */
-	I2C_RESULT Hardware_Setup(void);
-	unsigned int millis(void);
-	static void initTimer1(void);
-#endif	
+    
+    /* ---------------------- Public Function Declarations ------------------- */
+    I2C_RESULT Hardware_Setup(void);
+    unsigned int millis(void);
+    static void initTimer1(void);
+#endif    
