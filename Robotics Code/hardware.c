@@ -4,7 +4,6 @@ unsigned int millisec = 0;
 
 /* -------------------------- Function Prototyping --------------------------- */
 static void initTimer1(void);
-static I2C_RESULT WF32_Setup(void);
 
 /* ----------------------------- Hardware_Setup ------------------------------
   @ Summary
