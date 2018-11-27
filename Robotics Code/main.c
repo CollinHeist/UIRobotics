@@ -20,6 +20,7 @@
 #include "swDelay.h"
 #include "uart2.h"
 #include "uart4.h"
+#include "Variable.h"
 
 //extern unsigned int millisec;	// Global millisecond counter
 
@@ -28,12 +29,11 @@ static void initialize_nav_sens(void);
 /* ---------------------------- Main Project Function ------------------------ */
 int main(void) {
 	/* -------------- Variable declarations and initializations -------------- */
-	char uart2_ch, uart4_ch;			// Recieved character
-	BOOL uart2_flag, uart4_flag;		// Character ready flags
-	int x, y, z;						// GPS coordinates
-	float heading;						// GPS Heading
-	int timer = millisec;				// Time marker to limit output readings
-    
+	struct VariablesList Var;			//Initialize VARIABLE FILE
+	Var.timer = millisec;				// Time marker to limit output readings
+	Var.GPSMagTimer = millisec;			// Timer used to update the GPS & Magnometer
+
+	
     /* ---- Initialize all external communications (UART2, UART4, I2C...) ---- */
 	I2C_RESULT i2c_flag = Hardware_Setup();
 	initialize_nav_sens();
@@ -43,30 +43,46 @@ int main(void) {
 
 	if (i2c_flag == I2C_SUCCESS) {
 		printf("System configuration completed.\n\r");
+
+						//THIS IS THE CURRENT OPERATIONAL CODE LOOP
+
 		while (1) {
 			/* ---------- Read from the UART2 Channel, i.e. PC Input --------- */
-			uart2_flag = getcU2(&uart2_ch);
-			if (uart2_flag) {			// Character has been recieved
+			Var.uart2_flag = getcU2(&Var.uart2_ch);
+			if (Var.uart2_flag) {			// Character has been recieved
 				// Character processing code should go here
-				putcU4(uart2_ch);		// Put the character on the monitor
+				putcU4(Var.uart2_ch);		// Put the character on the monitor
 			}
 
 			/* -------- Read from the UART4 Channel; the X-Bee Module -------- */
-			uart4_flag = getcU4(&uart4_ch);
-			if (uart4_flag) {
+			Var.uart4_flag = getcU4(&Var.uart4_ch);
+			if (Var.uart4_flag) {
 				// Character processing code should go here
-				putcU4(uart4_ch);	// Put the character on the monitor?
+				putcU4(Var.uart4_ch);	// Put the character on the monitor?
 			}
 
+									//THIS IS WHERE SAM'S CODE SITS
+			
 			/* -------- Read from the I2C GPS and Magnetometer Module -------- */
-			i2c_flag = ReportGPS(TRUE);	// Read RMC only, send to the terminal
-			i2c_flag = MAG3110_readMag(&x, &y, &z);
-			if (i2c_flag == I2C_SUCCESS && (millisec - timer > 1000)) { // Only output every second
-				timer = millisec;
-				heading = MAG3110_readHeading();
-				heading = (heading < 0.0 ? heading + 360.0 : heading);
-				printf("Magnetic X: %4d, Y: %4d, Z: %4d, Dir: %f\n\r", x, y, z, heading);
+			//WRITE XBOX VARIABLES UPDATE COMMAND HERE	//Update every pass
+			if((millisec-Var.GPSMagTimer)>2000){	//Update every 2 seconds
+				i2c_flag = ReportGPS(TRUE);	// Read RMC only, send to the terminal
+				i2c_flag = MAG3110_readMag(&Var.x, &Var.y, &Var.z);
+				if (i2c_flag == I2C_SUCCESS) {
+					Var.heading = MAG3110_readHeading();
+					Var.heading = (Var.heading < 0.0 ? Var.heading + 360.0 : Var.heading);
+					printf("Magnetic X: %4d, Y: %4d, Z: %4d, Dir: %f\n\r", Var.x, Var.y, Var.z, Var.heading);
+				}
+				Var.GPSMagTimer = millisec;
 			}
+/*
+			while((millisec-TEMPVAR)>1){	//Update _____ Variables every 1 millisecond
+				TEMPVAR = millisec;
+			}
+*/
+			//INSERT COMMAND HERE
+			//INSERT COMMAND HERE
+			//INSERT COMMAND HERE
 		}
 	}
 	else {
