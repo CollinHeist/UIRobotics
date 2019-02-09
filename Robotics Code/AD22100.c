@@ -16,10 +16,10 @@ void init_ad22100(void) {
 	CloseADC10();
 
 	// Configure to sampel AN16 and AN19
-	SetChanADC10( ADC_CH0_NEG_SAMPLEA_NVREF | ADC_CH0_POS_SAMPLEA_AN16 |\
-				  ADC_CH0_NEG_SAMPLEB_NVREF | ADC_CH0_POS_SAMPLEB_AN19); 
+	SetChanADC10(ADC_CH0_NEG_SAMPLEA_NVREF | ADC_CH0_POS_SAMPLEA_AN16 |\
+				 ADC_CH0_NEG_SAMPLEB_NVREF | ADC_CH0_POS_SAMPLEB_AN19); 
 	// Configure ADC using the above parameter definitions
-	OpenADC10G( ADC_PARAM1, ADC_PARAM2, ADC_PARAM3, ADC_PARAM4, ADC_PARAM5 ); 
+	OpenADC10G(ADC_PARAM1, ADC_PARAM2, ADC_PARAM3, ADC_PARAM4, ADC_PARAM5); 
 	EnableADC10();			// Enable the ADC
 	while (!mAD1GetIntFlag()) {}
 }
@@ -40,7 +40,7 @@ void read_ad22100(int *t1, int *t2)  {
 
 	ConvertADC10();
 	// Wait for the first conversion to complete so there will be vaild data in ADC result registers
-	while (!mAD1GetIntFlag()) { } 
+	while (!mAD1GetIntFlag()) {} 
 	offset = 8 * ((~ReadActiveBufferADC10() & 0x01));  // Determine which buffer is idle and create an offset
 	adc1 = ReadADC10(offset);
 	adc2 = ReadADC10(offset + 1);
