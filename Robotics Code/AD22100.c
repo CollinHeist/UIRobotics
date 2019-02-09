@@ -33,7 +33,7 @@ void init_ad22100(void) {
   @ Returns
 	 None
   ---------------------------------------------------------------------------- */
-void read_ad22100(float *t1, float *t2)  {
+void read_ad22100(int *t1, int *t2)  {
 	int offset;
 	int adc1, adc2;
 	float v1, v2, tempC;
@@ -46,14 +46,12 @@ void read_ad22100(float *t1, float *t2)  {
 	adc2 = ReadADC10(offset + 1);
 
 	/* -------------------- Convert the first ADC Channel -------------------- */
-	v1		= ((adc1 * 3.3) / ADCMAX);
-	v2		= v1 - 1.4025;
-	tempC	= v2 * 44.444;
-	*t1		= ((tempC * 9) / 5) + 32;
+	v1    = ((adc1 * 3.3) / ADCMAX);    //Convert output bits from TMP36 to actual voltage on sensor
+	tempC = (v1 - .5) * 100.0;          //Remove the .5 volt offset of sensor, and then multiply by the 100 degrees C per volt
+    *t1   = ((tempC * 9) / 5) + 32;     //Convert from C to F
 
 	/* -------------------- Convert the second ADC Channel ------------------- */
-	v1		= ((adc2 * 3.3) / ADCMAX);
-	v2		= v1 - 1.4025;
-	tempC	= v2 * 44.444;
-	*t2		= ((tempC * 9) / 5) + 32;
+    v1    = ((adc2 * 3.3) / ADCMAX);    //Convert output bits from TMP36 to actual voltage on sensor
+	tempC = (v1 - .5) * 100.0;          //Remove the .5 volt offset of sensor, and then multiply by the 100 degrees C per volt
+    *t2   = ((tempC * 9) / 5) + 32;     //Convert from C to F
 }
