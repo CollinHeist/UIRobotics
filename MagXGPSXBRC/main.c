@@ -66,9 +66,9 @@ int main(void)
     
     DmaIntFlag = 0;
     
-	// Initilization
-	I2cResultFlag = InitializeModules(&I2cResultFlag);		// Init all I/O modules
-	MagInitMessage();							// Init mag and send message
+	// Initialization
+	I2cResultFlag = InitializeModules(&I2cResultFlag);		// Initialize all I/O modules
+	MagInitMessage();							// Initialize mag and send message
     DmaUartRxInit(); 
 
     
@@ -79,7 +79,7 @@ int main(void)
 
 		//
         
-        if(DmaIntFlag)          // clear the interrupt flag) 
+        if(DmaIntFlag)          // clear the interrupt flag
         {
             DmaIntFlag=0;       // Reset DMA Rx block flag
             printf("message received %s\n", dmaBuff);
@@ -87,15 +87,15 @@ int main(void)
             HandleInput();							// Handles all user input from the XB device
         }
         
-        if(SW0())
+        if(SW0())				// Checking Switch '0' on board
         {
-            SetDefaultServoPosition();
+            SetDefaultServoPosition();	//set servo back to the default position
         }
 
-		// GPS receieves data
-		if (ActualGPSInterval == 0)
+		// GPS receives data
+		if (ActualGPSInterval == 0) //Update GPS on specified interval
 		{
-            Move();
+            Move(); //Read and update controller inputs
 			ActualGPSInterval = GPSInterval;	// Reset the interval
 			//I2cReadFlag = ReportGPS(TRUE);		// Read from the GPS and display to the screen
 		}
@@ -105,11 +105,11 @@ int main(void)
 		}
 
 
-		// Mag recieves data
- 		if (ActualMagInterval == 0)
+		// Mag receives data
+ 		if (ActualMagInterval == 0) //Update magnetometer readings on specified interval
 		{
 			ActualMagInterval = MagInterval;	// Resets the original interval
-			loop();								// Gets data from the magnotometer
+			loop();								// Gets data from the magnetometer
 		}
 		else
 		{
