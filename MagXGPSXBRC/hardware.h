@@ -1,3 +1,33 @@
+/* ************************************************************************** */
+/** Descriptive File Name
+  @ Author
+    Richard Wall
+ 
+  @ Date:       April 30, 2016
+    Revised:    December 12, 2016
+    Verified:   May 20, 2017
+
+  @Company
+    Digilent Inc.      
+
+  @File Name
+    hardware.h
+
+  @Development Environment
+    MPLAB X IDE x3.61 - http://www.microchip.com/mplab/mplab-x-ide 
+	XC32 1.43 - http://www.microchip.com/mplab/compilers
+	PLIB 3/7/20162 - http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20Library
+
+  @Summary
+    Definition of constants and macro routines for the Basys MX3A processor board 
+
+  @Description
+    The #define statements and macro C code provides high level access to the 
+    Basys MX3A trainer boards switches, push buttons, and LEDs.
+    
+ */
+/* ************************************************************************** */
+/* Conditional inclusion prevents multiple definition errors */
 #ifndef _HARDWARE_H_   
     #define	_HARDWARE_H_
 
@@ -14,10 +44,18 @@
  * BRNU are not functional unless compiled and programmed for stand alone 
  * operation */
 
-//  #define DEBUG_MODE  
+//    #define DEBUG_MODE  
+
+/* This included file provides access to the peripheral library functions and
+   must be installed after the XC32 compiler. See
+http://ww1.microchip.com/downloads/en/DeviceDoc/32bitPeripheralLibraryGuide.pdf and
+http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20Library */
 
    #include <plib.h>
    
+/* The following definitions are for IO assigned on the Digilent Basys MX3
+   processor board. */
+
 /* The ANSELx register has a default value of 0xFFFF; therefore, all pins that
  * share analog functions are analog (not digital) by default. All pins are 
  * initially set be digital followed be setting A_POT for the ANALOG INPUT 
@@ -26,6 +64,7 @@
     #define SET_MIC_ANALOG()  ANSELBbits.ANSB4 = 1
     #define SET_POT_ANALOG()  ANSELBbits.ANSB2 = 1
 
+/* Macros to configure PIC pins as inputs to sense switch settings */
 
 /* The following macro instruction seta the processor pins for all 8 switch inputs */
 
@@ -38,18 +77,18 @@
     #define SW5cfg()    TRISBbits.TRISB11 = 1
     #define SW6cfg()    TRISBbits.TRISB10 = 1
     #define SW7cfg()    TRISBbits.TRISB9 = 1
-    #define SWcfg()  (SW0cfg(), SW1cfg(), SW2cfg(), SW3cfg(), SW4cfg(),\
+    #define SWcfg()     (SW0cfg(), SW1cfg(), SW2cfg(), SW3cfg(), SW4cfg(),\
                          SW5cfg(), SW6cfg(), SW7cfg())
 
 /* The following macro instructions provide for reading the position of the 8 switches. */
-    #define SW0()         PORTFbits.RF3
-    #define SW1()         PORTFbits.RF5
-    #define SW2()         PORTFbits.RF4
-    #define SW3()         PORTDbits.RD15
-    #define SW4()         PORTDbits.RD14
-    #define SW5()         PORTBbits.RB11
-    #define SW6()         PORTBbits.RB10
-    #define SW7()         PORTBbits.RB9
+    #define SW0()           PORTFbits.RF3
+    #define SW1()           PORTFbits.RF5
+    #define SW2()           PORTFbits.RF4
+    #define SW3()           PORTDbits.RD15
+    #define SW4()           PORTDbits.RD14
+    #define SW5()           PORTBbits.RB11
+    #define SW6()           PORTBbits.RB10
+    #define SW7()           PORTBbits.RB9
 
     #define Switch2Binary() ((((int) SW0()) << 0) + (((int) SW1()) <<1 ) +\
                              (((int) SW2()) << 2) + (((int) SW3()) <<3 ) +\
@@ -83,12 +122,12 @@
 /* Macro instructions to read the button position values. 1 = button pressed */ 
     #ifndef DEBUG_MODE
 /* Include BTNL and BTNU only if NOT in debug mode */
-        #define BTNL()    PORTBbits.RB0  
-        #define BTNU()    PORTBbits.RB1  
+        #define BTNL()      PORTBbits.RB0  
+        #define BTNU()      PORTBbits.RB1  
     #endif
-    #define BTNR()      PORTBbits.RB8  
-    #define BTND()      PORTAbits.RA15 
-    #define BTNC()      PORTFbits.RF0 
+    #define BTNR()          PORTBbits.RB8  
+    #define BTND()          PORTAbits.RA15 
+    #define BTNC()          PORTFbits.RF0 
 
 /* Macros to define the PIC pin values for the board LEDs */
     #define LED0_bit        0x01
@@ -127,7 +166,7 @@
     #define Set_All_LEDs_Off()  LATACLR = All_LED_bits  // Set all LEDs off
 
 /* Macros to invert the output to the board LEDs */
-    #define invLED0()   LATAINV = LED0_bit  
+    #define invLED0()   LATAINV = LED0_bit    
     #define invLED1()   LATAINV = LED1_bit
     #define invLED2()   LATAINV = LED2_bit
     #define invLED3()   LATAINV = LED3_bit
@@ -142,11 +181,11 @@
 	#define Set_LED8_B_Out()	TRISDbits.TRISD3 = 0		
     #define Set_RGB_Output()    ( Set_LED8_R_Out(), Set_LED8_G_Out(), Set_LED8_B_Out() )
 
-    #define Set_LED8_R(a)      LATDbits.LATD2 = a
-    #define Set_LED8_G(a)      LATDbits.LATD12 = a
-    #define Set_LED8_B(a)      LATDbits.LATD3 = a
+    #define Set_LED8_R(a)       LATDbits.LATD2 = a
+    #define Set_LED8_G(a)       LATDbits.LATD12 = a
+    #define Set_LED8_B(a)       LATDbits.LATD3 = a
 
-    #define Set_LED8_RGB(a)  (LATDbits.LATD2 = a, LATDbits.LATD12 = a, LATDbits.LATD3 = a)          
+    #define Set_LED8_RGB(a)     (LATDbits.LATD2 = a, LATDbits.LATD12 = a, LATDbits.LATD3 = a)             
 
 // Set Motor Control drive inputs
 	#define AIN1cfg()   (TRISBbits.TRISB3 = 0, ANSELBbits.ANSB3 = 0, LATBbits.LATB3 = 0)
@@ -156,16 +195,22 @@
 	#define MCMODEcfg() (TRISFbits.TRISF1 = 0, LATFbits.LATF1 = 0)
 	#define MCInit()	(AIN1cfg(), AIN2cfg(), BIN1cfg(), BIN2cfg(), MCMODEcfg())
 
-	#define AIN1(a);   {if(a) LATBbits.LATB3 = 1; else LATBbits.LATB3 = 0;}
-	#define AIN2(a);   {if(a) LATEbits.LATE8 = 1; else LATEbits.LATE8 = 0;}
-	#define BIN1(a);   {if(a) LATEbits.LATE9 = 1; else LATEbits.LATE9 = 0;}
-	#define BIN2(a);   {if(a) LATBbits.LATB5 = 1; else LATBbits.LATB5 = 0;}
+	#define AIN1(a);    {if(a) LATBbits.LATB3 = 1; else LATBbits.LATB3 = 0;}
+	#define AIN2(a);    {if(a) LATEbits.LATE8 = 1; else LATEbits.LATE8 = 0;}
+	#define BIN1(a);    {if(a) LATEbits.LATE9 = 1; else LATEbits.LATE9 = 0;}
+	#define BIN2(a);    {if(a) LATBbits.LATB5 = 1; else LATBbits.LATB5 = 0;}
 	#define MCMODE(a);  {if(a) LATFbits.LATF1 = 1; else LATFbits.LATF1 = 0;}
 
+// define setup parameters for OpenADC10
+                   
+/* Based upon setting in config_bits.h These directly influence timed
+ * events using the Tick module.  They also are used for UART I2C, and SPI
+ * baud rate generation. */
+
     #define XTAL                 (8000000UL)     /* 8 MHz Xtal on Basys MX3A */
-    #define GetSystemClock()     (80000000UL)   /* Instruction frequency */
-    #define SYSTEM_FREQ    (GetSystemClock())
-    #define GetCoreClock()     (GetSystemClock()/2) /* Core clock frequency */
+    #define GetSystemClock()     (80000000UL)    /* Instruction frequency */
+    #define SYSTEM_FREQ          (GetSystemClock())
+    #define GetCoreClock()       (GetSystemClock()/2) /* Core clock frequency */
     #define GetPeripheralClock() (GetSystemClock()/8) /* PCLK set for 80 MHz */
 
 /* Used in core timer software delay */
@@ -176,4 +221,25 @@ static void initTimer1(void);
 unsigned int millisec = 0;
 // End of hardware.h 
 
-#endif
+#endif	/* End of _HARDWARE_H_ */
+
+// *****************************************************************************
+/**
+  @Function
+    void hardware(void);
+
+  @Summary
+    Initializes PIC32 pins commonly used for IO on the Basys MX3 Trainer 
+    processor board.
+
+  @Description
+    Initializes PIC32 digital IO pins to provide functionality for the 
+    slide switches, push buttons, and LEDs
+
+  @Parameters
+    None
+
+  @Returns
+    None
+***************************************************************************** */    
+

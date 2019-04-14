@@ -1,3 +1,18 @@
+/*********************************************************************
+ *
+ *                  DMA Uart echo example file
+ *
+ *********************************************************************
+ * FileName:        DMA_uart2.c
+ * Dependencies:	plib.h
+ *
+ * Processor:       PIC32MX
+ *
+ * Author               Date        Comment
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * 
+ *
+ ********************************************************************/
 #include "hardware.h"
 #include <plib.h>
 #include "DMA_UART2.h"
@@ -25,7 +40,8 @@ DmaChannel  dmaChn = DMA_CHANNEL1;	// DMA channel
  *                  received.
  * Note:            None.
  ********************************************************************/
-void DmaUartRxInit(void) {
+void DmaUartRxInit(void)
+{
 	INTClearFlag(INT_SOURCE_DMA(dmaChn));	// Clear any standing DNA interrupts
 	DmaChnOpen(dmaChn, DMA_CHN_PRI2, DMA_OPEN_MATCH);
 	DmaChnSetMatchPattern(dmaChn, 0);	// set null as ending character
@@ -60,22 +76,25 @@ void DmaUartRxInit(void) {
  *
  * Note:            None.
  ********************************************************************/
-void DmaUartRx(void) {
+void DmaUartRx(void)
+{
 	DmaChnSetTxfer(dmaChn, (void*)&U2RXREG, dmaBuff2, 1, DMA_BUFFER_SIZE, 1);
-	DmaChnEnable(dmaChn);
+    DmaChnEnable(dmaChn);
 }
 
 // handler for the DMA channel 1 interrupt
-void __ISR(_DMA1_VECTOR, IPL5SOFT) DmaHandler1(void) {
-	int	evFlags;	// event flags when getting the interrupt
+void __ISR(_DMA1_VECTOR, IPL5SOFT) DmaHandler1(void)
+{
+int	evFlags;	// event flags when getting the interrupt
 
-	// release the interrupt in the INT controller, we're servicing int
+// release the interrupt in the INT controller, we're servicing int
 	evFlags=DmaChnGetEvFlags(dmaChn);	// get the event flags
 	INTClearFlag(INT_SOURCE_DMA(dmaChn));	
     
-    if(evFlags & DMA_EV_ALL_EVNTS) {
-    	// just a sanity check. we enabled just the DMA_EV_BLOCK_DONE transfer 
-		DmaIntFlag=1;
-	    strcpy(dmaBuff,dmaBuff2);
+    if(evFlags & DMA_EV_ALL_EVNTS)
+    { // just a sanity check. we enabled just the DMA_EV_BLOCK_DONE transfer 
+      // done interrupt
+        DmaIntFlag=1;
+        strcpy(dmaBuff,dmaBuff2);
     }
 }

@@ -32,13 +32,14 @@
 
     // Temperature Parameters - Temporary
     #define SLOW_TEMP       125     // Degrees F where we start throttling motor
-    #define STOP_TEMP       150     // Degrees F where we STOP the motor    
-#endif
+    #define STOP_TEMP       150     // Degrees F where we STOP the motor
 
-// Function Prototypes
-void init_temperature(void); 
-void read_temperature(int *t1, int *t2);
-void check_thresh(float *motor1_scale, float *motor2_scale);
-int GetTemp1();
-int GetTemp2();
-void read_temperature_store();
+	/* ---------------------- Public Function Declarations ------------------- */
+    void init_temperature(void); 
+    void read_temperature(int *t1, int *t2);
+    void check_thresh(float *motor1_scale, float *motor2_scale);
+    int GetTemp1();
+    int GetTemp2();
+    void read_temperature_store();
+    
+#endif

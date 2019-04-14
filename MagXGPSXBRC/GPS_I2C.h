@@ -90,12 +90,12 @@
 
 	struct gps_time gps;
 	BYTE gpsStr[256] = {0};
+    
+	/* ---------------------- Public Function declarations ------------------- */
+	I2C_RESULT GPS_I2C_Read(I2C_MODULE i2c_port, BYTE DeviceAddress, BYTE *str, int *len);
+	int GPS_DECODE_RMC(BYTE *str);
+	I2C_RESULT ReportGPS(int show);
+	I2C_RESULT sendMTKpacket(char *command);
+	I2C_RESULT setGPS_RMC(void);
+	BYTE calcCRCforMTK(char *sentence, char *crcStr); //XORs all bytes between $ and *
 #endif
-
-// Function Prototypes
-I2C_RESULT GPS_I2C_Read(I2C_MODULE i2c_port, BYTE DeviceAddress, BYTE *str, int *len);
-int GPS_DECODE_RMC(BYTE *str);
-I2C_RESULT ReportGPS(int show);
-I2C_RESULT sendMTKpacket(char *command);
-I2C_RESULT setGPS_RMC(void);
-BYTE calcCRCforMTK(char *sentence, char *crcStr); //XORs all bytes between $ and *

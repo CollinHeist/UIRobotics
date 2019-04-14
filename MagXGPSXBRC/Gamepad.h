@@ -7,8 +7,8 @@
 
 #pragma once
 
-// Function Prototype
 void Move();
 int HandleInput();	// Call to handle gamepad input
 int GamepadInit();  // Call to initialize this input library
 void ClearLeftStick();
+

@@ -1,6 +1,7 @@
+
 #ifndef _SUPPRESS_PLIB_WARNING	/* Suppress plib obsolesce warnings */
-	#define _SUPPRESS_PLIB_WARNING
-#endif
+        #define _SUPPRESS_PLIB_WARNING
+    #endif
 
 #include "uart2.h"
 #include "uart4.h"
@@ -14,6 +15,7 @@
 #include <stdlib.h>
 
 #define nullptr ((void*)0)
+//#define Debug
 
 #define MODE_TEST
 #define MODE_NORM
@@ -199,11 +201,11 @@ int ParseInput(char* String)
                 
 				time = strtol(Temp, &end, 10);
                    
-                if(~mPORTCRead() & (BIT_13 | BIT_14))
-                {
-                   GamepadInputManager.m_LeftSticks.m_CompOne = 50;
-                }
-                else GamepadInputManager.m_LeftSticks.m_CompOne = time;
+               // if(~mPORTCRead() & (BIT_13 | BIT_14))
+              //  {
+               //    GamepadInputManager.m_LeftSticks.m_CompOne = 50;
+              //  }
+                GamepadInputManager.m_LeftSticks.m_CompOne = time;
 
 
 				//printf("GAME_STICK_LEFT %d\n", time);
@@ -319,10 +321,8 @@ int HandleInput()
 			// Indicates an entire string was received, moves to parsing
 			//printf("%s \nFull string received\n", GamepadInputManager.m_InputString);
             
-            putsU2("ACK\0");
             
 			ParseInput(GamepadInputManager.m_InputString);
-
 	}
 	return 0;
 }
@@ -381,14 +381,14 @@ void Move()
     if((temp = GamepadInputManager.m_LeftSticks.m_CompOne) < 0)   
     {
         //TurnLeftPos(-5);
-        TurnLeftPos((temp /= 20) ? -1 * temp : -1);
-        printf("tempL %d\n", temp);
+        TurnLeftPos(-temp);
+        //printf("tempL %d\n", temp);
     }
     else if((temp = GamepadInputManager.m_LeftSticks.m_CompOne) > 0 )
     {
-        TurnRightPos((temp /= 20) ? temp : 1);
-        //TurnRightPos(5);
-        printf("tempR %d\n", temp);
+        TurnRightPos(temp);
+       // TurnRightPos(5);
+       // printf("tempR %d\n", temp);
     }
     DelayMs(20);
 }

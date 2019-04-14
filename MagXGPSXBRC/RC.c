@@ -1,12 +1,16 @@
 #include "RC.h"
+
 //#include "swDelay.h"
 
 int rc[NRC];
 int rc_set[NRC];
 
+// Function prototypes
+
 const int RCMid = 50;
 const int RCRight = 130;
 const int RCLeft = 0;
+
 int RC1Pos = 50;
 
 /* -------------------------------- rcUpdate ---------------------------------
@@ -153,7 +157,8 @@ int SetDefaultServoPosition()
 // from its default position until the device is properly aligned.
 // Then the function will reset the motor back into its default position.
 //
-int TurnLeft() { 
+int TurnLeft() 
+{ 
     // Local variables
     static int pos = 0;
     int Aligned = 0;
@@ -246,13 +251,15 @@ int TurnRight()
     return 0; 
 }
 
-int TurnRightPos(int movement) { 
+int TurnRightPos(int movement) 
+{ 
     // Local variables
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
     
-    if(RC1Pos >= 130) {   
+    if(RC1Pos >= 130) 
+    {   
         RC1Pos = 130;
     }
     else

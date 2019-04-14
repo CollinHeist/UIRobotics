@@ -1,7 +1,11 @@
 #include "ADC_TEMP.h"
 
+
 static int Temp1;
 static int Temp2;
+
+
+
 
 /* -------------------------------- init_temps -------------------------------
   @ Summary
@@ -100,12 +104,12 @@ void check_thresh(float *motor1_scale, float *motor2_scale) {
 	*motor2_scale = (*motor2_scale < 0.0) ? 0.0 : *motor2_scale;
 }
 
-// Wrapper function to read temperature 1 directly
-int GetTemp1() {
+int GetTemp1()
+{
     return Temp1; 
 }
 
-// Wrapper function to read temperature 2 directly
-int GetTemp2() {
+int GetTemp2()
+{
     return Temp2;
 }
