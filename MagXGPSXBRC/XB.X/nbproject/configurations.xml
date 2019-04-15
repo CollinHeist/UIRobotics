@@ -17,11 +17,11 @@
       <itemPath>../GPS_I2C.h</itemPath>
       <itemPath>../i2c_lib.h</itemPath>
       <itemPath>../Gamepad.h</itemPath>
-      <itemPath>../MLX90393.h</itemPath>
       <itemPath>../ADC_TEMP.h</itemPath>
       <itemPath>../CycleData.h</itemPath>
       <itemPath>../Notice.h</itemPath>
       <itemPath>../DMA_UART2.h</itemPath>
+      <itemPath>../MAG3110.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -42,11 +42,11 @@
       <itemPath>../GPS_I2C.c</itemPath>
       <itemPath>../i2c_lib.c</itemPath>
       <itemPath>../Gamepad.c</itemPath>
-      <itemPath>../MLX90393.c</itemPath>
       <itemPath>../ADC_TEMP.c</itemPath>
       <itemPath>../CycleData.c</itemPath>
       <itemPath>../Notice.c</itemPath>
       <itemPath>../DMA_UART2.c</itemPath>
+      <itemPath>../MAG3110.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

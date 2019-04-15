@@ -32,6 +32,7 @@ char GetMsg(char Char) { return Char;}
 int calc_ck_sum(char *str);
 int InitializeModules(I2C_RESULT* I2cResultFlag);
 void print_pretty_table(int use_uart);
+I2C_RESULT InitMag();
 
 // Global variables
 static char Char;
@@ -208,4 +209,38 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
     }
     
 	return Result; 
+}
+
+//
+// InitMag()
+//
+//
+I2C_RESULT InitMag()
+{
+	I2C_RESULT IResult;
+	BOOL Result;
+    int16_t x,y,z;
+
+	// Mag init procedure
+	if (!(Result = MAG3110_initialize()))
+	{
+		printf("MAG3110 failed to init");
+	}
+
+	printf("Magnetometer is calibrating\n\r");
+	MAG3110_enterCalMode();
+
+	while (MAG3110_isCalibrating())
+	{
+		MAG3110_calibrate();
+		MAG3110_readMag(&x, &y, &z);
+		printf("%d,%d,%d\n\r", x, y, z);
+		DelayMs(10);
+	}
+
+	if (MAG3110_isCalibrated())
+	{
+		printf("Magnetometer is calibrated\n\r");
+	}
+
 }
