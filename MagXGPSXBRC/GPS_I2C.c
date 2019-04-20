@@ -1,5 +1,7 @@
 #include "GPS_I2C.h"
 
+ BYTE gpsStr[256]= {0};
+
 /* ------------------------------- setGPS_RMC --------------------------------
   @ Summary
      Configures the GPS to only send the $RMC Packet, reduces I2C parsing needed

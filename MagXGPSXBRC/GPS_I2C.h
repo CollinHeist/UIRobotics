@@ -89,7 +89,7 @@
 	#define MAXWAITSENTENCE         10
 
 	struct gps_time gps;
-	BYTE gpsStr[256] = {0};
+	extern BYTE gpsStr[256];
     
 	/* ---------------------- Public Function declarations ------------------- */
 	I2C_RESULT GPS_I2C_Read(I2C_MODULE i2c_port, BYTE DeviceAddress, BYTE *str, int *len);
