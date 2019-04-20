@@ -156,3 +156,5 @@ Development environment specifics:
 	I2C_RESULT MAG3110_calibrate(void);
 	I2C_RESULT MAG3110_exitCalMode(void);
 	I2C_RESULT MAG3110_reset(void);
+    
+    void MAG3110_EnvCalibrate();

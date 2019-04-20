@@ -218,7 +218,7 @@ http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20
 
 void Hardware_Setup(void);
 static void initTimer1(void);
-unsigned int millisec = 0;
+unsigned int millisec;
 // End of hardware.h 
 
 #endif	/* End of _HARDWARE_H_ */

@@ -86,7 +86,7 @@ BYTE MAG3110_readRegister(BYTE address)
 
     reg[0] = address;
     i2c_result = I2C_Write(I2C1, MAG3110_I2C_ADDRESS, reg, &len);
-    DelayUs(100);
+    usDelay(100);
     if(i2c_result == I2C_SUCCESS)
     {
         len = 1;
@@ -436,7 +436,7 @@ I2C_RESULT i2c_result = I2C_SUCCESS;
 }
 
 /* ************************************************************************** */
-//This is private because you must read each axis for the data ready bit to 
+// This is private because you must read each axis for the data ready bit to 
 // be cleared. It may be confusing for casual users
 static int16_t MAG3110_readAxis(BYTE axis)
 {
@@ -449,7 +449,7 @@ int16_t reg;
 	
 	msb = MAG3110_readRegister(msbAddress);
 	
-	DelayUs(5); //needs at least 1.3us free time between start and stop
+	usDelay(5); //needs at least 1.3us free time between start and stop
 	
 	lsb = MAG3110_readRegister(lsbAddress);
 	
@@ -458,4 +458,12 @@ int16_t reg;
 	return reg;
 }
 
-/* End of file */
+//
+// MAG3110_EnvCalibrate()
+// Calibrates the magnetometer in relation
+// to its surrounding environment.
+//
+void MAG3110_EnvCalibrate()
+{
+
+}

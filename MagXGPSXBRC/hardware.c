@@ -43,6 +43,8 @@ http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20
 #include "LCDlib.h"
 #include "RC.h"
 
+unsigned int millisec = 0;
+
 // *****************************************************************************
 /**
   @Function

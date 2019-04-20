@@ -47,12 +47,14 @@
       <itemPath>../Notice.c</itemPath>
       <itemPath>../DMA_UART2.c</itemPath>
       <itemPath>../MAG3110.c</itemPath>
+      <itemPath>../Stepper.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>../Stepper.h</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>..</Elem>

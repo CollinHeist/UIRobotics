@@ -24,6 +24,7 @@
 #include "RC.h"
 #include "DMA_UART2.h"
 #include "MAG3110.h"
+#include "Stepper.h"
 
 #define RC_CW   0   // RC Direction of rotation
 #define RC_CCW  1
@@ -46,8 +47,7 @@ int main(void)
 
 	// Local variables
 	I2C_RESULT I2cResultFlag;   // I2C Init Result flag
-	I2C_RESULT I2cReadFlag;     // I2C Read result flag
-
+    int16_t x, y, z;
 	unsigned GPSInterval = 1000;
 	unsigned MagInterval = 60;
 	unsigned ADCTemperatureInterval = 60000;
@@ -61,17 +61,17 @@ int main(void)
 	unsigned ActualADCInterval = ADCTemperatureInterval;
 	unsigned ActualMovementInterval = MovementInterval;
     float heading = 0;
-    int16_t x, y, z;
 
-	// Init the DMA flag
+	// Init. the DMA flag
 	DmaIntFlag = 0;
 
-	// Initilization
+	// Initialization
 	I2cResultFlag = InitializeModules(&I2cResultFlag);	// Init all I/O modules
 	DmaUartRxInit();
 
-	// Reenable global interrupts
+	// Re-enable global interrupts
 
+    // Set the default position
 	SetDefaultServoPosition();
 
 	while (1)  // Forever process loop	
@@ -90,14 +90,14 @@ int main(void)
 			SetDefaultServoPosition();
 		}
 
-		// GPS receieves data
+		// GPS receives data
 		if ((millisec - GPSIntervalMark) >= GPSInterval)
 		{
 			//I2cReadFlag = ReportGPS(TRUE);	
 			GPSIntervalMark = millisec;
 		}
 
-		// GPS receieves data
+		// GPS receives data
 		if ((millisec - MovementIntervalMark) >= MovementInterval)
 		{
 			Move();								// Read from the GPS and display to the screen
@@ -166,7 +166,7 @@ void print_pretty_table(int use_uart)
 	led_flag = 1;   // Enable 4 digit 7 segment LED display
 }
 //
-//
+// InitializeModules()
 //
 //
 int InitializeModules(I2C_RESULT* I2cResultFlag)
@@ -185,6 +185,7 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
     
     *I2cResultFlag = I2C_Init(I2C1, 100000);
     initChangeNotice();
+    stepper_init();
     
     // Mag init procedure
      if(!(Result = MAG3110_initialize()))
