@@ -12,21 +12,21 @@ const int RCRight = 130;
 const int RCLeft = 0;
 
 int RC1Pos = 50;
-
+int RC2Pos = 50;
 /* -------------------------------- rcUpdate ---------------------------------
   @ Summary
 	 Updates information stored in array rc based on rc_set as it cycles
 	 through states based on the value of static variable rc_state and
-	 information from RC_MIN and RC_MAX. 
+	 information from RC_SERVO_MIN and RC_SERVO_MAX. 
   @ Parameters
 	 None
   @ Returns
 	 None
   ---------------------------------------------------------------------------- */
-void rcUpdate(void) {
-	static int channel = 0;				// Channel index 0<= channel NRC
-	static int rc_state = 0;			// Initial signal state
-	static int rc1, rc2;				// Signal period timers
+void rcUpdateServos(void) {
+	static int channel = NRCSPEEDCONTROLLERS;   // Channel index 0<= channel NRC
+	static int rc_state = 0;			        // Initial signal state
+	static int rc1, rc2;				        // Signal period timers
 	int i;
 
     invLED1();
@@ -34,10 +34,10 @@ void rcUpdate(void) {
 	switch (rc_state) {
 		case 0:		// Initial high period
 			rc_output(channel, TRUE);	// Turn channel on
-			rc1 = RC_MIN + rc[channel];	// Compute on time
-			if (rc1 > RC_MAX)
-				rc1 = RC_MAX;
-			rc2 = RC_MAX - rc1;			// Time to end of cycle
+			rc1 = RC_SERVO_MIN + rc[channel];	// Compute on time
+			if (rc1 > RC_SERVO_MAX)
+				rc1 = RC_SERVO_MAX;
+			rc2 = RC_SERVO_MAX - rc1;			// Time to end of cycle
 			if (rc2 < 0)
 				rc2 = 0;
 			rc_state++;
@@ -51,8 +51,8 @@ void rcUpdate(void) {
 		case 2:
 			if(--rc2 <= 0) {			// Count down Cycle off time
 				rc_state = 0;			// Reset state counter
-				channel = (channel +1) % NRC;	// Next channel
-				for (i = 0; i < NRC; i++) {
+				channel = NRCSPEEDCONTROLLERS + (((channel-NRCSPEEDCONTROLLERS) + 1) % (NRCSERVOS));	// Next channel
+				for (i = NRCSPEEDCONTROLLERS; i < NRC; i++) {
 					rc[i] = rc_set[i];
 				}
 			}
@@ -62,11 +62,59 @@ void rcUpdate(void) {
 	}
 }
 
+void rcUpdateSpeedControllers(void) {
+	//static int channel = NRCSERVOS;	    // Channel index starts right after all Servo motors
+	static int rc_state = 0;			// Initial signal state
+	static int rc1, rc2;				// Signal period timers
+	int i;
+
+    invLED2();
+
+	switch (rc_state) {
+		case 0:		// Initial high period
+            for(i = 0 ; i < NRCSPEEDCONTROLLERS ; i++)
+            {
+                rc_output(i, TRUE);	// Turn channel on
+            }
+            if(rc[0] > 50) {
+                rc1 = RC_SPEED_CONTROLLER_NEUTRAL + (((rc[0] - 50)/50)*(RC_SPEED_CONTROLLER_MAX-RC_SPEED_CONTROLLER_NEUTRAL));
+            }
+            else {
+                rc1 = RC_SPEED_CONTROLLER_NEUTRAL - (((50 - rc[0])/50)*(RC_SPEED_CONTROLLER_NEUTRAL-RC_SPEED_CONTROLLER_MIN));
+            }
+			if (rc1 > RC_SPEED_CONTROLLER_MAX)
+				rc1 = RC_SPEED_CONTROLLER_MAX;
+			rc2 = RC_SPEED_CONTROLLER_PERIOD - rc1;			// Time to end of cycle
+			if (rc2 < 0)
+				rc2 = 0;
+			rc_state++;
+			break;							
+		case 1:
+			if (--rc1 <= 0) {			// Count down cycle ON time
+                for(i = 0 ; i < NRCSPEEDCONTROLLERS ; i++)
+                {
+                    rc_output(i, FALSE);	// Turn channel off
+                }
+				rc_state++;
+			}
+			break;
+		case 2:
+			if(--rc2 <= 0) {			// Count down Cycle off time
+				rc_state = 0;			// Reset state counter
+				for (i = 0; i < NRCSPEEDCONTROLLERS; i++) {
+					rc[i] = rc_set[i];
+				}
+			}
+			break;
+		default:
+			rc_state = 0;
+	}
+}
 /* --------------------------------- set_rc ----------------------------------
   @ Summary
-	 Sets values of global variable rc_set used in rcUpdate() to the values
-	 of its four parameters. These values designate the on time of
-	 each of the four channels.
+	 Sets values of global variable rc_set used in rcUpdateServos() and 
+     rcUpdateSpeedControllers() to the values of its four parameters. 
+     These values designate the on time of each of the four channels.
   @ Parameters
 	 @ param1 : An integer (percentage) that corresponds to rc_set[0]
 	 @ param2 : An integer (percentage) that corresponds to rc_set[1]
@@ -77,7 +125,6 @@ void rcUpdate(void) {
   ---------------------------------------------------------------------------- */
 void set_rc(int rc1, int rc2, int rc3, int rc4) {
 	rc_set[0] = rc1;
-    
 	rc_set[1] = rc2;
 	rc_set[2] = rc3;
 	rc_set[3] = rc4;
@@ -146,7 +193,7 @@ int SetDefaultServoPosition()
 {
     //DelayMs(500);  
     RC1Pos = RCMid;
-    set_rc(RCMid, RCMid, RCMid, RCMid);
+    set_rc(RC2Pos, RC2Pos, RCMid, RCMid);
 }
 
 //
@@ -199,7 +246,7 @@ int TurnLeftPos(int movement)
     }
     else
     {
-        set_rc(pos, pos, RC1Pos-= movement, pos);
+        set_rc(RC2Pos, RC2Pos, RC1Pos-= movement, RC1Pos);
     }
     
     
@@ -265,7 +312,74 @@ int TurnRightPos(int movement)
     else
     {
         pos++;
-        set_rc(pos, pos, RC1Pos+=movement, pos);
+        set_rc(RC2Pos, RC2Pos, RC1Pos+=movement, RC1Pos);
+    }
+    
+    
+    // Until the device is aligned in the correct position 
+    // Right now this is a busy loop just to be a placeholder so that when the 
+    // additional functions get made, they can be inserted more easily.
+    /*
+    while(!Aligned)
+    {   
+        i++;
+        if(i == 9000000)
+            Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
+    }*/
+    DelayMs(1);               // However much additional time for the boat to turn
+    //SetDefaultServoPosition();
+    
+    return 0; 
+}
+
+int ForwardPos(int movement) 
+{ 
+    // Local variables
+    static int pos = 50;
+    int Aligned = 0;
+    int i = 0;
+    
+    if(RC1Pos <= 0) 
+    {   
+        RC1Pos = 0;
+    }
+    else
+    {
+        set_rc(RC2Pos-= movement, RC2Pos, RC1Pos, RC1Pos);
+    }
+    
+    
+    // Until the device is aligned in the correct position 
+    // Right now this is a busy loop just to be a placeholder so that when the 
+    // additional functions get made, they can be inserted more easily.
+    /*
+    while(!Aligned)
+    {   
+        i++;
+        if(i == 9000000)
+            Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
+    }*/
+    DelayMs(10);               // However much additional time for the boat to turn
+    //SetDefaultServoPosition();
+    
+    return 0; 
+}
+
+int BackwardPos(int movement) 
+{ 
+    // Local variables
+    static int pos = 50;
+    int Aligned = 0;
+    int i = 0;
+    
+    if(RC1Pos >= 130) 
+    {   
+        RC1Pos = 130;
+    }
+    else
+    {
+        pos++;
+        set_rc(RC2Pos+=movement, RC2Pos, RC1Pos, RC1Pos);
     }
     
     

@@ -152,7 +152,8 @@ void __ISR(_TIMER_1_VECTOR, IPL2SOFT) Timer1Handler(void)
 		}
         updateLED7();
 	}
-	rcUpdate();		 			// This updates the RC outputs
+	rcUpdateServos();		 			// This updates the RC outputs for the servos
+    rcUpdateSpeedControllers(); // This updates the RC outputs for the speed controllers
 	mT1ClearIntFlag();			// Clear the interrupt flag    
 }
 
