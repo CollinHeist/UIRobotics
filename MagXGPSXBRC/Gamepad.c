@@ -390,13 +390,13 @@ void Move()
        // TurnRightPos(5);
        // printf("tempR %d\n", temp);
     }
-    if((temp = GamepadInputManager.m_RightSticks.m_CompOne) < 0)   
+    if((temp = GamepadInputManager.m_LeftSticks.m_CompOne) < 0)   
     {
         //TurnLeftPos(-5);
         BackwardPos(-temp);
         //printf("tempL %d\n", temp);
     }
-    else if((temp = GamepadInputManager.m_RightSticks.m_CompOne) > 0 )
+    else if((temp = GamepadInputManager.m_LeftSticks.m_CompOne) > 0 )
     {
         ForwardPos(temp);
        // TurnRightPos(5);

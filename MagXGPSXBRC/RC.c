@@ -84,6 +84,8 @@ void rcUpdateSpeedControllers(void) {
             }
 			if (rc1 > RC_SPEED_CONTROLLER_MAX)
 				rc1 = RC_SPEED_CONTROLLER_MAX;
+            else if (rc1 < RC_SPEED_CONTROLLER_MIN)
+				rc1 = RC_SPEED_CONTROLLER_MIN;
 			rc2 = RC_SPEED_CONTROLLER_PERIOD - rc1;			// Time to end of cycle
 			if (rc2 < 0)
 				rc2 = 0;
@@ -239,14 +241,19 @@ int TurnLeftPos(int movement)
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
-    
+    RC1Pos-= movement;
+
     if(RC1Pos <= 0) 
     {   
         RC1Pos = 0;
     }
+    else if(RC1Pos >= 130) 
+    {   
+        RC1Pos = 130;
+    }
     else
     {
-        set_rc(RC2Pos, RC2Pos, RC1Pos-= movement, RC1Pos);
+        set_rc(RC2Pos, RC2Pos, RC1Pos, RC1Pos);
     }
     
     
@@ -304,15 +311,20 @@ int TurnRightPos(int movement)
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
-    
-    if(RC1Pos >= 130) 
+    RC1Pos-= movement;
+
+    if(RC1Pos <= 0) 
+    {   
+        RC1Pos = 0;
+    }
+    else if(RC1Pos >= 130) 
     {   
         RC1Pos = 130;
     }
     else
     {
         pos++;
-        set_rc(RC2Pos, RC2Pos, RC1Pos+=movement, RC1Pos);
+        set_rc(RC2Pos, RC2Pos, RC1Pos, RC1Pos);
     }
     
     
@@ -334,18 +346,23 @@ int TurnRightPos(int movement)
 
 int ForwardPos(int movement) 
 { 
-    // Local variables
+    // Local variables                                                                                                                                                                                                                                                  
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
-    
-    if(RC1Pos <= 0) 
+    RC2Pos-= movement;
+
+    if(RC2Pos <= 0) 
     {   
-        RC1Pos = 0;
+        RC2Pos = 0;
+    }
+    else if(RC2Pos >= 100) 
+    {   
+        RC2Pos = 100;
     }
     else
     {
-        set_rc(RC2Pos-= movement, RC2Pos, RC1Pos, RC1Pos);
+        set_rc(RC2Pos, RC2Pos, RC1Pos, RC1Pos);
     }
     
     
@@ -371,15 +388,20 @@ int BackwardPos(int movement)
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
+    RC2Pos+=movement;
     
-    if(RC1Pos >= 130) 
+    if(RC2Pos >= 100) 
     {   
-        RC1Pos = 130;
+        RC2Pos = 100;
+    }
+    else if(RC2Pos <= 0) 
+    {   
+        RC2Pos = 0;
     }
     else
     {
         pos++;
-        set_rc(RC2Pos+=movement, RC2Pos, RC1Pos, RC1Pos);
+        set_rc(RC2Pos, RC2Pos, RC1Pos, RC1Pos);
     }
     
     
