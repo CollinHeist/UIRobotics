@@ -23,6 +23,7 @@ Development environment specifics:
 #include <math.h>
 #include <float.h>
 #include <STDIO.h>
+#include "Stepper.h"
 
 #define CALIBRATION_TIMEOUT 10000 //timeout in milliseconds
 #define DEG_PER_RAD (180.0/3.14159265358979)
@@ -205,7 +206,7 @@ float yf = 0;
             *heading = (atan2f(xf, yf) * RAD2DEG) + MAG_DECLINATION ;    
         else
             *heading = 0.0;
-        printf("X:%6d / %1.6f   Y: %6d / %1.6f  -> %8.2f\n\r",x, xf, y, yf, *heading);                
+        //printf("X:%6d / %1.6f   Y: %6d / %1.6f  -> %8.2f\n\r",x, xf, y, yf, *heading);                
 	}
     else
     {
@@ -465,5 +466,45 @@ int16_t reg;
 //
 void MAG3110_EnvCalibrate()
 {
+	int Degree = 0;
+	int TotalX = 0;
+	int TotalY = 0;
+	int TotalZ = 0;
+	int Step = 0;
 
+	const int StepMax = 1625;
+
+	// Do a set of calibration 
+	// For each cycle, calibrate then
+	// step by a full step
+
+	// While we are calibrating 
+	while (Step < StepMax)
+	{
+		// Get the data
+		MAG3110_readMag(&x, &y, &z);
+
+		// Add the results
+		TotalX += x;
+		TotalY += y;
+		TotalZ += z;
+
+		// Then move the stepper motor
+		step(1, 1);
+
+		msDelay(5);
+        Step++;
+	}
+    
+    TotalX /= StepMax;
+    TotalY /= StepMax;
+    TotalZ /= StepMax;
+    
+    x_offset = TotalX;
+    y_offset = TotalY;
+    z_offset = TotalZ;
+
+    
+    printf("Offsets %d %d %d\n" , TotalX, TotalY, TotalZ);
+	printf("Environmental cal. complete\n");
 }

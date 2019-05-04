@@ -20,7 +20,8 @@ void stepper_init(void)
 
 //
 // step()
-//
+// direction is +1 or -1
+// mode is 1 for half, 2 for full
 //
 void step(int direction, int mode)
 {
@@ -34,3 +35,4 @@ static unsigned int step_ptr = 0;   // Initialize pointer only on power up
     BIN1(step_code[step_ptr] & 0x04);
     BIN2(step_code[step_ptr] & 0x08);
 }
+

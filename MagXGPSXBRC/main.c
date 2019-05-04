@@ -47,6 +47,7 @@ int main(void)
 
 	// Local variables
 	I2C_RESULT I2cResultFlag;   // I2C Init Result flag
+    I2C_RESULT I2cReadFlag;   // I2C Init Result flag
     int16_t x, y, z;
 	unsigned GPSInterval = 1000;
 	unsigned MagInterval = 60;
@@ -74,6 +75,8 @@ int main(void)
     // Set the default position
 	SetDefaultServoPosition();
 
+    MAG3110_EnvCalibrate();
+    
 	while (1)  // Forever process loop	
 	{
 		if (DmaIntFlag)          // clear the interrupt flag) 
@@ -93,7 +96,7 @@ int main(void)
 		// GPS receives data
 		if ((millisec - GPSIntervalMark) >= GPSInterval)
 		{
-			//I2cReadFlag = ReportGPS(TRUE);	
+			I2cReadFlag = ReportGPS(TRUE);	
 			GPSIntervalMark = millisec;
 		}
 
@@ -104,6 +107,7 @@ int main(void)
 			MovementIntervalMark = millisec;
 		}
 
+        
 		// Mag receives data
 		if ((millisec - MagIntervalMark) >= MagInterval)
 		{
@@ -115,7 +119,7 @@ int main(void)
                 if(heading < 0) heading += 360;
                 if(heading >= 360) heading -= 360;
                 clrLCD();
-                printf("%d,%d,%d,%d\n\r", heading, x, y, z);  
+                printf("%f,%d,%d,%d\n\r", heading, x, y, z);  
            }
            else
            {
@@ -124,6 +128,7 @@ int main(void)
                      
 			MagIntervalMark = millisec;
 		}
+         
 
 		// Get data from the ADC temperature sensors
 		if ((millisec - ADCIntervalMark) >= ADCTemperatureInterval)
@@ -208,6 +213,8 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
     {
         printf("Magnetometer is calibrated\n\r");
     }
+    
+    Result = setGPS_RMC();
     
 	return Result; 
 }

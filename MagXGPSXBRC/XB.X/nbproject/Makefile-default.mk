@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=../LCDlib.c ../hardware.c ../led7.c ../main.c ../swDelay.c ../uart2.c ../uart4.c ../RC.c ../Pot.c ../GPS_I2C.c ../i2c_lib.c ../Gamepad.c ../ADC_TEMP.c ../CycleData.c ../Notice.c ../DMA_UART2.c ../MAG3110.c ../Stepper.c
+SOURCEFILES_QUOTED_IF_SPACED=../LCDlib.c ../hardware.c ../led7.c ../main.c ../swDelay.c ../uart2.c ../uart4.c ../RC.c ../Pot.c ../GPS_I2C.c ../i2c_lib.c ../Gamepad.c ../ADC_TEMP.c ../CycleData.c ../Notice.c ../DMA_UART2.c ../MAG3110.c ../Stepper.c ../SparkfunMag3110.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1472/LCDlib.o ${OBJECTDIR}/_ext/1472/hardware.o ${OBJECTDIR}/_ext/1472/led7.o ${OBJECTDIR}/_ext/1472/main.o ${OBJECTDIR}/_ext/1472/swDelay.o ${OBJECTDIR}/_ext/1472/uart2.o ${OBJECTDIR}/_ext/1472/uart4.o ${OBJECTDIR}/_ext/1472/RC.o ${OBJECTDIR}/_ext/1472/Pot.o ${OBJECTDIR}/_ext/1472/GPS_I2C.o ${OBJECTDIR}/_ext/1472/i2c_lib.o ${OBJECTDIR}/_ext/1472/Gamepad.o ${OBJECTDIR}/_ext/1472/ADC_TEMP.o ${OBJECTDIR}/_ext/1472/CycleData.o ${OBJECTDIR}/_ext/1472/Notice.o ${OBJECTDIR}/_ext/1472/DMA_UART2.o ${OBJECTDIR}/_ext/1472/MAG3110.o ${OBJECTDIR}/_ext/1472/Stepper.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1472/LCDlib.o.d ${OBJECTDIR}/_ext/1472/hardware.o.d ${OBJECTDIR}/_ext/1472/led7.o.d ${OBJECTDIR}/_ext/1472/main.o.d ${OBJECTDIR}/_ext/1472/swDelay.o.d ${OBJECTDIR}/_ext/1472/uart2.o.d ${OBJECTDIR}/_ext/1472/uart4.o.d ${OBJECTDIR}/_ext/1472/RC.o.d ${OBJECTDIR}/_ext/1472/Pot.o.d ${OBJECTDIR}/_ext/1472/GPS_I2C.o.d ${OBJECTDIR}/_ext/1472/i2c_lib.o.d ${OBJECTDIR}/_ext/1472/Gamepad.o.d ${OBJECTDIR}/_ext/1472/ADC_TEMP.o.d ${OBJECTDIR}/_ext/1472/CycleData.o.d ${OBJECTDIR}/_ext/1472/Notice.o.d ${OBJECTDIR}/_ext/1472/DMA_UART2.o.d ${OBJECTDIR}/_ext/1472/MAG3110.o.d ${OBJECTDIR}/_ext/1472/Stepper.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1472/LCDlib.o ${OBJECTDIR}/_ext/1472/hardware.o ${OBJECTDIR}/_ext/1472/led7.o ${OBJECTDIR}/_ext/1472/main.o ${OBJECTDIR}/_ext/1472/swDelay.o ${OBJECTDIR}/_ext/1472/uart2.o ${OBJECTDIR}/_ext/1472/uart4.o ${OBJECTDIR}/_ext/1472/RC.o ${OBJECTDIR}/_ext/1472/Pot.o ${OBJECTDIR}/_ext/1472/GPS_I2C.o ${OBJECTDIR}/_ext/1472/i2c_lib.o ${OBJECTDIR}/_ext/1472/Gamepad.o ${OBJECTDIR}/_ext/1472/ADC_TEMP.o ${OBJECTDIR}/_ext/1472/CycleData.o ${OBJECTDIR}/_ext/1472/Notice.o ${OBJECTDIR}/_ext/1472/DMA_UART2.o ${OBJECTDIR}/_ext/1472/MAG3110.o ${OBJECTDIR}/_ext/1472/Stepper.o ${OBJECTDIR}/_ext/1472/SparkfunMag3110.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1472/LCDlib.o.d ${OBJECTDIR}/_ext/1472/hardware.o.d ${OBJECTDIR}/_ext/1472/led7.o.d ${OBJECTDIR}/_ext/1472/main.o.d ${OBJECTDIR}/_ext/1472/swDelay.o.d ${OBJECTDIR}/_ext/1472/uart2.o.d ${OBJECTDIR}/_ext/1472/uart4.o.d ${OBJECTDIR}/_ext/1472/RC.o.d ${OBJECTDIR}/_ext/1472/Pot.o.d ${OBJECTDIR}/_ext/1472/GPS_I2C.o.d ${OBJECTDIR}/_ext/1472/i2c_lib.o.d ${OBJECTDIR}/_ext/1472/Gamepad.o.d ${OBJECTDIR}/_ext/1472/ADC_TEMP.o.d ${OBJECTDIR}/_ext/1472/CycleData.o.d ${OBJECTDIR}/_ext/1472/Notice.o.d ${OBJECTDIR}/_ext/1472/DMA_UART2.o.d ${OBJECTDIR}/_ext/1472/MAG3110.o.d ${OBJECTDIR}/_ext/1472/Stepper.o.d ${OBJECTDIR}/_ext/1472/SparkfunMag3110.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/_ext/1472/LCDlib.o ${OBJECTDIR}/_ext/1472/hardware.o ${OBJECTDIR}/_ext/1472/led7.o ${OBJECTDIR}/_ext/1472/main.o ${OBJECTDIR}/_ext/1472/swDelay.o ${OBJECTDIR}/_ext/1472/uart2.o ${OBJECTDIR}/_ext/1472/uart4.o ${OBJECTDIR}/_ext/1472/RC.o ${OBJECTDIR}/_ext/1472/Pot.o ${OBJECTDIR}/_ext/1472/GPS_I2C.o ${OBJECTDIR}/_ext/1472/i2c_lib.o ${OBJECTDIR}/_ext/1472/Gamepad.o ${OBJECTDIR}/_ext/1472/ADC_TEMP.o ${OBJECTDIR}/_ext/1472/CycleData.o ${OBJECTDIR}/_ext/1472/Notice.o ${OBJECTDIR}/_ext/1472/DMA_UART2.o ${OBJECTDIR}/_ext/1472/MAG3110.o ${OBJECTDIR}/_ext/1472/Stepper.o
+OBJECTFILES=${OBJECTDIR}/_ext/1472/LCDlib.o ${OBJECTDIR}/_ext/1472/hardware.o ${OBJECTDIR}/_ext/1472/led7.o ${OBJECTDIR}/_ext/1472/main.o ${OBJECTDIR}/_ext/1472/swDelay.o ${OBJECTDIR}/_ext/1472/uart2.o ${OBJECTDIR}/_ext/1472/uart4.o ${OBJECTDIR}/_ext/1472/RC.o ${OBJECTDIR}/_ext/1472/Pot.o ${OBJECTDIR}/_ext/1472/GPS_I2C.o ${OBJECTDIR}/_ext/1472/i2c_lib.o ${OBJECTDIR}/_ext/1472/Gamepad.o ${OBJECTDIR}/_ext/1472/ADC_TEMP.o ${OBJECTDIR}/_ext/1472/CycleData.o ${OBJECTDIR}/_ext/1472/Notice.o ${OBJECTDIR}/_ext/1472/DMA_UART2.o ${OBJECTDIR}/_ext/1472/MAG3110.o ${OBJECTDIR}/_ext/1472/Stepper.o ${OBJECTDIR}/_ext/1472/SparkfunMag3110.o
 
 # Source Files
-SOURCEFILES=../LCDlib.c ../hardware.c ../led7.c ../main.c ../swDelay.c ../uart2.c ../uart4.c ../RC.c ../Pot.c ../GPS_I2C.c ../i2c_lib.c ../Gamepad.c ../ADC_TEMP.c ../CycleData.c ../Notice.c ../DMA_UART2.c ../MAG3110.c ../Stepper.c
+SOURCEFILES=../LCDlib.c ../hardware.c ../led7.c ../main.c ../swDelay.c ../uart2.c ../uart4.c ../RC.c ../Pot.c ../GPS_I2C.c ../i2c_lib.c ../Gamepad.c ../ADC_TEMP.c ../CycleData.c ../Notice.c ../DMA_UART2.c ../MAG3110.c ../Stepper.c ../SparkfunMag3110.c
 
 
 CFLAGS=
@@ -214,6 +214,12 @@ ${OBJECTDIR}/_ext/1472/Stepper.o: ../Stepper.c  nbproject/Makefile-${CND_CONF}.m
 	@${RM} ${OBJECTDIR}/_ext/1472/Stepper.o 
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/Stepper.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1472/Stepper.o.d" -o ${OBJECTDIR}/_ext/1472/Stepper.o ../Stepper.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/_ext/1472/SparkfunMag3110.o: ../SparkfunMag3110.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
+	@${RM} ${OBJECTDIR}/_ext/1472/SparkfunMag3110.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1472/SparkfunMag3110.o 
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/SparkfunMag3110.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1472/SparkfunMag3110.o.d" -o ${OBJECTDIR}/_ext/1472/SparkfunMag3110.o ../SparkfunMag3110.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
+	
 else
 ${OBJECTDIR}/_ext/1472/LCDlib.o: ../LCDlib.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
@@ -322,6 +328,12 @@ ${OBJECTDIR}/_ext/1472/Stepper.o: ../Stepper.c  nbproject/Makefile-${CND_CONF}.m
 	@${RM} ${OBJECTDIR}/_ext/1472/Stepper.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/Stepper.o 
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/Stepper.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1472/Stepper.o.d" -o ${OBJECTDIR}/_ext/1472/Stepper.o ../Stepper.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/_ext/1472/SparkfunMag3110.o: ../SparkfunMag3110.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
+	@${RM} ${OBJECTDIR}/_ext/1472/SparkfunMag3110.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1472/SparkfunMag3110.o 
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/SparkfunMag3110.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1472/SparkfunMag3110.o.d" -o ${OBJECTDIR}/_ext/1472/SparkfunMag3110.o ../SparkfunMag3110.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
 	
 endif
 
