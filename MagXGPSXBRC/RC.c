@@ -1,11 +1,15 @@
+// File Inclusion
+#include "hardware.h"
+#include "swDelay.h"
+#include <plib.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <Math.h>
 #include "RC.h"
-
-//#include "swDelay.h"
 
 int rc[NRC];
 int rc_set[NRC];
-
-// Function prototypes
 
 const int RCMid = 50;
 const int RCRight = 130;
@@ -26,7 +30,7 @@ int RC2Pos = 50;
 void rcUpdateServos(void) {
 	static int channel = NRCSPEEDCONTROLLERS;   // Channel index 0<= channel NRC
 	static int rc_state = 0;			        // Initial signal state
-	static int rc1, rc2;				        // Signal period timers
+	static int rc1, rc2;				      // Signal period timers
 	int i;
 
     invLED1();
@@ -63,7 +67,7 @@ void rcUpdateServos(void) {
 }
 
 void rcUpdateSpeedControllers(void) {
-	//static int channel = NRCSERVOS;	    // Channel index starts right after all Servo motors
+	//static int channel = NRCSERVOS;	 // Channel index starts right after all Servo motors
 	static int rc_state = 0;			// Initial signal state
 	static int rc1, rc2;				// Signal period timers
 	int i;
@@ -141,7 +145,7 @@ void set_rc(int rc1, int rc2, int rc3, int rc4) {
   @ Parameters
 	 @ param1 : An integer corresponding to the channel number being addressed				 
 	 @ param2 : An integer that corresponds to what you want the channel to do. 
-			    OFF is 0 and On is 1. 
+			 OFF is 0 and On is 1. 
   @ Returns
 	 This function has no return value.
   ---------------------------------------------------------------------------- */
@@ -229,7 +233,7 @@ int TurnLeft()
         if(i == 9000000)
             Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
     }*/
-    DelayMs(1);               // However much additional time for the boat to turn
+    DelayMs(1);      // However much additional time for the boat to turn
     //SetDefaultServoPosition();
     
     return 0; 
@@ -338,7 +342,7 @@ int TurnRightPos(int movement)
         if(i == 9000000)
             Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
     }*/
-    DelayMs(1);               // However much additional time for the boat to turn
+    DelayMs(1);      // However much additional time for the boat to turn
     //SetDefaultServoPosition();
     
     return 0; 
@@ -346,7 +350,7 @@ int TurnRightPos(int movement)
 
 int ForwardPos(int movement) 
 { 
-    // Local variables                                                                                                                                                                                                                                                  
+    // Local variables                                                                                                                          
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
@@ -415,7 +419,7 @@ int BackwardPos(int movement)
         if(i == 9000000)
             Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
     }*/
-    DelayMs(1);               // However much additional time for the boat to turn
+    DelayMs(1);      // However much additional time for the boat to turn
     //SetDefaultServoPosition();
     
     return 0; 
