@@ -1,8 +1,8 @@
+#ifndef _SUPPRESS_PLIB_WARNING
+    #define _SUPPRESS_PLIB_WARNING
+#endif
 
-#ifndef _SUPPRESS_PLIB_WARNING	/* Suppress plib obsolesce warnings */
-        #define _SUPPRESS_PLIB_WARNING
-    #endif
-
+// File Inclusion
 #include "uart2.h"
 #include "uart4.h"
 #include "hardware.h"

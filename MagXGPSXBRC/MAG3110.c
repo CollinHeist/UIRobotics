@@ -31,7 +31,6 @@ static BOOL rawMode;
 
 static int16_t MAG3110_readAxis(BYTE axis);
 
-/* ************************************************************************* */
 BOOL MAG3110_initialize(void) 
 {
 	int tempF = 0;
@@ -61,7 +60,6 @@ BOOL MAG3110_initialize(void)
 	}
 }
 
-/* ************************************************************************* */
 BYTE MAG3110_readRegister(BYTE address)
 {
     I2C_RESULT i2c_result;
@@ -81,7 +79,6 @@ BYTE MAG3110_readRegister(BYTE address)
         return 0;
 }
 
-/* ************************************************************************* */
 I2C_RESULT MAG3110_writeRegister(BYTE address, BYTE value)
 {
     I2C_RESULT i2c_result;
@@ -94,7 +91,6 @@ I2C_RESULT MAG3110_writeRegister(BYTE address, BYTE value)
     return i2c_result;
 }
 
-/* ************************************************************************* */
 BOOL MAG3110_dataReady(void) 
 {
 unsigned char dr_stat;
@@ -109,7 +105,6 @@ unsigned char dr_stat;
     }
 }
 
-/* ************************************************************************* */
 I2C_RESULT MAG3110_readMag(int16_t* x, int16_t* y, int16_t* z)
 {
 I2C_RESULT i2c_result;
@@ -151,7 +146,6 @@ uint16_t values[3];
     return i2c_result;
 }
 
-/* ************************************************************************* */
 I2C_RESULT MAG3110_readMicroTeslas(float* xf, float* yf, float* zf)
 {
 	// Using internal read function
@@ -170,7 +164,6 @@ int16_t x_int, y_int, z_int;
     return i2c_result;
 }
 
-/* ************************************************************************* */
 //Note: Must be calibrated to use readHeading!!!
 I2C_RESULT MAG3110_readHeading(float *heading)
 {
@@ -200,7 +193,6 @@ float yf = 0;
 	return ( i2c_result );
 }
 
-/* ************************************************************************* */
 I2C_RESULT MAG3110_setDR_OS(BYTE DROS)
 {
 I2C_RESULT i2c_result = I2C_SUCCESS;	
@@ -227,7 +219,6 @@ BYTE current;
     return i2c_result;
 }
 
-/* ************************************************************************* */
 I2C_RESULT MAG3110_triggerMeasurement()
 {
 I2C_RESULT i2c_result = I2C_SUCCESS;	
@@ -237,7 +228,6 @@ BYTE current;
     return i2c_result;
 }
 
-/* ************************************************************************* */
 //Note that AUTO_MRST_EN will always read back as 0
 //Therefore we must explicitly set this bit every time we modify CTRL_REG2
 I2C_RESULT MAG3110_rawData(BOOL raw)
@@ -257,7 +247,6 @@ I2C_RESULT i2c_result = I2C_SUCCESS;
     return i2c_result;
 }
 
-/* ************************************************************************* */
 //If you look at the data sheet, the offset registers are kind of strange
 //The offset is stored in the most significant 15 bits.
 //Bit 0 of the LSB register is always 0 for some reason...

@@ -7,28 +7,8 @@
 #include "RC.h"
 
 unsigned int millisec = 0;
-
-// *****************************************************************************
-/**
-  @Function
-	void hardware(void);
-
-  @Summary
-	Initializes PIC32 pins commonly used for IO on the Basys MX3 Trainer 
-	processor board.
-
-  @Description
-	Initializes PIC32 digital IO pins to provide functionality for the 
-	slide switches, push buttons, and LEDs
-
-  @Parameters
-	None
-
-  @Returns
-	None
-***************************************************************************** */	
-void Hardware_Setup(void)
-{
+	
+void Hardware_Setup(void) {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Statement configure cache, wait states and peripheral bus clock
  * Configure the device for maximum performance but does not change the PBDIV
@@ -59,8 +39,6 @@ void Hardware_Setup(void)
 	
 }
 
-
-/* End of hardware.c */
 /* -------------------------------- initTimer1 -------------------------------
   @ Summary
 	 Initializes Timer 1 for a 10us interrupt.
@@ -69,8 +47,7 @@ void Hardware_Setup(void)
   @ Returns
 	 This function has no return value.
    --------------------------------------------------------------------------- */
-static void initTimer1(void) 
-{	
+static void initTimer1(void) {
 	PORTSetPinsDigitalOut(IOPORT_B, BIT_8);
 	LATBbits.LATB8 = 0;
 	millisec = 0;	   // Global millisecond counter
@@ -95,14 +72,12 @@ static void initTimer1(void)
   @ Returns
 	 None
   ---------------------------------------------------------------------------- */
-void __ISR(_TIMER_1_VECTOR, IPL2SOFT) Timer1Handler(void) 
-{
+void __ISR(_TIMER_1_VECTOR, IPL2SOFT) Timer1Handler(void) {
 	static ms = 100;			// Millisecond counter
 	static int onesec = 1000;	// One second counter
 
 	ms--;						// Increment the millisecond counter
-	if (ms <= 0) 
-	{
+	if (ms <= 0) {
 		millisec++;		
 		ms = 100;
 		onesec--;
@@ -117,4 +92,3 @@ void __ISR(_TIMER_1_VECTOR, IPL2SOFT) Timer1Handler(void)
 	rcUpdateSpeedControllers();	// This updates the RC outputs for the speed controllers
 	mT1ClearIntFlag();			// Clear the interrupt flag	
 }
-

@@ -1,4 +1,6 @@
 #include "ADC_TEMP.h"
+#include "hardware.h"
+#include <plib.h>
 
 static int Temp1;
 static int Temp2;
