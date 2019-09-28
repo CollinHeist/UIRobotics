@@ -1,24 +1,6 @@
 /* ************************************************************************** */
 /** Descriptive File Name: comm_lib.c - UART Serial communications. 
 
-  @ Author  
-	 Richard Wall
-  
-  @ Date: 
-	 Created:	June 17, 2016 for Basys MX3
-	 Verified:	 May 18, 2017
-
-  @Company
-	Digilent Inc
-
-  @File Name
-	comm_lib.c
-
-  @Development Environment
-	MPLAB X IDE x3.61 - http://www.microchip.com/mplab/mplab-x-ide 
-	XC32 1.43 - http://www.microchip.com/mplab/compilers
-	PLIB 3/7/20162 - http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20Library
-
   @Summary
 	UART 4 initialization and character and string I/O.
 
@@ -27,11 +9,9 @@
 	parity. Character and string input functions are non blocking functions.
 	The serial interface uses UART channel 4.
 
-  @Remarks
-	This code also uses the "printf" function on UART Serial Port 4
-
 **************************************************************************** */
 
+// File Inclusion
 #include "hardware.h"	// Has info regarding the PB clock
 #include <plib.h>
 #include <stdio.h>	  // Required for printf 
@@ -57,8 +37,7 @@
 	This code also uses the "printf" function on UART Serial Port 4
 	9 bit mode MARK or SPACE parity is not supported
 
- 
- * END DESCRIPTION **********************************************************/
+ **/
 void uart4_init(unsigned int baud, int parity) {
 	RPF12R = 0x02;  // Mapping U4TX to RPF12;
 	U4RXR = 0x09;   // Mapping U4RX to RPF13

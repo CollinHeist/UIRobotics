@@ -20,7 +20,6 @@
 	#define NO_PARITY		0
 	#define ODD_PARITY		1
 	#define EVEN_PARITY		2
-
 #endif
 
 // Function Prototypes
