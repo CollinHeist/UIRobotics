@@ -31,7 +31,6 @@
 #define RC_CCW  1
 
 char GetMsg(char Char) { return Char;}
-int calc_ck_sum(char *str);
 int InitializeModules(I2C_RESULT* I2cResultFlag);
 void print_pretty_table(int use_uart);
 I2C_RESULT InitMag();

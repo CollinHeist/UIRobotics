@@ -78,6 +78,8 @@
 
 	#define MAXWAITSENTENCE         10
 
+	#include <plib.h>
+	
 	struct gps_time gps;
 	extern BYTE gpsStr[256];
     

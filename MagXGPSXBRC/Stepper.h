@@ -8,6 +8,8 @@
 // Prevent Multiple Inclusion
 #pragma once
 
+#include <plib.h>
+
 #define STEPPER_MODE_DIR	PORTSetDigitalOut(IOPORT_F, BIT_1)	//RF1
 #define STEPPER_MODE(a)		PORTSetBits(IOPORT_F, BIT_1)		//RF1
 

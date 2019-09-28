@@ -1,5 +1,7 @@
 #ifndef __RC_H__
 	#define __RC_H__
+
+	#include <plib.h>
 	
 	#define cfgRC1()	PORTSetPinsDigitalOut(IOPORT_D, BIT_9)	// Wall has 4
 	#define cfgRC2()	PORTSetPinsDigitalOut(IOPORT_D, BIT_11) // 8

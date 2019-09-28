@@ -3,6 +3,8 @@
 
 	#define DMA_BUFFER_SIZE 256
 
+	#include <plib.h>
+
 	// Function Prototypes
 	void DmaUartRxInit(void);
 	void DmaUartRx(void);

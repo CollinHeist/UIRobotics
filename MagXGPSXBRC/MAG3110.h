@@ -1,4 +1,4 @@
-/#ifndef __MAG3110_H__
+#ifndef __MAG3110_H__
 	#define __MAG3110_H__
 
 	/* -------------------------- MAG3110 Registers -------------------------- */
@@ -104,6 +104,8 @@
 
 	#define CALIBRATION_TIMEOUT 		10000 //timeout in milliseconds
 	#define DEG_PER_RAD 				(180.0/3.14159265358979)
+
+	#include <plib.h>
 
 	// Function Prototypes
 	BOOL       MAG3110_initialize(void);

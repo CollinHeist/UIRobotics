@@ -5,11 +5,11 @@ build/default/production/_ext/1472/main.o:  \
 ../main.h  \
 ../Pot.h  \
 ../i2c_lib.h  \
-../swDelay.h  \
 ../GPS_I2C.h  \
- ../Gamepad.h  \
-../ADC_TEMP.h  \
+../Gamepad.h  \
+ ../ADC_TEMP.h  \
 ../Notice.h  \
+../swDelay.h  \
 ../uart4.h  \
 ../uart2.h  \
 ../led7.h  \

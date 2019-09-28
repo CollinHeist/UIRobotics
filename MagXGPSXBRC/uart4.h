@@ -20,14 +20,15 @@
 	#define NO_PARITY		0
 	#define ODD_PARITY		1
 	#define EVEN_PARITY		2
+
+	// Function Prototypes
+	void uart4_init(unsigned int baud, int parity);
+	void _mon_putc(char c);
+	//BOOL putcU4( int c);
+	//BOOL getcU4( char *ch);
+	int putsU4(const char *s); 
+	int getstrU4( char *s, unsigned int len );
+	int getcIU4( char *ch);
+	int putcIU4( int ch);
 #endif
 
-// Function Prototypes
-void uart4_init(unsigned int baud, int parity);
-void _mon_putc(char c);
-//BOOL putcU4( int c);
-//BOOL getcU4( char *ch);
-int putsU4(const char *s); 
-int getstrU4( char *s, unsigned int len );
-int getcIU4( char *ch);
-int putcIU4( int ch);

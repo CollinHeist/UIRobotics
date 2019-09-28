@@ -76,6 +76,8 @@
 	// Set address pointer for DDRAM 
 	#define setLCDC( a) waitLCD(); writeLCD( LCDCMD, (a & 0x7F) | 0x80)
 
+	#include <plib.h>
+
 	// Function Prototypes
 	void initLCD( void);
 	void writeLCD( int rs, char c);
@@ -83,5 +85,4 @@
 	void putsLCD( char *s);
 	void putcLCD(int rs,  char c);
 	void initLCDGr(void);
-	void FFT_Disp(int16_t* amplitude, int N);
 #endif

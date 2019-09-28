@@ -55,6 +55,8 @@
 	#define SET_DP		0								// Decimal point position
 	#define T1_TICK		(GetPeripheralClock()/10000)	// Used PBCLK = 10MHz
 
+	#include <plib.h>
+
 	// Function Prototypes
 	void seg7_init(void);   // initializes the 4 digit- 7 segment LED display
 	void clr_dsp(void);	 // Turns off all LED segments (blanks display)
