@@ -11,6 +11,36 @@
 #include <STDIO.h>
 #include "Stepper.h"
 
+// Function Prototypes
+BOOL       MAG3110_initialize(void);
+BYTE 	   MAG3110_readRegister(BYTE address);
+I2C_RESULT MAG3110_writeRegister(BYTE address, BYTE value);
+BOOL 	   MAG3110_dataReady(void);
+I2C_RESULT MAG3110_readMag(int16_t* x, int16_t* y, int16_t* z);
+I2C_RESULT MAG3110_readMicroTeslas(float* x, float* y, float* z);
+I2C_RESULT MAG3110_readHeading(float *heading);
+I2C_RESULT MAG3110_setDR_OS(BYTE DROS);
+I2C_RESULT MAG3110_triggerMeasurement();
+I2C_RESULT MAG3110_rawData(BOOL raw);
+I2C_RESULT MAG3110_setOffset(BYTE axis, int16_t offset);
+int16_t    MAG3110_readOffset(BYTE axis);
+I2C_RESULT MAG3110_start(void);
+I2C_RESULT MAG3110_enterStandby(void);
+I2C_RESULT MAG3110_exitStandby(void);
+
+BOOL MAG3110_isActive(void);
+BOOL MAG3110_isRaw(void);
+BOOL MAG3110_isCalibrated(void);
+BOOL MAG3110_isCalibrating(void);
+BYTE MAG3110_getSysMode(void);
+
+I2C_RESULT MAG3110_enterCalMode(void);
+I2C_RESULT MAG3110_calibrate(void);
+I2C_RESULT MAG3110_exitCalMode(void);
+I2C_RESULT MAG3110_reset(void);
+
+void MAG3110_EnvCalibrate();
+
 // Global Variables
 extern int16_t led_value;
 extern int angle;
