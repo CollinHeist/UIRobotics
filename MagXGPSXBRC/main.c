@@ -79,7 +79,7 @@ int main(void)
     
 	while (1)  // Forever process loop	
 	{
-		if (DmaIntFlag)          // clear the interrupt flag) 
+		if (DmaIntFlag)          // clear the interrupt flag
 		{
 			DmaIntFlag = 0;                       // Reset DMA Rx block flag
 			printf("message received %s\n", dmaBuff);
