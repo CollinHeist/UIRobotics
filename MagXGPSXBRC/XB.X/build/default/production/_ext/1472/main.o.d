@@ -9,11 +9,12 @@ build/default/production/_ext/1472/main.o:  \
 ../GPS_I2C.h  \
  ../Gamepad.h  \
 ../ADC_TEMP.h  \
+../Notice.h  \
 ../uart4.h  \
 ../uart2.h  \
 ../led7.h  \
-../LCDlib.h  \
- ../RC.h  \
+ ../LCDlib.h  \
+../RC.h  \
 ../DMA_UART2.h  \
 ../MAG3110.h  \
 ../Stepper.h 

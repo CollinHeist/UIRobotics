@@ -395,36 +395,36 @@ I2C_RESULT MAG3110_enterCalMode()
 I2C_RESULT MAG3110_calibrate(void)
 {
 	int x, y, z;
-	i2c_result = MAG3110_readMag(&x, &y, &z);
+	I2C_RESULT i2c_result = MAG3110_readMag(&x, &y, &z);
 	int timeLastChange = 0;
 
-	bool changed = false; //Keep track of if a min/max is updated
+	BOOL changed = FALSE; //Keep track of if a min/max is updated
 	if (x < x_min)
 	{
 		x_min = x;
-		changed = true;
+		changed = TRUE;
 	}
 	if (x > x_max)
 	{
 		x_max = x;
-		changed = true;
+		changed = TRUE;
 	}
 	if (y < y_min)
 	{
 		y_min = y;
-		changed = true;
+		changed = TRUE;
 	}
 	if (y > y_max)
 	{
 		y_max = y;
-		changed = true;
+		changed = TRUE;
 	}
 
 	if (changed)
 		timeLastChange = millisec; //Reset timeout counter
 
 	if (millisec > 5000 && millisec - timeLastChange > CALIBRATION_TIMEOUT) //If the timeout has been reached, exit calibration
-		exitCalMode();
+		MAG3110_exitCalMode();
 
 	MAG3110_exitCalMode();
 	return i2c_result;

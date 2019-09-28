@@ -12,6 +12,7 @@
 #include "GPS_I2C.h"
 #include "Gamepad.h"
 #include "ADC_TEMP.h"
+#include "Notice.h"
 
 // Platform common included files
 #include "swDelay.h"
