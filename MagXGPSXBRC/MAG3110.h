@@ -16,11 +16,6 @@ Development environment specifics:
 #ifndef __MAG3110_H__
 	#define __MAG3110_H__
 
-	/* ----------------- Necessary system include statements ----------------- */
-	#include "hardware.h"
-    #include <stdint.h>
-	#include "i2c_lib.h"
-
 	/* -------------------------- MAG3110 Registers -------------------------- */
 	#define MAG3110_I2C_ADDRESS 	0x0E
 	
@@ -121,6 +116,9 @@ Development environment specifics:
 	#define MAG3110_X_AXIS 				1
 	#define MAG3110_Y_AXIS 				3
 	#define MAG3110_Z_AXIS 				5
+
+	#define CALIBRATION_TIMEOUT 		10000 //timeout in milliseconds
+	#define DEG_PER_RAD 				(180.0/3.14159265358979)
 #endif
         
     //#define int16_t int
