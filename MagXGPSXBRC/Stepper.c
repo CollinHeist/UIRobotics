@@ -1,8 +1,6 @@
-// System included files
+// File Inclusion
 #include "hardware.h"
 #include <plib.h>
-
-// Application included files
 #include "Stepper.h"
 
 int smPos;	// Motor step position

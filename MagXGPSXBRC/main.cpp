@@ -24,7 +24,7 @@
 #include "LCDlib.h"
 #include "RC.h"
 #include "DMA_UART2.h"
-#include "SparkfunMag3110.h"
+#include "Mag3110.h"
 #include "Stepper.h"
 
 #define RC_CW   0   // RC Direction of rotation

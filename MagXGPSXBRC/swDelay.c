@@ -2,49 +2,18 @@
 /** Descriptive File Name: swDelay.c - software delay implemented by polling
 						   the core timer.
 
-  @ Author
-	Richard Wall
- 
-  @ Date
-	Created:	May 28, 2016
-	Revised:	October 24, 2016 - revised msDelay
-				December 10, 2016 - added usDelay, nsDelay, and PeriodMs 
-	Verified:   May 19, 2017
-  
-  @Company
-	Digilent Inc.
-
-   @File Name
-	swDelay.c
-
-  @Development Environment
-	MPLAB X IDE x3.61 - http://www.microchip.com/mplab/mplab-x-ide 
-	XC32 1.43 - http://www.microchip.com/mplab/compilers
-	PLIB 3/7/20162 - http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20Library
-
   @Summary
 	Blocking and non-blocking time delay
 
   @Precondition
 	"config_bits* must be included in the project that establishes the
 	the value for CORE_MS_TICK_RATE based on the core timer frequency.
-
-  @Description
-	Delays the number of milliseconds, microseconds, or picoseconds specified 
-	the integer value passed when called.  This is a preemptive blocking 
-	function. Interrupts may affect the the length of the total delay if the 
-	execution time of the interrupt extends the core timer beyond time recorded
-	as the end of the delay period.
- 
-	The PeriodMs function is a non-blocking function that must be called by 
-	using function to determine ie the delay period has expired.
  */
 /* ************************************************************************** */
-// System included files
+
+// File Inclusion
 #include "hardware.h"
 #include <plib.h>
-
-// Platform common included files
 #include "swDelay.h"
 
 /*msDelay   Function Description *********************************************
