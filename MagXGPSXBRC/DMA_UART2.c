@@ -19,10 +19,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if !defined(_DMAC) || !defined(__UART2_H__)
-    #error "This example needs a PIC32MX processor with DMA controller and UART2 present. Aborting build!"
-#endif  // _DMAC
-
 int         DmaIntFlag = 0; 			// flag used in interrupts
 char 		dmaBuff[DMA_BUFFER_SIZE+1];	 // Master DMA Uart RX buffer
 char 		dmaBuff1[DMA_BUFFER_SIZE+1]; // DMA Uart RX buffer 1
