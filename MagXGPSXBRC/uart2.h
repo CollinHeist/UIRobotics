@@ -16,7 +16,6 @@
 
 #ifndef __UART2_H__
 	#define __UART2_H__
-	#define _UART2
 
 	// ASCII control characters
 	#define BACKSPACE		0x08

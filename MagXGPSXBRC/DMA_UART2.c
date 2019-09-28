@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if !defined(_DMAC) || !defined(_UART2)
+#if !defined(_DMAC) || !defined(__UART2_H__)
     #error "This example needs a PIC32MX processor with DMA controller and UART2 present. Aborting build!"
 #endif  // _DMAC
 
