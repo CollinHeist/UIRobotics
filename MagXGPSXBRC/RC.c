@@ -36,7 +36,13 @@ void rcUpdateServos(void) {
 			rc_output(channel, TRUE);	// Turn channel on
 			rc1 = RC_SERVO_MIN + rc[channel];	// Compute on time
 			if (rc1 > RC_SERVO_MAX)
-				rc1 = RC_SERVO_MAX;
+            {
+                rc1 = RC_SERVO_MAX;
+            }
+            else if(rc1 < RC_SERVO_MIN)
+            {
+                rc1 = RC_SERVO_MIN;
+            }
 			rc2 = RC_SERVO_MAX - rc1;			// Time to end of cycle
 			if (rc2 < 0)
 				rc2 = 0;
@@ -194,45 +200,8 @@ void initRC(void) {
 int SetDefaultServoPosition()
 {
     //DelayMs(500);  
-    RC1Pos = RCMid;
-    set_rc(RC2Pos, RC2Pos, RCMid, RCMid);
-}
-
-//
-// TurnLeft() 
-// Early version of the a turn left function for the 
-// motor angle servo motors, in pin positions JB3 and JB4.
-// This function is designed so that the motor will turn left 
-// from its default position until the device is properly aligned.
-// Then the function will reset the motor back into its default position.
-//
-int TurnLeft() 
-{ 
-    // Local variables
-    static int pos = 0;
-    int Aligned = 0;
-    int i = 0;
-    
-    pos--;
-    
-    if(pos == RCLeft) pos = 0;
-    
-    set_rc(RC1Pos--, pos, pos, pos);
-    
-    // Until the device is aligned in the correct position 
-    // Right now this is a busy loop just to be a placeholder so that when the 
-    // additional functions get made, they can be inserted more easily.
-    /*
-    while(!Aligned)
-    {   
-        i++;
-        if(i == 9000000)
-            Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
-    }*/
-    DelayMs(1);               // However much additional time for the boat to turn
-    //SetDefaultServoPosition();
-    
-    return 0; 
+    //RC1Pos = RCMid;
+    //set_rc(RC2Pos, RC2Pos, RCMid, RCMid);
 }
 
 int TurnLeftPos(int movement) 
@@ -255,52 +224,9 @@ int TurnLeftPos(int movement)
     {
         set_rc(RC2Pos, RC2Pos, RC1Pos, RC1Pos);
     }
-    
-    
-    // Until the device is aligned in the correct position 
-    // Right now this is a busy loop just to be a placeholder so that when the 
-    // additional functions get made, they can be inserted more easily.
-    /*
-    while(!Aligned)
-    {   
-        i++;
-        if(i == 9000000)
-            Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
-    }*/
+
     DelayMs(10);               // However much additional time for the boat to turn
     //SetDefaultServoPosition();
-    
-    return 0; 
-}
-
-//
-// TurnRight() 
-// Early version of the a turn right function for the 
-// motor angle servo motors, in pin positions JB3 and JB4.
-// This function is designed so that the motor will turn right 
-// from its default position until the device is properly aligned.
-// Then the function will reset the motor back into its default position.
-//
-int TurnRight() 
-{ 
-    // Local variables
-    int Aligned = 0;
-    int i = 0;
-    
-    set_rc(RCRight, RCRight, RCRight, RCRight); // Set to the appropriate position to turn the motors
-    
-    // Until the device is aligned in the correct position
-    // Right now this is a busy loop just to be a placeholder so that when the 
-    // additional functions get made, they can be inserted more easily.
-    while(!Aligned)
-    {   
-        i++;
-        if(i == 9000000)
-            Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
-    }
-    
-    //DelayMs(3000);               // However much additional time for the boat to turn
-    SetDefaultServoPosition();
     
     return 0; 
 }
@@ -311,7 +237,7 @@ int TurnRightPos(int movement)
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
-    RC1Pos-= movement;
+    RC1Pos+= movement;
 
     if(RC1Pos <= 0) 
     {   
@@ -326,19 +252,8 @@ int TurnRightPos(int movement)
         pos++;
         set_rc(RC2Pos, RC2Pos, RC1Pos, RC1Pos);
     }
-    
-    
-    // Until the device is aligned in the correct position 
-    // Right now this is a busy loop just to be a placeholder so that when the 
-    // additional functions get made, they can be inserted more easily.
-    /*
-    while(!Aligned)
-    {   
-        i++;
-        if(i == 9000000)
-            Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
-    }*/
-    DelayMs(1);               // However much additional time for the boat to turn
+
+    DelayMs(10);               // However much additional time for the boat to turn
     //SetDefaultServoPosition();
     
     return 0; 
@@ -350,7 +265,7 @@ int ForwardPos(int movement)
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
-    RC2Pos-= movement;
+    RC2Pos+= movement;
 
     if(RC2Pos <= 0) 
     {   
@@ -365,17 +280,6 @@ int ForwardPos(int movement)
         set_rc(RC2Pos, RC2Pos, RC1Pos, RC1Pos);
     }
     
-    
-    // Until the device is aligned in the correct position 
-    // Right now this is a busy loop just to be a placeholder so that when the 
-    // additional functions get made, they can be inserted more easily.
-    /*
-    while(!Aligned)
-    {   
-        i++;
-        if(i == 9000000)
-            Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
-    }*/
     DelayMs(10);               // However much additional time for the boat to turn
     //SetDefaultServoPosition();
     
@@ -388,7 +292,7 @@ int BackwardPos(int movement)
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
-    RC2Pos+=movement;
+    RC2Pos-=movement;
     
     if(RC2Pos >= 100) 
     {   
@@ -404,18 +308,7 @@ int BackwardPos(int movement)
         set_rc(RC2Pos, RC2Pos, RC1Pos, RC1Pos);
     }
     
-    
-    // Until the device is aligned in the correct position 
-    // Right now this is a busy loop just to be a placeholder so that when the 
-    // additional functions get made, they can be inserted more easily.
-    /*
-    while(!Aligned)
-    {   
-        i++;
-        if(i == 9000000)
-            Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
-    }*/
-    DelayMs(1);               // However much additional time for the boat to turn
+    DelayMs(10);               // However much additional time for the boat to turn
     //SetDefaultServoPosition();
     
     return 0; 

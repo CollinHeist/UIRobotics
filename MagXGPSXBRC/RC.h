@@ -26,8 +26,8 @@
 	#define NRCSPEEDCONTROLLERS 2
 	#define NRC					NRCSPEEDCONTROLLERS+NRCSERVOS		// Number of RC channels
 	/* --------- RC Setting Range - How wide the PWM Signal should be -------- */
-	#define RC_SERVO_MIN		100
-	#define	RC_SERVO_MAX		200
+	#define RC_SERVO_MIN		50
+	#define	RC_SERVO_MAX		150
 	#define RC_SPEED_CONTROLLER_MIN		108  //I rounded up for safety
 	#define	RC_SPEED_CONTROLLER_MAX		190  //I rounded down for safety
 	#define RC_SPEED_CONTROLLER_NEUTRAL 148  //Period of no movement
