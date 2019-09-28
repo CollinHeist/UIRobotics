@@ -1,20 +1,6 @@
-/******************************************************************************
-MAG3110.c
-SFE_MAG3110 Library
-George Beckstein contracting for SparkFun Electronics
-Original Creation Date: 9/11/2016
-Modified and tested for BASYS MX3 by R. W. Wall, April 11, 2019
-
-Development environment specifics:
-	IDE:               MPLAB X v5.05
-	Hardware Platform: Digilent BASYS MX3
-	MAG3110 Breakout Version 1
-
-    Removed all programming specifics for C++ 
-
-******************************************************************************/
-
+// File Inclusion
 #include "hardware.h"
+#include <stdint.h>
 #include "i2c_lib.h"
 #include "MAG3110.h"
 #include "led7.h"
@@ -25,9 +11,7 @@ Development environment specifics:
 #include <STDIO.h>
 #include "Stepper.h"
 
-#define CALIBRATION_TIMEOUT 10000 //timeout in milliseconds
-#define DEG_PER_RAD (180.0/3.14159265358979)
-
+// Global Variables
 extern int16_t led_value;
 extern int angle;
 extern int deg;
@@ -45,14 +29,13 @@ static BOOL calibrationMode;
 static BOOL activeMode;
 static BOOL rawMode;
 
-
 static int16_t MAG3110_readAxis(BYTE axis);
 
 /* ************************************************************************* */
 BOOL MAG3110_initialize(void) 
 {
-int tempF = 0;
-int tempC = 0;
+	int tempF = 0;
+	int tempC = 0;
 	//Just some random initial values
 	x_offset = X_OFFSET;
 	y_offset = Y_OFFSET;
