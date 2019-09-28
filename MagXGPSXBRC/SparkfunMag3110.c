@@ -394,7 +394,7 @@ I2C_RESULT MAG3110_enterCalMode()
 /* ************************************************************************** */
 I2C_RESULT MAG3110_calibrate(void)
 {
-	int x, y, z;
+	int16_t x, y, z;
 	I2C_RESULT i2c_result = MAG3110_readMag(&x, &y, &z);
 	int timeLastChange = 0;
 

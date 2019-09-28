@@ -97,8 +97,8 @@ int main(void)
 		// GPS receives data
 		if ((millisec - GPSIntervalMark) >= GPSInterval)
 		{
-			I2cReadFlag = ReportGPS(TRUE);	
-			GPSIntervalMark = millisec;
+			//I2cReadFlag = ReportGPS(TRUE);	
+			//GPSIntervalMark = millisec;
 		}
 
 		// GPS receives data
@@ -198,7 +198,8 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
      {
          printf("MAG3110 failed to init");
      }
-     
+    
+    
     printf("Magnetometer is calibrating\n\r");
     MAG3110_enterCalMode();
         
