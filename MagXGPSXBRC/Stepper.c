@@ -5,17 +5,16 @@
 // Application included files
 #include "Stepper.h"
 
-int smPos;           // Motor step position
-int angle;           // Target angle
-int deg;             // Motor Position
+int smPos;	// Motor step position
+int angle;	// Target angle
+int deg;	// Motor Position
 
 //
 // stepper_init()
 //
 //
-void stepper_init(void) 
-{
-    MCInit();
+void stepper_init(void)  {
+	MCInit();
 }
 
 //
@@ -23,16 +22,16 @@ void stepper_init(void)
 // direction is +1 or -1
 // mode is 1 for half, 2 for full
 //
-void step(int direction, int mode)
-{
-static const unsigned char step_code[8] = {8, 9, 1, 5, 4, 6, 2, 10}; 
-static unsigned int step_ptr = 0;   // Initialize pointer only on power up
-    step_ptr += (direction * mode);     // Compute step code pointer
-    step_ptr &= sizeof(step_code)-1;	// force modulo 8
+void step(int direction, int mode) {
+	static const unsigned char step_code[8] = {8, 9, 1, 5, 4, 6, 2, 10}; 
+	static unsigned int step_ptr = 0;   // Initialize pointer only on power up
 
-    AIN1(step_code[step_ptr] & 0x01);
-    AIN2(step_code[step_ptr] & 0x02);
-    BIN1(step_code[step_ptr] & 0x04);
-    BIN2(step_code[step_ptr] & 0x08);
+	step_ptr += (direction * mode);		// Compute step code pointer
+	step_ptr &= sizeof(step_code)-1;	// force modulo 8
+
+	AIN1(step_code[step_ptr] & 0x01);
+	AIN2(step_code[step_ptr] & 0x02);
+	BIN1(step_code[step_ptr] & 0x04);
+	BIN2(step_code[step_ptr] & 0x08);
 }
 
