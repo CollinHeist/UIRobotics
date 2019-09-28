@@ -282,19 +282,16 @@ char ch;							// Received new character
 	return 1;					   // Not EOL
 } // End of getstrU2
 
-// UART 2 interrupt handler
-// it is set at priority level 2 with software context saving
-void __ISR(_UART2_VECTOR, IPL3SOFT) IntUart2Handler(void)
-{
-char ch;
+// UART 2 interrupt handler - This triggers when a character is sent or receieved over UART2
+void __ISR(_UART2_VECTOR, IPL3SOFT) IntUart2Handler(void) {
+	char ch;
 	// Is this an RX interrupt?
-	if (INTGetFlag(INT_SOURCE_UART_RX(UART2)))
-	{
+	if (INTGetFlag(INT_SOURCE_UART_RX(UART2))) {
 		// Echo what we just received.
 		HandleInput();
 		
-
 		// Clear the RX interrupt Flag
+		INTClearFlag(INT_SOURCE_UART_RX(UART2));
 
 		// Toggle LED to indicate UART activity
 		mPORTAToggleBits(BIT_7);
@@ -302,15 +299,7 @@ char ch;
 	}
 
 	// We don't care about TX interrupt
-	if (INTGetFlag(INT_SOURCE_UART_TX(UART2)))
-	{
+	if (INTGetFlag(INT_SOURCE_UART_TX(UART2))) {
 		INTClearFlag(INT_SOURCE_UART_TX(UART2));
 	}
-	
-	INTClearFlag(INT_SOURCE_UART_RX(UART2));
-
-
 }
-
-
-/* End of uart2.c */
