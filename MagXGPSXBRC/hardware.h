@@ -14,8 +14,6 @@
 http://ww1.microchip.com/downloads/en/DeviceDoc/32bitPeripheralLibraryGuide.pdf and
 http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20Library */
 
-   #include <plib.h>
-
 /* The ANSELx register has a default value of 0xFFFF; therefore, all pins that
  * share analog functions are analog (not digital) by default. All pins are 
  * initially set be digital followed be setting A_POT for the ANALOG INPUT 

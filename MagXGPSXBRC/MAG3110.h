@@ -1,24 +1,9 @@
-/******************************************************************************
-MAG3110.h
-SFE_MAG3110 Library
-George Beckstein contracting for SparkFun Electronics
-Original Creation Date: 9/11/2016
-Modified and tested for BASYS MX3 by R. W. Wall, April 11, 2019
-
-Development environment specifics:
-	IDE:               MPLAB X v5.05
-	Hardware Platform: Digilent BASYS MX3
-	MAG3110 Breakout Version 1
-
- 
-******************************************************************************/
-
-#ifndef __MAG3110_H__
+/#ifndef __MAG3110_H__
 	#define __MAG3110_H__
 
 	/* -------------------------- MAG3110 Registers -------------------------- */
 	#define MAG3110_I2C_ADDRESS 	0x0E
-	
+
 	#define MAG3110_DR_STATUS		0x00
 	#define MAG3110_OUT_X_MSB		0x01
 	#define MAG3110_OUT_X_LSB		0x02
@@ -38,25 +23,25 @@ Development environment specifics:
 	#define MAG3110_CTRL_REG1		0x10
 	#define MAG3110_CTRL_REG2		0x11
 
-    #define MAG3110_XYZOW           0x01
-    #define MAG3110_XOW             0x02
-    #define MAG3110_YOW             0x04
-    #define MAG3110_ZOW             0x08
-    #define MAG3110_XYZDR           0x10
-    #define MAG3110_ZDR             0x20
-    #define MAG3110_YDR             0x40
-    #define MAG3110_XDR             0x80
+	#define MAG3110_XYZOW           0x01
+	#define MAG3110_XOW             0x02
+	#define MAG3110_YOW             0x04
+	#define MAG3110_ZOW             0x08
+	#define MAG3110_XYZDR           0x10
+	#define MAG3110_ZDR             0x20
+	#define MAG3110_YDR             0x40
+	#define MAG3110_XDR             0x80
 
-    #define X_OFFSET               -1071.6276923077f
-    #define Y_OFFSET                1498.4283076923f
-    #define Z_OFFSET               -1371.4824615385f
+	#define X_OFFSET               -1071.6276923077f
+	#define Y_OFFSET                1498.4283076923f
+	#define Z_OFFSET               -1371.4824615385f
 
-    #define X_GAIN                  (1.0/226.0)
-    #define Y_GAIN                  (1.0/231.1)
-    #define Z_GAIN                  (1.0/46.0)
+	#define X_GAIN                  (1.0/226.0)
+	#define Y_GAIN                  (1.0/231.1)
+	#define Z_GAIN                  (1.0/46.0)
 
-    #define RAD2DEG                 (180.0 / 3.14159)
-    #define MAG_DECLINATION         -13
+	#define RAD2DEG                 (180.0 / 3.14159)
+	#define MAG_DECLINATION         -13
 
 	/* ---------------------- MAG3110 WHO_AM_I Response ---------------------- */
 	#define MAG3110_WHO_AM_I_RSP	0xC4
@@ -119,20 +104,13 @@ Development environment specifics:
 
 	#define CALIBRATION_TIMEOUT 		10000 //timeout in milliseconds
 	#define DEG_PER_RAD 				(180.0/3.14159265358979)
-#endif
-        
-    //#define int16_t int
-    
-    /* -------------------- Public Variable Declarations --------------------- */
-	BOOL error;
-	BOOL calibrated;
-  
-	/* --------------------- Public Method Declarations ---------------------- */
+
+	// Function Prototypes
 	BOOL       MAG3110_initialize(void);
-    BYTE 	   MAG3110_readRegister(BYTE address);
+	BYTE 	   MAG3110_readRegister(BYTE address);
 	I2C_RESULT MAG3110_writeRegister(BYTE address, BYTE value);
 	BOOL 	   MAG3110_dataReady(void);
-    I2C_RESULT MAG3110_readMag(int16_t* x, int16_t* y, int16_t* z);
+	I2C_RESULT MAG3110_readMag(int16_t* x, int16_t* y, int16_t* z);
 	I2C_RESULT MAG3110_readMicroTeslas(float* x, float* y, float* z);
 	I2C_RESULT MAG3110_readHeading(float *heading);
 	I2C_RESULT MAG3110_setDR_OS(BYTE DROS);
@@ -154,5 +132,9 @@ Development environment specifics:
 	I2C_RESULT MAG3110_calibrate(void);
 	I2C_RESULT MAG3110_exitCalMode(void);
 	I2C_RESULT MAG3110_reset(void);
-    
-    void MAG3110_EnvCalibrate();
+
+	void MAG3110_EnvCalibrate();
+#endif
+
+BOOL error;
+BOOL calibrated;

@@ -1,16 +1,6 @@
 /* --------------------- Guarding against multiple inclusion ----------------- */
 #ifndef __GPS_I2C_H__
 	#define __GPS_I2C_H__
-
-    /* ----------------- Necessary system include statements ----------------- */
-    #include "hardware.h"
-    #include <plib.h>
-    #include <string.h>
-    #include <stdio.h>
-    #include <stdint.h>
-
-	#include "i2c_lib.h"
-    #include "swDelay.h"
    
 	/* ----------------- Public Global Variables / Constants ----------------- */
 	#define GPS_MPH_PER_KNOT    1.15077945

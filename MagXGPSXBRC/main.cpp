@@ -42,11 +42,9 @@ int gps_message = 0;        // Active GPS sentence
 extern int16_t led_value;
 extern BOOL led_flag;
 
-int main(void)
-{
+int main(void) {
 	// Need to disable global interrupts
 
-    
 	// Local variables
 	I2C_RESULT I2cResultFlag;   // I2C Init Result flag
     I2C_RESULT I2cReadFlag;   // I2C Init Result flag
