@@ -1,11 +1,7 @@
 #include "ADC_TEMP.h"
 
-
 static int Temp1;
 static int Temp2;
-
-
-
 
 /* -------------------------------- init_temps -------------------------------
   @ Summary
@@ -31,14 +27,14 @@ void init_temperature(void) {
 	while (!mAD1GetIntFlag()) {}
 }
 
-/* -------------------------------- read_temps -------------------------------
+/* ----------------------------- read_temperature ----------------------------
   @ Summary
 	 Function to read data from the Analog to Digital Converter.
   @ Parameters
 	 @ param1 : Pointer to result of temperature on ADC1
 	 @ param2 : Pointer to result of temperature on ADC2
   @ Returns
-	 None
+	 None, adjusts the values of t1 and t2
   ---------------------------------------------------------------------------- */
 void read_temperature(int *t1, int *t2)  {
 	int offset;
