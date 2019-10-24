@@ -19,18 +19,18 @@ from mpl_toolkits.mplot3d import Axes3D
 
 max_retry_count = 3
 xbox_dict = {
-	"send_time":     0,								# Time the command was recieved
+	"send_time":	 0,				# Time the command was recieved
 	"trans_num":     0,		
-	"left_trigger":  0, 							# Between 0-255, scales with hardness -> Scaled 0-100
-	"left_bumper":   0,								# T/F, pressed or not -> 1/0
-	"right_trigger": 0,								# Between 0-255, scales with hardness -> Scaled 0-100
-	"right_bumper":  0,								# T/F, pressed or not -> 1/0
-	"left_stick":    (0, 0), 						# -32768-32768, tuple of the {x, y} -> Scaled -100-100
-	"d_pad":		 (0, 0),						# -1-1, tuple of x, y of D-pad (-x is left, -y is top)
-	"right_stick":	 (0, 0),						# -32768-32768, tuple of the x, y -> Scaled -100-100
-	"buttons":		 (0, 0, 0, 0),					# T/F, pressed or not of Y, B, A, X -> 1/0
-	"start_button":  0,								# T/F, pressed or not of start button -> 1/0
-	"back_button":	 0								# T/F, pressed or not of the back button -> 1/0
+	"left_trigger":  0, 			# Between 0-255, scales with hardness -> Scaled 0-100
+	"left_bumper":   0,				# T/F, pressed or not -> 1/0
+	"right_trigger": 0,				# Between 0-255, scales with hardness -> Scaled 0-100
+	"right_bumper":  0,				# T/F, pressed or not -> 1/0
+	"left_stick":    (0, 0), 		# -32768-32768, tuple of the {x, y} -> Scaled -100-100
+	"d_pad":		 (0, 0),		# -1-1, tuple of x, y of D-pad (-x is left, -y is top)
+	"right_stick":	 (0, 0),		# -32768-32768, tuple of the x, y -> Scaled -100-100
+	"buttons":		 (0, 0, 0, 0),	# T/F, pressed or not of Y, B, A, X -> 1/0
+	"start_button":  0,				# T/F, pressed or not of start button -> 1/0
+	"back_button":	 0				# T/F, pressed or not of the back button -> 1/0
 }
 
 contentOrder = [("buttons", 2), ("buttons", 1), ("buttons", 3), ("buttons", 0),
@@ -154,8 +154,6 @@ def dictReadLoop(logInterval, xbee):
 					marked_time = time.time()
 					timeout_count += 1
 
-
-
 			# if time.time() - marked_time > logInterval:
 			# 	clearFile() # Clear the file, initiate the next sequence of the queue
 			# 	ack_string = sendDict(xbox_dict, xbee)
@@ -173,3 +171,4 @@ def dictReadLoop(logInterval, xbee):
 
 xbee_port = findXbee()
 dictReadLoop(0.10, xbee_port) # 0.15 works very well
+
