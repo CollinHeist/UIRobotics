@@ -35,7 +35,7 @@ static int gpsMessage = 0;        // Active GPS sentence
 extern int16_t ledValue;
 extern BOOL ledFlag;
 
-static currentState = IDLE;
+static State currentState = IDLE;
 
 int main(void)
 {
@@ -91,28 +91,17 @@ int main(void)
 			SetDefaultServoPosition();
 		}
 
-		// GPS receives data
-		if ((millisec - GPSIntervalMark) >= GPSInterval)
-		{
-			I2cReadFlag = ReportGPS(FALSE);
-			GPSIntervalMark = millisec;
+		currentState = popFront();
 
-			// get our gps data
+		switch (currentState)
+		{
+		case READ_GPS:
+
+			I2cReadFlag = ReportGPS(FALSE);
 			GPSTime gpsData = getGPSData();
 
-			printf("Time %d\n", gpsData.utc_time);
-		}
-
-		// GPS receives data
-		if ((millisec - MovementIntervalMark) >= MovementInterval)
-		{
-			Move();								// Read from the GPS and display to the screen
-			MovementIntervalMark = millisec;
-		}
-
-		// Mag receives data
-		if ((millisec - MagIntervalMark) >= MagInterval)
-		{
+			break;
+		case READ_MAG:
 			I2cResultFlag = MAG3110_readMag(&x, &y, &z);
 
 			if (I2cResultFlag == I2C_SUCCESS)
@@ -128,14 +117,24 @@ int main(void)
 				printf("Readmag error\n");
 			}
 
-			MagIntervalMark = millisec;
-		}
+			break;
+		case READ_TEMP:
+			// Get data from the ADC temperature sensors
+			if ((millisec - ADCIntervalMark) >= ADCTemperatureInterval)
+			{
+				read_temperature_store();			// Reads in the temperature
+				ADCIntervalMark = millisec;
+			}
+			break;
+		case MOVE:
 
-		// Get data from the ADC temperature sensors
-		if ((millisec - ADCIntervalMark) >= ADCTemperatureInterval)
-		{
-			read_temperature_store();			// Reads in the temperature
-			ADCIntervalMark = millisec;
+			Move();	
+
+			break;
+		case IDLE:
+			break;
+		default:
+			break;
 		}
 	}
 	return EXIT_FAILURE; // Code execution should never get to this statement 

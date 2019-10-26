@@ -32,7 +32,7 @@
 	#define GPGLL		   3
 
 	// states for the program
-	typedef enum { READ_GPS, READ_MAG, MOVE, IDLE } State;
+	typedef enum { READ_GPS, READ_MAG, MOVE, READ_TEMP, IDLE } State;
 
 #endif /* _MAIN_H */
 

@@ -36,18 +36,21 @@ void addState(State state)
 		currentState[backOfQueue] = state;
 }
 
-void popFront()
+State popFront()
 {
 	int i = 0;
 	if (backOfQueue)
 	{
+		State top = currentState[0];
 		for (i = 1; i < backOfQueue; i++)
 		{
 			// move all items forward one
 			currentState[i - 1] = currentState[i];
 		}
 		backOfQueue--;
+		return top;
 	}
+	return IDLE;
 }
 
 void Hardware_Setup(void) {
@@ -148,9 +151,32 @@ void __ISR(_TIMER_1_VECTOR, IPL2SOFT) Timer1Handler(void) {
 	}
 
 	// if there was a change, then we can add to all of our variables
-	if(change)
+	if (change)
 	{
-		
+		if ((millisec - ADCIntervalMark) >= ADCTemperatureInterval)
+		{
+			addState(READ_TEMP);
+		}
+
+		if ((millisec - GPSIntervalMark) >= GPSInterval) 
+		{
+			addState(READ_GPS);
+		}
+
+		if ((millisec - MagIntervalMark) >= MagInterval)
+		{
+			addState(READ_MAG);
+		}
+
+		if ((millisec - MovementIntervalMark) >= MovementInterval)
+		{
+			addState(MOVE);
+		}
+
+		if ((millisec - GPSIntervalMark) >= GPSInterval)
+		{
+			addState(READ_GPS);
+		}
 	}
 
 	// TODO: count how much time has passed, and check each of the operations available

@@ -177,5 +177,7 @@ http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20
 	// Function Prototypes
 	void Hardware_Setup(void);
 	static void initTimer1(void);
+	void addState(State state);
+	State popFront();
 	unsigned int millisec;
 #endif
