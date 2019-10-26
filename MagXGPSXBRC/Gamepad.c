@@ -1,3 +1,10 @@
+/*  Gamepad.c
+ *  Author: Damon
+ *  Commenter: Sam
+ *
+ *  Purpose: Integration of XBox Controller as control surface
+ *
+ */
 #ifndef _SUPPRESS_PLIB_WARNING
     #define _SUPPRESS_PLIB_WARNING
 #endif
@@ -17,264 +24,263 @@
 #define nullptr ((void*)0)
 //#define Debug
 
-#define MODE_TEST
-#define MODE_NORM
+#define MODE_TEST   //IDTTDA
+#define MODE_NORM   //IDTTDA
 
-// Possible gamepad messages
+// Possible gamepad messages	//Information coming from the controller
 enum GamepadVariables{
-    GAME_TIME,
-    GAME_TRIGGER_LEFT,
-    GAME_BUMPER_LEFT,
-    GAME_TRIGGER_RIGHT,
-    GAME_BUMPER_RIGHT,
-    GAME_STICK_LEFT_X,
-	GAME_STICK_LEFT_Y,
-    GAME_D_PAD_X,
-	GAME_D_PAD_Y,
-    GAME_STICK_RIGHT_X,
-	GAME_STICK_RIGHT_Y,
-    GAME_BUTTON_Y,
-    GAME_BUTTON_B,
-    GAME_BUTTON_A,
-    GAME_BUTTON_X,
-    GAME_BUTTON_START,
-    GAME_BUTTON_BACK
+    gameTime,		//Time info was sent
+    gameTriggerLeft,
+    gameBumperLeft,
+    gameTriggerRight,
+    gameBumperRight,
+    gameStickLeftX,
+    gameStickLeftY,
+    gameDPadX,
+    gameDPadY,
+    gameStickRightX,
+    gameStickRightY,
+    gameButtonY,
+    gameButtonB_,
+    gameButtonA,
+    gameButtonX,
+    gameButtonStart,
+    gameButtonBack
 };
 
 typedef struct pair
 {
-	int m_CompOne;
-	int m_CompTwo;
+	int varCompOne;
+	int varCompTwo;
 } 
 Pair;
 
 typedef struct buttons
 {
-	int m_ButtonY;
-	int m_ButtonB;
-	int m_ButtonA;
-	int m_ButtonX;
+	int varButtonY;
+	int varButtonB_;
+	int varButtonA;
+	int varButtonX;
 }
 Buttons;
 
 typedef struct gamepadInput
 {
-	unsigned int m_LeftTrigger;
-	unsigned int m_RightTrigger;
+	unsigned int varTriggerLeft;
+	unsigned int varTriggerRight;
 
-	int m_SendTime;
-	int m_LeftBumper;
-	int m_RightBumper;
-	int m_StartButton;
-	int m_BackButton;
-	int m_Offset;
+	int varTimeSendTime;
+	int varBumperLeft;
+	int varBumperRight;
+	int varButtonStart;
+	int varButtonBack;
+	int varOffset;
 
-	Pair m_LeftSticks;
-    Pair m_RightSticks;
-	Pair m_DirPad;
-	Buttons m_Buttons;
+	Pair varSticksLeft;		//A "Pair" struct of the left stick variables - x and y values
+	Pair varSticksRight;		//A "Pair" struct of the right stick variables - x and y values
+	Pair varDPad;			//A "Pair" struct of the Dpad variables - x and y values
+	Buttons varButtons;		//A "Buttons" struct of the different controller buttons
 
-	char m_InputString[512];
+	char varInputString[512];
 } 
-GamepadInput;
+gamepadInput_;
 
 // The main object that handles input
-static GamepadInput GamepadInputManager;
+static gamepadInput_ gamepadInputManager;
 
-static void MoveLeft(int movement);
+static void moveLeft(int movement);
 
 //
-// GamepadInit()
-// Should be called once prior to using the GamepadInputManager
+// gamepadInit()
+// Should be called once prior to using the gamepadInputManager
 // Properly initializes all of the members of this object.
 //
-int GamepadInit()
+int gamepadInit()
 {
     int i = 0;
      
-    GamepadInputManager.m_Offset = 0;
+    gamepadInputManager.varOffset = 0;
     for(i = 0; i < 512; i++)
     {
-        GamepadInputManager.m_InputString[i] = 0;
+        gamepadInputManager.varInputString[i] = 0;
     }
     
-    GamepadInputManager.m_BackButton = 0;
-    GamepadInputManager.m_LeftTrigger = 0;
-    GamepadInputManager.m_RightTrigger = 0;
-    GamepadInputManager.m_LeftBumper = 0;
-    GamepadInputManager.m_RightBumper = 0;
-    GamepadInputManager.m_StartButton = 0;
-    GamepadInputManager.m_BackButton = 0;
+    gamepadInputManager.varButtonBack = 0;
+    gamepadInputManager.varTriggerLeft = 0;
+    gamepadInputManager.varTriggerRight = 0;
+    gamepadInputManager.varBumperLeft = 0;
+    gamepadInputManager.varBumperRight = 0;
+    gamepadInputManager.varButtonStart = 0;
+    gamepadInputManager.varButtonBack = 0;
     
-    GamepadInputManager.m_DirPad.m_CompOne = 0;
-    GamepadInputManager.m_DirPad.m_CompTwo = 0;
-    GamepadInputManager.m_RightSticks.m_CompOne = 0;
-    GamepadInputManager.m_RightSticks.m_CompTwo = 0;
-    GamepadInputManager.m_LeftSticks.m_CompOne = 0;
-    GamepadInputManager.m_LeftSticks.m_CompTwo = 0;
+    gamepadInputManager.varDPad.varCompOne = 0;
+    gamepadInputManager.varDPad.varCompTwo = 0;
+    gamepadInputManager.varSticksRight.varCompOne = 0;
+    gamepadInputManager.varSticksRight.varCompTwo = 0;
+    gamepadInputManager.varSticksLeft.varCompOne = 0;
+    gamepadInputManager.varSticksLeft.varCompTwo = 0;
     
-    GamepadInputManager.m_Buttons.m_ButtonA = 0;
-    GamepadInputManager.m_Buttons.m_ButtonB = 0;
-    GamepadInputManager.m_Buttons.m_ButtonY = 0;
-    GamepadInputManager.m_Buttons.m_ButtonX = 0;
+    gamepadInputManager.varButtons.varButtonA = 0;
+    gamepadInputManager.varButtons.varButtonB_ = 0;
+    gamepadInputManager.varButtons.varButtonY = 0;
+    gamepadInputManager.varButtons.varButtonX = 0;
 
 }
 
 //
-// ParseInput()
+// parseInput()
 // Parses the string and places all of the 
-// approp. variables into their corresponding
-// vars in the GamepadInputManager object.
+// appropriate variables into their corresponding
+// variables in the gamepadInputManager object.
 //
-int ParseInput(char* String)
+int parseInput(char* stringRef)	    //stringRef, currently, is only the input string from the XBee
 {
 	// Local variables
-	int i = 0;
-	int j = 0;
-	int Variable = GAME_TIME;
-	int FullVariable = 0;
-	char Temp[16];
+	int i = 0;		    //traversal variable
+	int j = 0;		    //traversal variable
+	int variable = gameTime;
+	char temp[16];		    //character string to 
 	int time = 0;
 	char* end;
 
 	// Verifying that the sting received is valid
-	if (String == nullptr)
+	if (stringRef == nullptr)
 	{
-		printf("string received was nullptr\n");
-		return -1;
+		printf("stringRef received was nullptr\n");
+		return;
 	}
 
-	// Parsing the string
+	// Parsing the stringRef
 	for (i = 0; i < 512; i++)
 	{
 
-		if (!isspace(String[i]))
+		if (!isspace(stringRef[i]))	//If location in stringRef is empty
 		{
 			// Copying contents of this variable
-			for (j = 0; j < 16 && !isspace(String[i]); j++, i++)
+			for (j = 0; j < 16 && !isspace(stringRef[i]); j++, i++)
 			{
-				Temp[j] = String[i];
+				temp[j] = stringRef[i];
 			}
 
-			Temp[j] = 0;			// Append null termination
-			end = &(Temp[j - 1]);	// ptr to end of this section
+			temp[j] = 0;			// Append null termination
+			end = &(temp[j - 1]);	// pointer to end of this section
 
 			// Case for each of the different variables in the string
-			switch (Variable)
+			switch (variable)
 			{
-			case GAME_TIME:
+			case gameTime:
 
-				time = strtol(Temp, &end, 10);
-            #ifdef Debug
-                printf("GAME_TIME %s\n", Temp);
-            #endif
+				time = strtol(temp, &end, 10);
+			    #ifdef Debug
+				printf("gameTime %s\n", temp);
+			    #endif
                 
 				break;
-			case GAME_TRIGGER_LEFT:
+			case gameTriggerLeft:
 
-				time = strtol(Temp, &end, 10);
-            #ifdef Debug
-				printf("GAME_TRIGGER_LEFT %s\n", Temp);
-            #endif
-
-				break;
-			case GAME_BUMPER_LEFT:
-				time = strtol(Temp, &end, 10);
-                #ifdef Debug
-				printf("GAME_BUMPER_LEFT %s\n", Temp);
-                #endif
+				time = strtol(temp, &end, 10);
+			    #ifdef Debug
+						printf("gameTriggerLeft %s\n", temp);
+			    #endif
 
 				break;
-			case GAME_TRIGGER_RIGHT:
-				time = strtol(Temp, &end, 10);
-                #ifdef Debug
-				printf("GAME_TRIGGER_RIGHT %s\n", Temp);
-                #endif
+			case gameBumperLeft:
+				time = strtol(temp, &end, 10);
+			    #ifdef Debug
+					    printf("gameBumperLeft %s\n", temp);
+			    #endif
 
 				break;
-			case GAME_BUMPER_RIGHT:
-				time = strtol(Temp, &end, 10);
-				//printf("GAME_BUMPER_RIGHT %d\n", time);
+			case gameTriggerRight:
+				time = strtol(temp, &end, 10);
+			    #ifdef Debug
+					    printf("gameTriggerRight %s\n", temp);
+			    #endif
 
 				break;
-			case GAME_STICK_LEFT_X:
+			case gameBumperRight:
+				time = strtol(temp, &end, 10);
+				//printf("gameBumperRight %d\n", time);
+
+				break;
+			case gameStickLeftX:
                 
-				time = strtol(Temp, &end, 10);
+				time = strtol(temp, &end, 10);
                    
-               // if(~mPORTCRead() & (BIT_13 | BIT_14))
-              //  {
-               //    GamepadInputManager.m_LeftSticks.m_CompOne = 50;
-              //  }
-                GamepadInputManager.m_LeftSticks.m_CompOne = time;
+				// if(~mPORTCRead() & (BIT_13 | BIT_14))
+			       //  {
+				//    gamepadInputManager.varSticksLeft.varCompOne = 50;
+			       //  }
+				 gamepadInputManager.varSticksLeft.varCompOne = time;
 
 
 				//printf("GAME_STICK_LEFT %d\n", time);
 				break;
-			case GAME_STICK_LEFT_Y:
+			case gameStickLeftY:
 
-				time = strtol(Temp, &end, 10);
+				time = strtol(temp, &end, 10);
                 
-                GamepadInputManager.m_LeftSticks.m_CompTwo = time;
+                gamepadInputManager.varSticksLeft.varCompTwo = time;
 
 				//printf("GAME_STICK_LEFT %d\n", time);
 				break;
-			case GAME_D_PAD_X:
-				time = strtol(Temp, &end, 10);
+			case gameDPadX:
+				time = strtol(temp, &end, 10);
 				//printf("GAME_D_PAD %d\n", time);
 
 				break;
-			case GAME_D_PAD_Y:
-				time = strtol(Temp, &end, 10);
+			case gameDPadY:
+				time = strtol(temp, &end, 10);
 				//printf("GAME_D_PAD %d\n", time);
 
 				break;
-			case GAME_STICK_RIGHT_X:
+			case gameStickRightX:
 
-				time = strtol(Temp, &end, 10);
+				time = strtol(temp, &end, 10);
 				//printf("GAME_STICK_RIGHT %d\n", time);
 
 				break;
-			case GAME_STICK_RIGHT_Y:
+			case gameStickRightY:
 
-				time = strtol(Temp, &end, 10);
+				time = strtol(temp, &end, 10);
 				//printf("GAME_STICK_RIGHT %d\n", time);
 
 				break;
-			case GAME_BUTTON_Y:
+			case gameButtonY:
 
-				time = strtol(Temp, &end, 10);
-				//printf("GAME_BUTTON_Y %d\n", time);
-
-				break;
-			case GAME_BUTTON_B:
-
-				time = strtol(Temp, &end, 10);
-				//printf("GAME_BUTTON_B %d\n", time);
+				time = strtol(temp, &end, 10);
+				//printf("gameButtonY %d\n", time);
 
 				break;
-			case GAME_BUTTON_A:
+			case gameButtonB_:
 
-				time = strtol(Temp, &end, 10);
-                GamepadInputManager.m_Buttons.m_ButtonA = time;				
-                //printf("GAME_BUTTON_A %d\n", time);
-
-				break;
-			case GAME_BUTTON_X:
-
-				time = strtol(Temp, &end, 10);
-				//printf("GAME_BUTTON_X %d\n", time);
+				time = strtol(temp, &end, 10);
+				//printf("gameButtonB_ %d\n", time);
 
 				break;
-			case GAME_BUTTON_START:
+			case gameButtonA:
 
-				time = strtol(Temp, &end, 10);
-				//printf("GAME_BUTTON_START %d\n", time);
+				time = strtol(temp, &end, 10);
+                gamepadInputManager.varButtons.varButtonA = time;				
+                //printf("gameButtonA %d\n", time);
 
 				break;
-			case GAME_BUTTON_BACK:
+			case gameButtonX:
 
-				time = strtol(Temp, &end, 10);
-				//printf("GAME_BUTTON_BACK %d\n", time);
+				time = strtol(temp, &end, 10);
+				//printf("gameButtonX %d\n", time);
+
+				break;
+			case gameButtonStart:
+
+				time = strtol(temp, &end, 10);
+				//printf("gameButtonStart %d\n", time);
+
+				break;
+			case gameButtonBack:
+
+				time = strtol(temp, &end, 10);
+				//printf("gameButtonBack %d\n", time);
 
 				break;
 
@@ -283,17 +289,17 @@ int ParseInput(char* String)
 			}
 
 			// Move to the next variable
-			Variable++;
+			variable++;
 		}
 	}
 }
 
 //
-// HandleInput()
+// handleInput()
 // Call this function to handle all input from the 
 // gamepad and XBee modules.
 //
-int HandleInput()
+int handleInput()
 {
 	char Char;
 	int CharReceived = 1 ;
@@ -308,28 +314,28 @@ int HandleInput()
 		// Adding this character to the approp. position in the object
         for(i; dmaBuff[i] != 0; i++)
         {
-            GamepadInputManager.m_InputString[GamepadInputManager.m_Offset] = dmaBuff[i];
+            gamepadInputManager.varInputString[gamepadInputManager.varOffset] = dmaBuff[i];
             // Incrementing the offset of this array
-            GamepadInputManager.m_Offset++;
+            gamepadInputManager.varOffset++;
         }
 
 		// If the null char was present
 		
 			// Resets the offset and...
-			GamepadInputManager.m_Offset = 0;
+			gamepadInputManager.varOffset = 0;
 
 			// Indicates an entire string was received, moves to parsing
-			//printf("%s \nFull string received\n", GamepadInputManager.m_InputString);
+			//printf("%s \nFull string received\n", gamepadInputManager.varInputString);
             
             
-			ParseInput(GamepadInputManager.m_InputString);
+			parseInput(gamepadInputManager.varInputString);
 	}
 	return 0;
 }
 
 
 
-void MoveLeft(int movement)
+void moveLeft(int movement)
 {
     static int received = 0;
     
@@ -369,34 +375,34 @@ void MoveRight(int movement)
     
 }
 
-void Move()
+void move()
 {
     int temp = 0;
     
-    if(GamepadInputManager.m_Buttons.m_ButtonA)
+    if(gamepadInputManager.varButtons.varButtonA)
     {
         SetDefaultServoPosition();
-        GamepadInputManager.m_Buttons.m_ButtonA = 0;
+        gamepadInputManager.varButtons.varButtonA = 0;
     }
-    if((temp = GamepadInputManager.m_LeftSticks.m_CompOne) < 0)   
+    if((temp = gamepadInputManager.varSticksLeft.varCompOne) < 0)   
     {
         //TurnLeftPos(-5);
         TurnLeftPos(-temp);
         //printf("tempL %d\n", temp);
     }
-    else if((temp = GamepadInputManager.m_LeftSticks.m_CompOne) > 0 )
+    else if((temp = gamepadInputManager.varSticksLeft.varCompOne) > 0 )
     {
         TurnRightPos(temp);
        // TurnRightPos(5);
        // printf("tempR %d\n", temp);
     }
-    if((temp = GamepadInputManager.m_LeftSticks.m_CompOne) < 0)   
+    if((temp = gamepadInputManager.varSticksLeft.varCompOne) < 0)   
     {
         //TurnLeftPos(-5);
         BackwardPos(-temp);
         //printf("tempL %d\n", temp);
     }
-    else if((temp = GamepadInputManager.m_LeftSticks.m_CompOne) > 0 )
+    else if((temp = gamepadInputManager.varSticksLeft.varCompOne) > 0 )
     {
         ForwardPos(temp);
        // TurnRightPos(5);
@@ -405,8 +411,8 @@ void Move()
     DelayMs(20);
 }
 
-void ClearLeftStick()
+void clearStickLeft()
 {
-    GamepadInputManager.m_LeftSticks.m_CompOne = 0;
-    GamepadInputManager.m_LeftSticks.m_CompTwo = 0;
+    gamepadInputManager.varSticksLeft.varCompOne = 0;
+    gamepadInputManager.varSticksLeft.varCompTwo = 0;
 }

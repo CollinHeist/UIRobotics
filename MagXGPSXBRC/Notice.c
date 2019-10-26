@@ -143,7 +143,7 @@ void __ISR(_CHANGE_NOTICE_VECTOR, IPL1SOFT) ChangeNoticeHandler(void)
     {
         JA1 = mPORTCRead() & BIT_13; // Clear all standing CNSTATA bits.
         SetDefaultServoPosition();
-        ClearLeftStick();
+        clearStickLeft();
         
         Status1++;
         Status1 %= 2;
@@ -155,7 +155,7 @@ void __ISR(_CHANGE_NOTICE_VECTOR, IPL1SOFT) ChangeNoticeHandler(void)
     {
         JA2 = mPORTCRead() & BIT_14; // Clear all standing CNSTATA bits.
         SetDefaultServoPosition();
-        ClearLeftStick();
+        clearStickLeft();
         
         Status2++;
         Status2 %= 2;

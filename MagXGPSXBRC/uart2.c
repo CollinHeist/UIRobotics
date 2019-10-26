@@ -288,7 +288,7 @@ void __ISR(_UART2_VECTOR, IPL3SOFT) IntUart2Handler(void) {
 	// Is this an RX interrupt?
 	if (INTGetFlag(INT_SOURCE_UART_RX(UART2))) {
 		// Echo what we just received.
-		HandleInput();
+		handleInput();
 		
 		// Clear the RX interrupt Flag
 		INTClearFlag(INT_SOURCE_UART_RX(UART2));

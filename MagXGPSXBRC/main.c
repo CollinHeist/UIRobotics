@@ -84,7 +84,7 @@ int main(void)
 			DmaIntFlag = 0;                       // Reset DMA Rx block flag
 			printf("message received %s\n", dmaBuff);
 			DmaUartRx();
-			HandleInput();						// Handles all user input from the XB device
+			handleInput();						// Handles all user input from the XB device
 			putsU2("A");
 		}
 
@@ -103,7 +103,7 @@ int main(void)
 		// GPS receives data
 		if ((millisec - MovementIntervalMark) >= MovementInterval)
 		{
-			Move();								// Read from the GPS and display to the screen
+			move();								// Read from the GPS and display to the screen
 			MovementIntervalMark = millisec;
 		}
 
