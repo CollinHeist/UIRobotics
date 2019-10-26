@@ -4,4 +4,5 @@ build/default/production/_ext/1472/hardware.o:  \
 ../uart4.h  \
 ../led7.h  \
 ../LCDlib.h  \
-../RC.h 
+../RC.h  \
+../main.h 

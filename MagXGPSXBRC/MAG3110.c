@@ -42,7 +42,7 @@ I2C_RESULT MAG3110_reset(void);
 void MAG3110_EnvCalibrate();
 
 // Global Variables
-extern int16_t led_value;
+extern int16_t ledValue;
 extern int angle;
 extern int deg;
 

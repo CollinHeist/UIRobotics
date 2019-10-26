@@ -106,6 +106,7 @@
 	#define DEG_PER_RAD 				(180.0/3.14159265358979)
 
 	#include <plib.h>
+	#include <stdint.h>
 
 	// Function Prototypes
 	BOOL       MAG3110_initialize(void);

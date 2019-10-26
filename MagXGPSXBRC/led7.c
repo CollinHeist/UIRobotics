@@ -5,8 +5,8 @@
 #include <plib.h>
 #include <stdint.h>
 
-int16_t led_value = 0;
-BOOL led_flag = 0;
+int16_t ledValue = 0;
+BOOL ledFlag = 0;
 
 void seg7_init(void) {
 	Seg7cfg();
@@ -262,27 +262,27 @@ static int led_digit;			   // Seven-segment LED digit display value
 
 	if((millisec % 2) == 0)				// Measure out 10 tenths of a second 
 	{
-		if(led_flag && (led_value<10000) && (led_value > -1000))
+		if(ledFlag && (ledValue<10000) && (ledValue > -1000))
 		{
 			switch(led_disp)	// Determine the display digit
 			{
 				case 0:
-					led_digit = abs(led_value) % 10;		// Units digit
+					led_digit = abs(ledValue) % 10;		// Units digit
 					break;
 				case 1:
-					led_digit = (abs(led_value) % 100)/10;  // Tens digit
+					led_digit = (abs(ledValue) % 100)/10;  // Tens digit
 					break;
 				case 2:
-					led_digit = (abs(led_value) % 1000)/100;	// 100s digit
+					led_digit = (abs(ledValue) % 1000)/100;	// 100s digit
 					break;
 				case 3:
-					if((led_value < 0) && ( led_value > -1000)) // Test maximum neg.
+					if((ledValue < 0) && ( ledValue > -1000)) // Test maximum neg.
 					{
 						led_digit = -1;		   // Assign digit 4 to negative 1
 					}
 					else
 					{
-						led_digit = led_value/1000;   // 1K digit
+						led_digit = ledValue/1000;   // 1K digit
 					}
 			}
 			if(led_disp == SET_DP)

@@ -31,6 +31,9 @@
 	#define GPGGA		   2
 	#define GPGLL		   3
 
+	// states for the program
+	typedef enum { READ_GPS, READ_MAG, MOVE, IDLE } State;
+
 #endif /* _MAIN_H */
 
 /* ***************************************************************************/

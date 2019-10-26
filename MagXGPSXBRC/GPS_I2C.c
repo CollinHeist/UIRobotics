@@ -11,7 +11,20 @@
 #include "swDelay.h"
 
 // Global Variables
-BYTE gpsStr[256]= {0};
+BYTE gpsStr[256] = { 0 };
+static GPSTime gps;
+
+/* ------------------------------- getGPSData --------------------------------
+  @ Summary
+	 returns the object denoting our gps state and data
+  @ Parameters
+	 None
+  @ Returns
+	 gps_time structure defined in GPS_I2C.h
+  ---------------------------------------------------------------------------- */
+GPSTime getGPSData() {
+	return gps;
+}
 
 /* ------------------------------- setGPS_RMC --------------------------------
   @ Summary
@@ -61,9 +74,14 @@ int GPS_DECODE_RMC(BYTE *str) {
 						   &gps.utc_time,&gps.status,&gps.lat,&gps.ns,&gps.lon,\
 						   &gps.ew,&gps.speed,&gps.angle,&gps.date,&gps.mode,\
 						   &gps.cksum);
+
+				if (gps.status == 'V')
+				{
+
+				}
 			}
 			else {
-				printf("%s --> %d \n\r", s2, len - 1);
+				//printf("%s --> %d ", s2, len - 1);
 				len = 0;
 			}
 		}

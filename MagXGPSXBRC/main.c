@@ -1,25 +1,15 @@
 // System included files
-#include "config_bits.h"
-#include "hardware.h"
+#include "config_bits.h"// misc. hardware...
+#include "hardware.h"	// ...
 #include "main.h"
-#include "Pot.h"
-#include <plib.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
 #include "i2c_lib.h"
 #include "GPS_I2C.h"
-#include "Gamepad.h"
+#include "Gamepad.h"	// library for communication with servo-controlling gamepad
 #include "ADC_TEMP.h"
 #include "Notice.h"
-
-// Platform common included files
 #include "swDelay.h"
-
-// Application included files
-#include "uart4.h"  // Monitor UART
-#include "uart2.h"  // GPS UART
+#include "uart4.h"		// Monitor UART
+#include "uart2.h"		// GPS UART
 #include "led7.h"
 #include "LCDlib.h"
 #include "RC.h"
@@ -27,28 +17,34 @@
 #include "MAG3110.h"
 #include "Stepper.h"
 
-#define RC_CW   0   // RC Direction of rotation
-#define RC_CCW  1
+#include <plib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
 
+#define _SUPPRESS_PLIB_WARNING
+
+// function prototypes
 char GetMsg(char Char) { return Char;}
 int InitializeModules(I2C_RESULT* I2cResultFlag);
-void print_pretty_table(int use_uart);
 I2C_RESULT InitMag();
 
 // Global variables
-static char Char;
-int gps_message = 0;        // Active GPS sentence 
-extern int16_t led_value;
-extern BOOL led_flag;
+static int gpsMessage = 0;        // Active GPS sentence 
+extern int16_t ledValue;
+extern BOOL ledFlag;
+
+static currentState = IDLE;
 
 int main(void)
 {
-	// Need to disable global interrupts
+	// TODO: Need to disable global interrupts
 
 	// Local variables
 	I2C_RESULT I2cResultFlag;   // I2C Init Result flag
-    I2C_RESULT I2cReadFlag;   // I2C Init Result flag
-    int16_t x, y, z;
+	I2C_RESULT I2cReadFlag;   // I2C Init Result flag
+	int16_t x, y, z;
 	unsigned GPSInterval = 1000;
 	unsigned MagInterval = 60;
 	unsigned ADCTemperatureInterval = 60000;
@@ -61,7 +57,7 @@ int main(void)
 	unsigned ActualMagInterval = MagInterval;
 	unsigned ActualADCInterval = ADCTemperatureInterval;
 	unsigned ActualMovementInterval = MovementInterval;
-    float heading = 0;
+	float heading = 0;
 
 	// Init. the DMA flag
 	DmaIntFlag = 0;
@@ -70,13 +66,15 @@ int main(void)
 	I2cResultFlag = InitializeModules(&I2cResultFlag);	// Init all I/O modules
 	DmaUartRxInit();
 
-	// Re-enable global interrupts
+	// TODO: Re-enable global interrupts
 
-    // Set the default position
+	// Set the default position
 	SetDefaultServoPosition();
 
-    MAG3110_EnvCalibrate();
-    
+	// TODO: Fix the environmental calibration for the magnotometer based on the environment 
+		// so, it will help to deal with nearby metallic objects, etc..
+	// MAG3110_EnvCalibrate();
+
 	while (1)  // Forever process loop	
 	{
 		if (DmaIntFlag)          // clear the interrupt flag
@@ -96,8 +94,13 @@ int main(void)
 		// GPS receives data
 		if ((millisec - GPSIntervalMark) >= GPSInterval)
 		{
-			//I2cReadFlag = ReportGPS(TRUE);	
-			//GPSIntervalMark = millisec;
+			I2cReadFlag = ReportGPS(FALSE);
+			GPSIntervalMark = millisec;
+
+			// get our gps data
+			GPSTime gpsData = getGPSData();
+
+			printf("Time %d\n", gpsData.utc_time);
 		}
 
 		// GPS receives data
@@ -107,28 +110,26 @@ int main(void)
 			MovementIntervalMark = millisec;
 		}
 
-        
 		// Mag receives data
 		if ((millisec - MagIntervalMark) >= MagInterval)
 		{
-           I2cResultFlag = MAG3110_readMag(&x,&y,&z);
-            
-           if(I2cResultFlag == I2C_SUCCESS)
-           {
-                MAG3110_readHeading(&heading);
-                if(heading < 0) heading += 360;
-                if(heading >= 360) heading -= 360;
-                clrLCD();
-                printf("%f,%d,%d,%d\n\r", heading, x, y, z);  
-           }
-           else
-           {
-               printf("Readmag error\n");
-           }
-                     
+			I2cResultFlag = MAG3110_readMag(&x, &y, &z);
+
+			if (I2cResultFlag == I2C_SUCCESS)
+			{
+				MAG3110_readHeading(&heading);
+				if (heading < 0) heading += 360;
+				if (heading >= 360) heading -= 360;
+				clrLCD();
+				// printf("%f,%d,%d,%d\n\r", heading, x, y, z);  
+			}
+			else
+			{
+				printf("Readmag error\n");
+			}
+
 			MagIntervalMark = millisec;
 		}
-         
 
 		// Get data from the ADC temperature sensors
 		if ((millisec - ADCIntervalMark) >= ADCTemperatureInterval)
@@ -136,40 +137,10 @@ int main(void)
 			read_temperature_store();			// Reads in the temperature
 			ADCIntervalMark = millisec;
 		}
-
 	}
 	return EXIT_FAILURE; // Code execution should never get to this statement 
 }
 
-//
-// print_pretty_table()
-//
-//
-void print_pretty_table(int use_uart)
-{
-	char lcdStr[40];
-	int tempC, tempF;
-    int16_t x,y,z;
-	tempC = (int)((35 + ((10 * 0) - (10 * 0)) / 452));
-	tempF = ((tempC * 9) / 5) + 32;
-    
-    I2C_RESULT i2cFlag = MAG3110_readMag(&x,&y,&z);
-
-	if (use_uart)
-	{
-		printf("RAW data values\n\r");
-		printf("X:%6d ", x);
-		printf("Y:%6d ", y);
-		printf("Z:%6d\n\r ", z);
-	}
-	sprintf(lcdStr, "X:%5d Y:%5d", x, y);
-	clrLCD();
-	putsLCD(lcdStr);
-	gotoLCD(16);
-	sprintf(lcdStr, "T1:%5d T:%5d", GetTemp1(), GetTemp2());
-	putsLCD(lcdStr);
-	led_flag = 1;   // Enable 4 digit 7 segment LED display
-}
 //
 // InitializeModules()
 //
@@ -185,7 +156,7 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
 	putsU2("\n\rXBee online\n\r");		// Send message to PC
 	init_analog();						// Initialize AN2 to read Pot
 	init_temperature();
-	led_flag = 1;						// Enable 4 digit 7 segment LED display
+	int ledFlag = 1;						// Enable 4 digit 7 segment LED display
     int16_t x,y,z;
     
     *I2cResultFlag = I2C_Init(I2C1, 100000);
@@ -198,7 +169,11 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
          printf("MAG3110 failed to init");
      }
     
-    
+    /*
+
+	// this is commented out so we can focus on the gps only right now
+	// TODO: remove these comments
+
     printf("Magnetometer is calibrating\n\r");
     MAG3110_enterCalMode();
         
@@ -214,6 +189,7 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
     {
         printf("Magnetometer is calibrated\n\r");
     }
+	*/
     
     Result = setGPS_RMC();
     
@@ -251,5 +227,4 @@ I2C_RESULT InitMag()
 	{
 		printf("Magnetometer is calibrated\n\r");
 	}
-
 }

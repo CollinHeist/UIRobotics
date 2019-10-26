@@ -3,7 +3,6 @@ build/default/production/_ext/1472/main.o:  \
 ../config_bits.h  \
  ../hardware.h  \
 ../main.h  \
-../Pot.h  \
 ../i2c_lib.h  \
 ../GPS_I2C.h  \
 ../Gamepad.h  \

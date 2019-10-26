@@ -80,7 +80,7 @@
 
 	#include <plib.h>
 	
-	struct gps_time gps;
+	typedef struct gps_time GPSTime;
 	extern BYTE gpsStr[256];
     
 	/* ---------------------- Public Function declarations ------------------- */
@@ -90,4 +90,5 @@
 	I2C_RESULT sendMTKpacket(char *command);
 	I2C_RESULT setGPS_RMC(void);
 	BYTE calcCRCforMTK(char *sentence, char *crcStr); //XORs all bytes between $ and *
+	GPSTime getGPSData();
 #endif

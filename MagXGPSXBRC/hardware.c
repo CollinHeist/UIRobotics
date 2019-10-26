@@ -5,9 +5,51 @@
 #include "led7.h"
 #include "LCDlib.h"
 #include "RC.h"
+#include "main.h"
 
+static const int queueSize = 10;
+static State currentState[10];
+static int backOfQueue = 0;
 unsigned int millisec = 0;
 	
+static unsigned GPSInterval;
+static unsigned MagInterval;
+static unsigned ADCTemperatureInterval;
+static unsigned MovementInterval;
+static unsigned ActualGPSInterval;
+static unsigned GPSIntervalMark;
+static unsigned MagIntervalMark;
+static unsigned ADCIntervalMark;
+static unsigned MovementIntervalMark;
+static unsigned ActualMagInterval;
+static unsigned ActualADCInterval;
+static unsigned ActualMovementInterval;
+
+//
+// Adds a new state to the back of our state queue
+//
+//
+void addState(State state)
+{
+	backOfQueue++;
+	if(backOfQueue < queueSize)
+		currentState[backOfQueue] = state;
+}
+
+void popFront()
+{
+	int i = 0;
+	if (backOfQueue)
+	{
+		for (i = 1; i < backOfQueue; i++)
+		{
+			// move all items forward one
+			currentState[i - 1] = currentState[i];
+		}
+		backOfQueue--;
+	}
+}
+
 void Hardware_Setup(void) {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Statement configure cache, wait states and peripheral bus clock
@@ -18,7 +60,7 @@ void Hardware_Setup(void) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	SYSTEMConfig(GetSystemClock(), SYS_CFG_WAIT_STATES | SYS_CFG_PCACHE);
 	DDPCONbits.JTAGEN = 0;	// Statement is required to use Pin RA0 as IO
-  
+
 	ALL_DIGITAL_IO();		// Sets all LED, switches and push buttons for digital IO
 	SET_MIC_ANALOG();		// Sets microphone input for analog
 	SET_POT_ANALOG();		// Sets ANALOG INPUT CONTROL for analog input
@@ -36,6 +78,19 @@ void Hardware_Setup(void) {
 
 	//EnableCNA15();
 	//ConfigCNPullups();
+	
+	GPSInterval = 1000;
+	MagInterval = 60;
+	ADCTemperatureInterval = 60000;
+	MovementInterval = 20;
+	ActualGPSInterval = GPSInterval;
+	GPSIntervalMark = 0;
+	MagIntervalMark = 0;
+	ADCIntervalMark = 0;
+	MovementIntervalMark = 0;
+	ActualMagInterval = MagInterval;
+	ActualADCInterval = ADCTemperatureInterval;
+	ActualMovementInterval = MovementInterval;
 	
 }
 
@@ -67,6 +122,7 @@ static void initTimer1(void) {
 	 Processes the code associated with a Timer 1 interrupt. It is responsible
 	 for generating the signals for each RC channel in two phases; the three 
 	 state FSM controls the on period and the off period.
+	 This also manages our internal state.
   @ Parameters
 	 None, it is an ISR
   @ Returns
@@ -75,10 +131,11 @@ static void initTimer1(void) {
 void __ISR(_TIMER_1_VECTOR, IPL2SOFT) Timer1Handler(void) {
 	static ms = 100;			// Millisecond counter
 	static int onesec = 1000;	// One second counter
-
-	ms--;						// Increment the millisecond counter
+	BOOL change = FALSE;
+	
+	ms--;						
 	if (ms <= 0) {
-		millisec++;		
+		millisec++;		// Increment the millisecond counter
 		ms = 100;
 		onesec--;
 		if (onesec <= 0) 
@@ -87,7 +144,18 @@ void __ISR(_TIMER_1_VECTOR, IPL2SOFT) Timer1Handler(void) {
 			onesec = 1000;
 		}
 		updateLED7();
+		change = TRUE;
 	}
+
+	// if there was a change, then we can add to all of our variables
+	if(change)
+	{
+		
+	}
+
+	// TODO: count how much time has passed, and check each of the operations available
+
+
 	rcUpdateServos();		 	// This updates the RC outputs for the servos
 	rcUpdateSpeedControllers();	// This updates the RC outputs for the speed controllers
 	mT1ClearIntFlag();			// Clear the interrupt flag	
