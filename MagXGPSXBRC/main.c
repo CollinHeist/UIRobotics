@@ -8,11 +8,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <math.h>
 #include "i2c_lib.h"
 #include "GPS_I2C.h"
 #include "Gamepad.h"
 #include "ADC_TEMP.h"
-#include "Notice.h"
 
 // Platform common included files
 #include "swDelay.h"
@@ -31,6 +31,7 @@
 #define RC_CCW  1
 
 char GetMsg(char Char) { return Char;}
+int calc_ck_sum(char *str);
 int InitializeModules(I2C_RESULT* I2cResultFlag);
 void print_pretty_table(int use_uart);
 I2C_RESULT InitMag();
@@ -41,6 +42,129 @@ int gps_message = 0;        // Active GPS sentence
 extern int16_t led_value;
 extern BOOL led_flag;
 
+//*
+int main(void)
+{
+	// Local variables
+	I2C_RESULT I2cResultFlag;   // I2C Init Result flag
+	I2C_RESULT I2cReadFlag;     // I2C Read result flag
+
+	unsigned GPSInterval = 1000;
+    
+	unsigned MagInterval = 150000;
+	unsigned ADCTemperatureInterval = 250000;
+
+	unsigned ActualGPSInterval = GPSInterval;   
+	unsigned ActualMagInterval = MagInterval;
+	unsigned ActualADCInterval = ADCTemperatureInterval;
+    
+    DmaIntFlag = 0;
+    
+	// Initialization
+	I2cResultFlag = InitializeModules(&I2cResultFlag);		// Initialize all I/O modules
+//	MagInitMessage();							// Initialize mag and send message
+//    DmaUartRxInit(); 
+
+    
+//    SetDefaultServoPosition();  // Initially return the servo to the default position
+    
+//SAM"S TEMPORARY CODE TO FILL TIME AND MAKE/TEST STUFF
+    //Variables:
+    char textLCD[40] = {0};
+    int stateLCD = 0;
+    int stateLCDlast = stateLCD;
+    float lat, lon;
+    float memHeading;
+    //Timers
+    int updateTimer1 = 0;  //Timer for LCD update
+	
+    while(1)
+    {
+       // GPS receives data
+		if (ActualGPSInterval == 0) //Update movement on specified interval
+		{
+            Move(); //Read and update controller inputs
+			ActualGPSInterval = GPSInterval;	// Reset the interval
+			I2cReadFlag = ReportGPS(TRUE);		// Read from the GPS and display to the screen
+		}
+		else
+		{
+			ActualGPSInterval--;				// Decrement the counter
+		}
+        
+        //CHANGE LCD OUTPUT
+        if(BTNC()){ //Center button
+            if(SW0()){
+                stateLCD = 0;
+            }
+            else{
+                
+            }
+        }
+        if(BTNU()){ //Top button
+            if(SW0()){
+                stateLCD = 1;
+            }
+            else{
+                
+            }
+        }
+        if(BTNL()){ //Left button
+            if(SW0()){
+                stateLCD = 2;
+            }
+            else{
+                
+            }
+        }
+        if(BTND()){ //Bottom button
+            if(SW0()){
+                stateLCD = 3;
+            }
+            else{
+                
+            }
+        }
+        
+        
+        //UPDATE LCD
+        if(updateTimer1 == 10000 || stateLCDlast != stateLCD){
+            switch(stateLCD){
+                case 0: //Show current coordinates
+                    sprintf(textLCD,"LAT:%f LONG:%f", gps.lat , gps.lon );
+                    break;
+                case 1: //Save current coordinates into memory
+                    sprintf(textLCD, "READING LOCATION TO MEMORY");
+                    lat = gps.lat;
+                    lon = gps.lon;
+                    stateLCD = 2;
+                    break;
+                case 2: //Display memorized coordinates
+                    sprintf(textLCD, "MEM:LAT: %f LONG: %f", lat , lon );
+                    break;
+                case 3: //Display Compass heading to memorized coordinates
+                    memHeading = HeadingAngle( lon, lat, gps.lon, gps.lat);
+                    sprintf(textLCD, "Heading to Mem. Loc.: %f", memHeading );
+                    break;
+                case 4: //Display Preprogrammed destination coordinates
+                    
+                    break;
+                case 5: //
+                    
+                    break;
+            }
+            clrLCD();
+            putsLCD(textLCD);
+            updateTimer1 = 1;
+            stateLCDlast = stateLCD;
+        }
+        updateTimer1++;
+    }
+    return EXIT_FAILURE;
+}
+//*/
+
+/*
 int main(void)
 {
 	// Need to disable global interrupts
@@ -79,7 +203,7 @@ int main(void)
     
 	while (1)  // Forever process loop	
 	{
-		if (DmaIntFlag)          // clear the interrupt flag
+		if (DmaIntFlag)          // clear the interrupt flag) 
 		{
 			DmaIntFlag = 0;                       // Reset DMA Rx block flag
 			printf("message received %s\n", dmaBuff);
@@ -96,8 +220,8 @@ int main(void)
 		// GPS receives data
 		if ((millisec - GPSIntervalMark) >= GPSInterval)
 		{
-			//I2cReadFlag = ReportGPS(TRUE);	
-			//GPSIntervalMark = millisec;
+			I2cReadFlag = ReportGPS(TRUE);	
+			GPSIntervalMark = millisec;
 		}
 
 		// GPS receives data
@@ -140,6 +264,7 @@ int main(void)
 	}
 	return EXIT_FAILURE; // Code execution should never get to this statement 
 }
+//*/
 
 //
 // print_pretty_table()
@@ -197,8 +322,7 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
      {
          printf("MAG3110 failed to init");
      }
-    
-    
+     
     printf("Magnetometer is calibrating\n\r");
     MAG3110_enterCalMode();
         
