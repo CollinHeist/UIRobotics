@@ -52,8 +52,8 @@ int main(void)
 
 	// Local variables
 	I2C_RESULT I2cResultFlag;   // I2C Init Result flag
-    I2C_RESULT I2cReadFlag;   // I2C Init Result flag
-    int16_t x, y, z;
+	I2C_RESULT I2cReadFlag;   // I2C Init Result flag
+	int16_t x, y, z;
 	unsigned GPSInterval = 1000;
 	unsigned MagInterval = 60;
 	unsigned ADCTemperatureInterval = 60000;
@@ -66,7 +66,7 @@ int main(void)
 	unsigned ActualMagInterval = MagInterval;
 	unsigned ActualADCInterval = ADCTemperatureInterval;
 	unsigned ActualMovementInterval = MovementInterval;
-    float heading = 0;
+	float heading = 0;
 
 	// Init. the DMA flag
 	DmaIntFlag = 0;
@@ -77,11 +77,11 @@ int main(void)
 
 	// Re-enable global interrupts
 
-    // Set the default position
+	// Set the default position
 	SetDefaultServoPosition();
 
-    MAG3110_EnvCalibrate();
-    
+	MAG3110_EnvCalibrate();
+
 	while (1)  // Forever process loop	
 	{
 		if (DmaIntFlag)          // clear the interrupt flag
@@ -90,7 +90,7 @@ int main(void)
 			printf("message received %s\n", dmaBuff);
 			DmaUartRx();
 			HandleInput();						// Handles all user input from the XB device
-			putsU2("A");
+			putsU2("A");						// sends our acknowledge back
 		}
 
 		if (SW0())
@@ -112,28 +112,28 @@ int main(void)
 			MovementIntervalMark = millisec;
 		}
 
-        
+
 		// Mag receives data
 		if ((millisec - MagIntervalMark) >= MagInterval)
 		{
-           I2cResultFlag = MAG3110_readMag(&x,&y,&z);
-            
-           if(I2cResultFlag == I2C_SUCCESS)
-           {
-                MAG3110_readHeading(&heading);
-                if(heading < 0) heading += 360;
-                if(heading >= 360) heading -= 360;
-                clrLCD();
-                printf("%f,%d,%d,%d\n\r", heading, x, y, z);  
-           }
-           else
-           {
-               printf("Readmag error\n");
-           }
-                     
+			I2cResultFlag = MAG3110_readMag(&x, &y, &z);
+
+			if (I2cResultFlag == I2C_SUCCESS)
+			{
+				MAG3110_readHeading(&heading);
+				if (heading < 0) heading += 360;
+				if (heading >= 360) heading -= 360;
+				clrLCD();
+				printf("%f,%d,%d,%d\n\r", heading, x, y, z);
+			}
+			else
+			{
+				printf("Readmag error\n");
+			}
+
 			MagIntervalMark = millisec;
 		}
-         
+
 
 		// Get data from the ADC temperature sensors
 		if ((millisec - ADCIntervalMark) >= ADCTemperatureInterval)
@@ -154,11 +154,11 @@ void print_pretty_table(int use_uart)
 {
 	char lcdStr[40];
 	int tempC, tempF;
-    int16_t x,y,z;
+	int16_t x, y, z;
 	tempC = (int)((35 + ((10 * 0) - (10 * 0)) / 452));
 	tempF = ((tempC * 9) / 5) + 32;
-    
-    I2C_RESULT i2cFlag = MAG3110_readMag(&x,&y,&z);
+
+	I2C_RESULT i2cFlag = MAG3110_readMag(&x, &y, &z);
 
 	if (use_uart)
 	{
@@ -175,13 +175,14 @@ void print_pretty_table(int use_uart)
 	putsLCD(lcdStr);
 	led_flag = 1;   // Enable 4 digit 7 segment LED display
 }
+
 //
 // InitializeModules()
 //
 //
 int InitializeModules(I2C_RESULT* I2cResultFlag)
 {
-    BOOL Result;
+	BOOL Result;
 	Hardware_Setup();					// Initialize common IO
 	uart4_init(38400, NO_PARITY);		// PC Terminal
 	uart2_init(9600, NO_PARITY);		// XBEE
@@ -191,38 +192,38 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
 	init_analog();						// Initialize AN2 to read Pot
 	init_temperature();
 	led_flag = 1;						// Enable 4 digit 7 segment LED display
-    int16_t x,y,z;
-    
-    *I2cResultFlag = I2C_Init(I2C1, 100000);
-    initChangeNotice();
-    stepper_init();
-    
-    // Mag init procedure
-     if(!(Result = MAG3110_initialize()))
-     {
-         printf("MAG3110 failed to init");
-     }
-    
-    
-    printf("Magnetometer is calibrating\n\r");
-    MAG3110_enterCalMode();
-        
-    while(MAG3110_isCalibrating())
-    {
-        MAG3110_calibrate();
-        MAG3110_readMag(&x,&y,&z);
-        printf("%d,%d,%d\n\r",x,y,z);
-        DelayMs(10);
-    }
-    
-    if(MAG3110_isCalibrated())
-    {
-        printf("Magnetometer is calibrated\n\r");
-    }
-    
-    Result = setGPS_RMC();
-    
-	return Result; 
+	int16_t x, y, z;
+
+	*I2cResultFlag = I2C_Init(I2C1, 100000);
+	initChangeNotice();
+	stepper_init();
+
+	// Mag init procedure
+	if (!(Result = MAG3110_initialize()))
+	{
+		printf("MAG3110 failed to init");
+	}
+
+
+	printf("Magnetometer is calibrating\n\r");
+	MAG3110_enterCalMode();
+
+	while (MAG3110_isCalibrating())
+	{
+		MAG3110_calibrate();
+		MAG3110_readMag(&x, &y, &z);
+		printf("%d,%d,%d\n\r", x, y, z);
+		DelayMs(10);
+	}
+
+	if (MAG3110_isCalibrated())
+	{
+		printf("Magnetometer is calibrated\n\r");
+	}
+
+	Result = setGPS_RMC();
+
+	return Result;
 }
 
 //
@@ -233,7 +234,7 @@ I2C_RESULT InitMag()
 {
 	I2C_RESULT IResult;
 	BOOL Result;
-    int16_t x,y,z;
+	int16_t x, y, z;
 
 	// Mag init procedure
 	if (!(Result = MAG3110_initialize()))
