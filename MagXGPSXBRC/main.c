@@ -14,6 +14,11 @@
 #include "ADC_TEMP.h"
 #include "Notice.h"
 
+// NOTE:	
+// WARNING: DO NOT PUSH TO MAIN! FOR VS ONLY
+typedef char I2C_RESULT;
+typedef char BOOL;
+
 // Platform common included files
 #include "swDelay.h"
 
