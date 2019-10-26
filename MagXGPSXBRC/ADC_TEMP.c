@@ -2,8 +2,10 @@
 #include "hardware.h"
 #include <plib.h>
 
-static int Temp1;
-static int Temp2;
+static int temp1;
+static int temp2;
+
+
 
 /* -------------------------------- init_temps -------------------------------
   @ Summary
@@ -13,7 +15,7 @@ static int Temp2;
   @ Returns
 	 None
   ---------------------------------------------------------------------------- */
-void init_temperature(void) {
+void initTemperature(void) {
 	TRISGbits.TRISG6 = 1;	// Set pin as input
 	ANSELGbits.ANSG6 = 0;	// Set pin as analog input
 	TRISGbits.TRISG9 = 1;	// Set pin as input
@@ -29,7 +31,7 @@ void init_temperature(void) {
 	while (!mAD1GetIntFlag()) {}
 }
 
-/* ----------------------------- read_temperature ----------------------------
+/* ----------------------------- readTemperature ----------------------------
   @ Summary
 	 Function to read data from the Analog to Digital Converter.
   @ Parameters
@@ -38,7 +40,7 @@ void init_temperature(void) {
   @ Returns
 	 None, adjusts the values of t1 and t2
   ---------------------------------------------------------------------------- */
-void read_temperature(int *t1, int *t2)  {
+void readTemperature(int *t1, int *t2)  {
 	int offset;
 	int adc1, adc2;
 	float v1, v2, tempC;
@@ -60,11 +62,20 @@ void read_temperature(int *t1, int *t2)  {
 	tempC = (v1 - .5) * 100.0;          //Remove the .5 volt offset of sensor, and then multiply by the 100 degrees C per volt
     *t2   = ((tempC * 9) / 5) + 32;     //Convert from C to F
     
-    Temp1 = *t1;
-    Temp2 = *t2;
+    temp1 = *t1;
+    temp2 = *t2;
 }
 
-void read_temperature_store()  {
+
+/* -------------------------------- readTemperatureStore -------------------------------
+  @ Summary
+	 readTemperatureStore's function is to store temperature values of the motor in readable terms for an American (aka Fahrenheit)
+  @ Parameters
+	 None
+  @ Returns
+	 None
+  ---------------------------------------------------------------------------- */
+void readTemperatureStore()  {
 	int offset;
 	int adc1, adc2;
 	float v1, v2, tempC;
@@ -79,35 +90,46 @@ void read_temperature_store()  {
 	/* -------------------- Convert the first ADC Channel -------------------- */
 	v1    = ((adc1 * 3.3) / ADCMAX);    //Convert output bits from TMP36 to actual voltage on sensor
 	tempC = (v1 - .5) * 100.0;          //Remove the .5 volt offset of sensor, and then multiply by the 100 degrees C per volt
-    Temp1   = ((tempC * 9) / 5) + 32;     //Convert from C to F
+    temp1   = ((tempC * 9) / 5) + 32;     //Convert from C to F
 
 	/* -------------------- Convert the second ADC Channel ------------------- */
     v1    = ((adc2 * 3.3) / ADCMAX);    //Convert output bits from TMP36 to actual voltage on sensor
 	tempC = (v1 - .5) * 100.0;          //Remove the .5 volt offset of sensor, and then multiply by the 100 degrees C per volt
-    Temp2   = ((tempC * 9) / 5) + 32;     //Convert from C to F
+    temp2   = ((tempC * 9) / 5) + 32;     //Convert from C to F
 }
 
 // Function to return a value of how much to scale the motor speed by
-void check_thresh(float *motor1_scale, float *motor2_scale) {
+/* -------------------------------- checkThresh -------------------------------
+  @ Summary
+	 checkThresh's function is to act as a watchdog when checking temperature values of the motor,
+		if the motor is too hot, the motor will be scaled back to prevent increasing temperatures,
+		and to prevent the motor from spinning in a counter direction to its previous.
+		If the motor is within a healthy range, the motor will be allowed to continue running.
+  @ Parameters
+	motor1scale and motor2scale indicates the motors rotational speed
+  @ Returns
+	 None
+  ---------------------------------------------------------------------------- */
+void checkThresh(float *motor1Scale, float *motor2Scale) {
 	int t1 = 0;
 	int t2 = 0;
 
 	// Read current motor temperatures, set scale to decimal descale if out-of-range
-	read_temperature(&t1, &t2);	// Read current motor temperatures
-	*motor1_scale = (t1 >= SLOW_TEMP) ? 1 - (t1 - SLOW_TEMP) / (STOP_TEMP - SLOW_TEMP) : 1.0;
-	*motor2_scale = (t2 >= SLOW_TEMP) ? 1 - (t2 - SLOW_TEMP) / (STOP_TEMP - SLOW_TEMP) : 1.0;
+	readTemperature(&t1, &t2);	// Read current motor temperatures
+	*motor1Scale = (t1 >= SLOW_TEMP) ? 1 - (t1 - SLOW_TEMP) / (STOP_TEMP - SLOW_TEMP) : 1.0;
+	*motor2Scale = (t2 >= SLOW_TEMP) ? 1 - (t2 - SLOW_TEMP) / (STOP_TEMP - SLOW_TEMP) : 1.0;
 
 	// If the motor is beyond stopping temperature, set scale to 0.0
-	*motor1_scale = (*motor1_scale < 0.0) ? 0.0 : *motor1_scale;
-	*motor2_scale = (*motor2_scale < 0.0) ? 0.0 : *motor2_scale;
+	*motor1Scale = (*motor1Scale < 0.0) ? 0.0 : *motor1Scale;
+	*motor2Scale = (*motor2Scale < 0.0) ? 0.0 : *motor2Scale;
 }
 
-int GetTemp1()
+int getTemp1()
 {
-    return Temp1; 
+    return temp1; 
 }
 
-int GetTemp2()
+int getTemp2()
 {
-    return Temp2;
+    return temp2;
 }
