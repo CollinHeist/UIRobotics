@@ -48,9 +48,9 @@ For those have not yet used Github, I recommend reading through [this](https://g
 	 *		parameterOne: Describe the purpose or meaning of this first parameter.
 	 *		paramterTwo: Describe the purpose and meaning of this second paramter.
 	 *	Return
-	 		What the return value means.
+	 *		What the return value means.
 	 *	Notes
-	 		(Optional) Any additional notes that the user should know about this function.
+	 *		(Optional) Any additional notes that the user should know about this function.
 	 **/
 	 float testFunction(int paramaterOne, int* parameterTwo) {
 	 	// Code
