@@ -24,7 +24,7 @@ For those have not yet used Github, I recommend reading through [this](https://g
 		// Test code
 	}
 	```
-* Make all _macros_ (__#define__ statements) __SNAKE_CASE__.
+* Make all _macros_ (__#define__ statements) __snake case__.
 	```c
 	#define TEST_MACRO_NAME		( 500 )
 	```
