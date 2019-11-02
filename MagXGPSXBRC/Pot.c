@@ -10,9 +10,9 @@ void init_analog(void) {
 
 int readAnalog(void)
 {
-  unsigned int an2;		// conversion result as read from result buffer
-  unsigned int an4;		// conversion result as read from result buffer
-  unsigned int offset;	// buffer offset to point to the base of the idle buffer	
+	unsigned int an2;		// conversion result as read from result buffer
+	unsigned int an4;		// conversion result as read from result buffer
+	unsigned int offset;	// buffer offset to point to the base of the idle buffer	
 
 	ConvertADC10();
 	while (!mAD1GetIntFlag()) {}	// wait for the first conversion to complete so there will be vaild data in ADC result registers

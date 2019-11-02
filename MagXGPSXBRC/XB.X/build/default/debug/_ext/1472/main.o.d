@@ -1,0 +1,20 @@
+build/default/debug/_ext/1472/main.o:  \
+../main.c  \
+../config_bits.h  \
+ ../hardware.h  \
+../main.h  \
+../Pot.h  \
+../i2c_lib.h  \
+../GPS_I2C.h  \
+../Gamepad.h  \
+ ../ADC_TEMP.h  \
+../Notice.h  \
+../swDelay.h  \
+../uart4.h  \
+../uart2.h  \
+../led7.h  \
+ ../LCDlib.h  \
+../RC.h  \
+../DMA_UART2.h  \
+../MAG3110.h  \
+../Stepper.h 

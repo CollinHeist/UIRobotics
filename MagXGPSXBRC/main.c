@@ -75,7 +75,7 @@ int main(void)
     // Set the default position
 	SetDefaultServoPosition();
 
-    MAG3110_EnvCalibrate();
+    //MAG3110_EnvCalibrate();
     
 	while (1)  // Forever process loop	
 	{
@@ -176,7 +176,7 @@ void print_pretty_table(int use_uart)
 //
 int InitializeModules(I2C_RESULT* I2cResultFlag)
 {
-    BOOL Result;
+	BOOL Result;
 	Hardware_Setup();					// Initialize common IO
 	uart4_init(38400, NO_PARITY);		// PC Terminal
 	uart2_init(9600, NO_PARITY);		// XBEE
@@ -186,38 +186,37 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
 	init_analog();						// Initialize AN2 to read Pot
 	init_temperature();
 	led_flag = 1;						// Enable 4 digit 7 segment LED display
-    int16_t x,y,z;
-    
-    *I2cResultFlag = I2C_Init(I2C1, 100000);
-    initChangeNotice();
-    stepper_init();
-    
-    // Mag init procedure
-     if(!(Result = MAG3110_initialize()))
-     {
-         printf("MAG3110 failed to init");
-     }
-    
-    
-    printf("Magnetometer is calibrating\n\r");
-    MAG3110_enterCalMode();
-        
-    while(MAG3110_isCalibrating())
-    {
-        MAG3110_calibrate();
-        MAG3110_readMag(&x,&y,&z);
-        printf("%d,%d,%d\n\r",x,y,z);
-        DelayMs(10);
-    }
-    
-    if(MAG3110_isCalibrated())
-    {
-        printf("Magnetometer is calibrated\n\r");
-    }
-    
-    Result = setGPS_RMC();
-    
-	return Result; 
+	int16_t x, y, z;
+
+	*I2cResultFlag = I2C_Init(I2C1, 100000);
+	initChangeNotice();
+	stepper_init();
+
+	// Mag init procedure
+	if (!(Result = MAG3110_initialize()))
+	{
+		printf("MAG3110 failed to init");
+	}
+
+	printf("Magnetometer is calibrating\n\r");
+	MAG3110_enterCalMode();
+
+	while (MAG3110_isCalibrating())
+	{
+		MAG3110_calibrate();
+		//MAG3110_readMag(&x,&y,&z);
+		//printf("%d,%d,%d\n\r",x,y,z);
+		//DelayMs(10);
+	}
+
+	if (MAG3110_isCalibrated())
+	{
+		printf("Magnetometer is calibrated\n\r");
+	}
+
+	Result = setGPS_RMC();
+
+	return Result;
 }
 
 //

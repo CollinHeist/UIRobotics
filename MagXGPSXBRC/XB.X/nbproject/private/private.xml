@@ -3,12 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< Updated upstream
             <file>file:/D:/University%20of%20Idaho/Extracirricular/Robotics%20Club/2019/GitFolder/MagXGPSXBRC/Gamepad.c</file>
             <file>file:/D:/University%20of%20Idaho/Extracirricular/Robotics%20Club/2019/GitFolder/MagXGPSXBRC/ADC_TEMP.c</file>
             <file>file:/D:/University%20of%20Idaho/Extracirricular/Robotics%20Club/2019/GitFolder/MagXGPSXBRC/MAG3110.h</file>
             <file>file:/D:/University%20of%20Idaho/Extracirricular/Robotics%20Club/2019/GitFolder/MagXGPSXBRC/config_bits.h</file>
             <file>file:/D:/University%20of%20Idaho/Extracirricular/Robotics%20Club/2019/GitFolder/MagXGPSXBRC/MAG3110.c</file>
+=======
+            <file>file:/D:/University%20of%20Idaho/Extracirricular/Robotics%20Club/2019/GitFolder/MagXGPSXBRC/i2c_lib.c</file>
+            <file>file:/D:/University%20of%20Idaho/Extracirricular/Robotics%20Club/2019/GitFolder/MagXGPSXBRC/GPS_I2C.h</file>
+            <file>file:/D:/University%20of%20Idaho/Extracirricular/Robotics%20Club/2019/GitFolder/MagXGPSXBRC/hardware.c</file>
+>>>>>>> Stashed changes
             <file>file:/D:/University%20of%20Idaho/Extracirricular/Robotics%20Club/2019/GitFolder/MagXGPSXBRC/main.c</file>
+            <file>file:/D:/University%20of%20Idaho/Extracirricular/Robotics%20Club/2019/GitFolder/MagXGPSXBRC/GPS_I2C.c</file>
         </group>
     </open-files>
 </project-private>

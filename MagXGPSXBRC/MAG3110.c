@@ -54,6 +54,11 @@ static int16_t z_offset;
 static float x_scale;
 static float y_scale;
 static float z_scale;
+
+static int minX = 0;
+static int maxX = 0;
+static int minY = 0;
+static int maxY = 0;
   
 static BOOL calibrationMode;
 static BOOL activeMode;
@@ -197,84 +202,92 @@ int16_t x_int, y_int, z_int;
 //Note: Must be calibrated to use readHeading!!!
 I2C_RESULT MAG3110_readHeading(float *heading)
 {
-I2C_RESULT i2c_result;	
-int16_t x,y,z;
-float xf = 0;
-float yf = 0;
+	I2C_RESULT i2c_result;
+	int16_t x, y, z;
+	float xf = 0;
+	float yf = 0;
 
-    i2c_result = MAG3110_rawData(TRUE);
+	i2c_result = MAG3110_rawData(TRUE);
 	i2c_result |= MAG3110_readMag(&x, &y, &z);
-    if(i2c_result == I2C_SUCCESS)
-    {
-    	xf = ((float) (x - x_offset))*x_scale;
-    	yf = ((float) (y - y_offset))*y_scale;
-        if((xf != 0.0) && (yf != 0.0))
-            *heading = (atan2f(xf, yf) * RAD2DEG) + MAG_DECLINATION ;    
-        else
-            *heading = 0.0;
-        //printf("X:%6d / %1.6f   Y: %6d / %1.6f  -> %8.2f\n\r",x, xf, y, yf, *heading);                
+	if (i2c_result == I2C_SUCCESS)
+	{
+		//xf = ((float)(x - x_offset))*x_scale;
+		//yf = ((float)(y - y_offset))*y_scale;
+		//xf = x - x_offset;
+		//yf = y - y_offset;
+		//if ((xf != 0.0) && (yf != 0.0))
+		//	*heading = (atan2f(xf, yf) * RAD2DEG);
+		//else
+		//	*heading = 0.0;
+		//printf("X:%6d / %1.6f   Y: %6d / %1.6f  -> %8.2f\n\r",x, xf, y, yf, *heading); 
+		
+		float xf = (float) x * 1.0f;
+		float yf = (float) y * 1.0f;
+	
+		//Calculate the heading
+		*heading = (atan2f(-yf*y_scale, xf*x_scale) * DEG_PER_RAD);
 	}
-    else
-    {
-        *heading = 0;
-         printf("Bad heading measurement\n\r");                   
-    }
-        
-	return ( i2c_result );
+	else
+	{
+		*heading = 0;
+		printf("Bad heading measurement\n\r");
+	}
+
+	return (i2c_result);
 }
 
 I2C_RESULT MAG3110_setDR_OS(BYTE DROS)
 {
-I2C_RESULT i2c_result = I2C_SUCCESS;	
-BOOL wasActive = activeMode;
-BYTE current;
-	
-	if(activeMode)
+	I2C_RESULT i2c_result = I2C_SUCCESS;
+	BOOL wasActive = activeMode;
+	BYTE current;
+
+	if (activeMode)
 		i2c_result |= MAG3110_enterStandby(); //Must be in standby to modify CTRL_REG1
-	
+
 	//If we attempt to write to CTRL_REG1 right after going into standby
 	//It might fail to modify the other bits
 	DelayMs(100);
-	
-	 //Get the current control register
+
+	//Get the current control register
 	current = MAG3110_readRegister(MAG3110_CTRL_REG1) & 0x07; //And chop off the 5 MSB
 	i2c_result |= MAG3110_writeRegister(MAG3110_CTRL_REG1, (current | DROS)); //Write back the register with new DR_OS set
-	
+
 	DelayMs(100);
-	
+
 	//Start sampling again if we were before
-	if(wasActive)
+	if (wasActive)
 		i2c_result |= MAG3110_exitStandby();
-    
-    return i2c_result;
+
+	return i2c_result;
 }
 
 I2C_RESULT MAG3110_triggerMeasurement()
 {
-I2C_RESULT i2c_result = I2C_SUCCESS;	
-BYTE current;
-    current = MAG3110_readRegister(MAG3110_CTRL_REG1);
-	i2c_result = MAG3110_writeRegister(MAG3110_CTRL_REG1, (current |  0x02));
-    return i2c_result;
+	I2C_RESULT i2c_result = I2C_SUCCESS;
+	BYTE current;
+	current = MAG3110_readRegister(MAG3110_CTRL_REG1);
+	i2c_result = MAG3110_writeRegister(MAG3110_CTRL_REG1, (current | 0x02));
+	return i2c_result;
 }
 
 //Note that AUTO_MRST_EN will always read back as 0
 //Therefore we must explicitly set this bit every time we modify CTRL_REG2
 I2C_RESULT MAG3110_rawData(BOOL raw)
 {
-I2C_RESULT i2c_result = I2C_SUCCESS;	
+	I2C_RESULT i2c_result = I2C_SUCCESS;
 
-	if(raw) //Turn on raw (non-user corrected) mode
+	if (raw) //Turn on raw (non-user corrected) mode
 	{
 		rawMode = TRUE;
-		i2c_result |= MAG3110_writeRegister(MAG3110_CTRL_REG2, MAG3110_AUTO_MRST_EN | (0x01 << 5) );
+		i2c_result |= MAG3110_writeRegister(MAG3110_CTRL_REG2, MAG3110_AUTO_MRST_EN | (0x01 << 5));
 	}
 	else //Turn off raw mode
 	{
 		rawMode = FALSE;
 		i2c_result |= MAG3110_writeRegister(MAG3110_CTRL_REG2, MAG3110_AUTO_MRST_EN & ~(0x01 << 5));
 	}
-    return i2c_result;
+	return i2c_result;
 }
 
 //If you look at the data sheet, the offset registers are kind of strange
@@ -283,15 +296,15 @@ I2C_RESULT i2c_result = I2C_SUCCESS;
 //So we have to left shift the values by 1
 //Ask me how confused I was...
 I2C_RESULT MAG3110_setOffset(BYTE axis, int16_t offset)
-{	
-I2C_RESULT i2c_result = I2C_SUCCESS;	
+{
+	I2C_RESULT i2c_result = I2C_SUCCESS;
 
-    offset = (offset << 1) & 0xfffe;
+	offset = (offset << 1) & 0xfffe;
 	i2c_result |= MAG3110_writeRegister(axis, (BYTE)((offset >> 8) & 0xFF));
 	DelayMs(5);
-    i2c_result |= MAG3110_writeRegister((axis+1), (BYTE) (offset & 0xFE));
+	i2c_result |= MAG3110_writeRegister((axis + 1), (BYTE)(offset & 0xFE));
 	DelayMs(5);
-    return i2c_result;
+	return i2c_result;
 }
 
 /* ************************************************************************* */
@@ -302,35 +315,35 @@ int16_t MAG3110_readOffset(BYTE axis)
 }
 
 /* ************************************************************************* */
-I2C_RESULT MAG3110_start() 
+I2C_RESULT MAG3110_start()
 {
-I2C_RESULT i2c_result = I2C_SUCCESS;	
+	I2C_RESULT i2c_result = I2C_SUCCESS;
 	i2c_result = MAG3110_exitStandby();
 }
 
 /* ************************************************************************* */
 I2C_RESULT MAG3110_enterStandby(void)
 {
-I2C_RESULT i2c_result = I2C_SUCCESS;	
-BYTE current;
-    activeMode = FALSE;
+	I2C_RESULT i2c_result = I2C_SUCCESS;
+	BYTE current;
+	activeMode = FALSE;
 	current = MAG3110_readRegister(MAG3110_CTRL_REG1);
 	//Clear bits 0 and 1 to enter low power standby mode
-    return i2c_result;
+	return i2c_result;
 }
 
 /* ************************************************************************* */
 I2C_RESULT  MAG3110_exitStandby()
 {
-I2C_RESULT i2c_result = I2C_SUCCESS;	
-BYTE current;
+	I2C_RESULT i2c_result = I2C_SUCCESS;
+	BYTE current;
 	activeMode = TRUE;
-  	current = MAG3110_readRegister(MAG3110_CTRL_REG1);
-    DelayMs(10);
-    i2c_result |= MAG3110_writeRegister(MAG3110_CTRL_REG1, (current | MAG3110_ACTIVE_MODE));
-    DelayMs(10);
-    current = MAG3110_readRegister(MAG3110_CTRL_REG1);        
-    return i2c_result;	
+	current = MAG3110_readRegister(MAG3110_CTRL_REG1);
+	DelayMs(10);
+	i2c_result |= MAG3110_writeRegister(MAG3110_CTRL_REG1, (current | MAG3110_ACTIVE_MODE));
+	DelayMs(10);
+	current = MAG3110_readRegister(MAG3110_CTRL_REG1);
+	return i2c_result;
 }
 
 /* ************************************************************************* */
@@ -365,77 +378,118 @@ BYTE MAG3110_getSysMode()
 /* ************************************************************************* */
 I2C_RESULT MAG3110_enterCalMode()
 {
-I2C_RESULT i2c_result = I2C_SUCCESS;	
+	I2C_RESULT i2c_result = I2C_SUCCESS;
 
-    calibrationMode = TRUE;
-	//Starting values for calibration
+	calibrationMode = TRUE;
 
-	//Read raw readings for calibration
-	MAG3110_rawData(TRUE);	
+	// Starting values for calibration
+	minX = 0;
+	maxX = 0x8000;
+
+	minY = 0;
+	maxY = 0x8000;
 	
+	// Read raw readings for calibration
+	MAG3110_rawData(TRUE);
+
 	calibrated = FALSE;
-	
-	//Set to active mode, highest DROS for continous readings
+
+	// Set to active mode, highest DROS for continous readings
 	i2c_result |= MAG3110_setDR_OS(MAG3110_DR_OS_80_16);
-	if(!activeMode)
+	if (!activeMode)
 		i2c_result |= MAG3110_start();
-    return i2c_result;
+	return i2c_result;
 }
 /* ************************************************************************** */
 I2C_RESULT MAG3110_calibrate(void)
 {
-I2C_RESULT i2c_result = I2C_SUCCESS;	
-BOOL ready;
-int16_t x,y,z;
-    do
-    {
-        ready = MAG3110_dataReady();
-    }while(!ready);
-	i2c_result = MAG3110_readMag(&x, &y, &z);
-    MAG3110_exitCalMode();
-    return i2c_result;
+	I2C_RESULT result = I2C_SUCCESS;
+	BOOL changed = FALSE;
+	int16_t x, y, z;
+	static int timeLastChange = 0;
+
+	// read from the device
+	result |= MAG3110_readMag(&x, &y, &z);
+
+	if (x < minX)
+	{
+		minX = x;
+		changed = TRUE;
+	}
+	if (x > maxX)
+	{
+		maxX = x;
+		changed = TRUE;
+	}
+	if (y < minY)
+	{
+		minY = y;
+		changed = TRUE;
+	}
+	if (y > maxY)
+	{
+		maxY = y;
+		changed = TRUE;
+	}
+
+	if (changed)
+		timeLastChange = millisec;
+
+	if (millisec > 5000 && millisec - timeLastChange > CALIBRATION_TIMEOUT)
+		MAG3110_exitCalMode();
+
+	return result;
 }
 
 /* ************************************************************************** */
 I2C_RESULT MAG3110_exitCalMode()
 {
-I2C_RESULT i2c_result = I2C_SUCCESS;
-    printf("Hard Xoff:%6d  Yoff:%6d  Zoff:%6d\n\r",
-            x_offset,y_offset,z_offset);
-	
-    printf("Xgain: %1.6f  Ygain: %1.6f  Zgain: %1.6f\n\r",
-            x_scale,y_scale,z_scale);
-	//Use the offsets (set to normal mode)
+	I2C_RESULT i2c_result = I2C_SUCCESS;
+
+	x_offset = (minX + maxX) / 2;
+	y_offset = (minY + maxY) / 2;
+
+	x_scale = 1.0 / (maxX - minX);
+	y_scale = 1.0 / (maxY - minY);
+
+	printf("Hard Xoff:%6d  Yoff:%6d  Zoff:%6d\n\r",
+		x_offset, y_offset, z_offset);
+
+	printf("Xgain: %1.6f  Ygain: %1.6f  Zgain: %1.6f\n\r",
+		x_scale, y_scale, z_scale);
+
+	MAG3110_setOffset(MAG3110_X_AXIS, x_offset);
+	MAG3110_setOffset(MAG3110_Y_AXIS, y_offset);
+
+	// Use the offsets (set to normal mode)
 	MAG3110_rawData(FALSE);
-    DelayMs(10);
-	
+	DelayMs(10);
+
 	calibrationMode = FALSE;
 	calibrated = TRUE;
-	
-	//Enter standby and wait
-	//enterStandby();
-    return i2c_result;
+
+	return i2c_result;
 }
 
 /* ************************************************************************** */
-I2C_RESULT  MAG3110_reset() 
+I2C_RESULT  MAG3110_reset()
 {
-I2C_RESULT i2c_result = I2C_SUCCESS;	
+	I2C_RESULT i2c_result = I2C_SUCCESS;
 
-    i2c_result |= MAG3110_enterStandby();
+	i2c_result |= MAG3110_enterStandby();
 	i2c_result |= MAG3110_writeRegister(MAG3110_CTRL_REG1, 0x00); //Set everything to 0
 	i2c_result |= MAG3110_writeRegister(MAG3110_CTRL_REG2, 0x80); //Enable Auto Mag Reset, non-raw mode
-	
+
 	calibrationMode = FALSE;
 	activeMode = FALSE;
 	rawMode = FALSE;
 	calibrated = FALSE;
-	
+
 	i2c_result |= MAG3110_setOffset(MAG3110_X_AXIS, 0);
 	i2c_result |= MAG3110_setOffset(MAG3110_Y_AXIS, 0);
 	i2c_result |= MAG3110_setOffset(MAG3110_Z_AXIS, 0);
-    
-    return i2c_result;
+
+	return i2c_result;
 }
 
 /* ************************************************************************** */
@@ -443,21 +497,21 @@ I2C_RESULT i2c_result = I2C_SUCCESS;
 // be cleared. It may be confusing for casual users
 static int16_t MAG3110_readAxis(BYTE axis)
 {
-BYTE lsbAddress, msbAddress;
-BYTE lsb, msb;
-int16_t reg;
+	BYTE lsbAddress, msbAddress;
+	BYTE lsb, msb;
+	int16_t reg;
 
 	msbAddress = axis;
-	lsbAddress = axis+1;
-	
+	lsbAddress = axis + 1;
+
 	msb = MAG3110_readRegister(msbAddress);
-	
+
 	usDelay(5); //needs at least 1.3us free time between start and stop
-	
+
 	lsb = MAG3110_readRegister(lsbAddress);
-	
+
 	reg = (lsb | (msb << 8)); //concatenate the MSB and LSB;
-    
+
 	return reg;
 }
 
@@ -468,45 +522,63 @@ int16_t reg;
 //
 void MAG3110_EnvCalibrate()
 {
-	int Degree = 0;
-	int TotalX = 0;
-	int TotalY = 0;
-	int TotalZ = 0;
-	int Step = 0;
+	// We need to move the magnotometer completely around by using some sort of stepper motor
+	// after each movement we need to find the maximum and minumum for this position
 
-	const int StepMax = 1625;
+	printf("Entering the magnotometer calibration\n");
 
-	// Do a set of calibration 
-	// For each cycle, calibrate then
-	// step by a full step
+	int16_t x = 0.0f;
+	int16_t y = 0.0f;
+	int16_t z = 0.0f;
 
-	// While we are calibrating 
-	while (Step < StepMax)
+	int minX = 0;
+	int maxX = 0;
+	int minY = 0;
+	int maxY = 0;
+
+	BOOL rotating = TRUE;
+
+	// a timer for 4 seconds using our millisec variable
+	int timerMax = 4000;	
+	int enterTime = millisec;
+
+	// we rotate the mag. by a step
+	// magnotometerRotater.rotate();
+
+	while (rotating)
 	{
-		// Get the data
-		MAG3110_readMag(&x, &y, &z);
+		I2C_RESULT result = MAG3110_rawData(TRUE);
+		result |= MAG3110_readMag(&x, &y, &z);
+		if (result == I2C_SUCCESS)
+		{
+			// then we make the measurements here
+			MAG3110_readMag(&x, &y, &z);
 
-		// Add the results
-		TotalX += x;
-		TotalY += y;
-		TotalZ += z;
+			if (x < minX) minX = x;
+			else if (x > maxX) maxX = x;
 
-		// Then move the stepper motor
-		step(1, 1);
+			if (y < minY) minY = y;
+			else if (y > maxY) maxY = y;
+		}
 
-		msDelay(5);
-        Step++;
+		if ((millisec - enterTime) >= timerMax)
+		{
+			rotating = FALSE;
+		}
 	}
-    
-    TotalX /= StepMax;
-    TotalY /= StepMax;
-    TotalZ /= StepMax;
-    
-    x_offset = TotalX;
-    y_offset = TotalY;
-    z_offset = TotalZ;
 
-    
-    printf("Offsets %d %d %d\n" , TotalX, TotalY, TotalZ);
+	int xRange = maxX - minX;
+	int yRange = maxY - minY;
+	int xOffset = (maxX + minX) / 2;
+	int yOffset = (maxY + minY) / 2;
+
+	x_offset = xOffset;
+	y_offset = yOffset;
+	//x_scale = xRange;
+	//y_scale = yRange;
+	
+	
+	printf("Offsets %d %d\n", xOffset, yOffset);
+	printf("Ranges %d %d\n", xRange, yRange);
 	printf("Environmental cal. complete\n");
 }
