@@ -62,7 +62,14 @@ void DmaUartRx(void) {
 	DmaChnEnable(dmaChn);
 }
 
-// handler for the DMA channel 1 interrupt
+/* ------------------------------ DmaHandler1 ------------------------------
+  @ Summary
+	 Handler for the DMA channel 1 interrupt
+  @ Parameters
+	 None, it is an ISR
+  @ Returns
+	 None
+  ---------------------------------------------------------------------------- */
 void __ISR(_DMA1_VECTOR, IPL5SOFT) DmaHandler1(void) {
 	int	evFlags;	// event flags when getting the interrupt
 

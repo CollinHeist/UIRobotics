@@ -7,15 +7,20 @@
 #include "RC.h"
 
 unsigned int millisec = 0;
-	
+
+/* -------------------------------- initTimer1 -------------------------------
+  @ Summary
+	 Statement configure cache, wait states and peripheral bus clock
+	 Configure the device for maximum performance but does not change the PBDIV
+	 Given the options, this function will change the flash wait states, RAM
+	 wait state and enable prefetch cache but will not change the PBDIV.
+	 The PBDIV value is already set via the pragma FPBDIV option above..
+  @ Parameters
+	 This function takes no parameters.
+  @ Returns
+	 This function has no return value.
+   --------------------------------------------------------------------------- */	
 void Hardware_Setup(void) {
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Statement configure cache, wait states and peripheral bus clock
- * Configure the device for maximum performance but does not change the PBDIV
- * Given the options, this function will change the flash wait states, RAM
- * wait state and enable prefetch cache but will not change the PBDIV.
- * The PBDIV value is already set via the pragma FPBDIV option above..
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	SYSTEMConfig(GetSystemClock(), SYS_CFG_WAIT_STATES | SYS_CFG_PCACHE);
 	DDPCONbits.JTAGEN = 0;	// Statement is required to use Pin RA0 as IO
   

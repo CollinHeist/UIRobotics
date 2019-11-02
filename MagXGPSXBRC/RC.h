@@ -33,10 +33,8 @@
 	void rcUpdateServos(void);
 	void rcUpdateSpeedControllers(void);
 	void set_rc(int rc1, int rc2, int rc3, int rc4);
-	int TurnLeft();
 	int TurnLeftPos(int movement);
 	int BackwardPos(int movement);
-	int TurnRight();
 	int TurnRightPos(int movement);
 	int ForwardPos(int movement);
 #endif

@@ -119,7 +119,7 @@ int JA2;
    ConfigIntCNC((CHANGE_INT_ON | CHANGE_INT_PRI_1));
 }
 
-/* ------------------------------ Timer1Handler ------------------------------
+/* ------------------------------ ChangeNoticeHandler ------------------------------
   @ Summary
  * A common CN ISE is used for all CN interrupts regardless of IO port and 
  * pin.

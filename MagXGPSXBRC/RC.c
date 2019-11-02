@@ -66,6 +66,15 @@ void rcUpdateServos(void) {
 	}
 }
 
+/* ------------------------------- rcUpdateSpeedControllers ------------------------------
+ @ Summary
+    Updates speed of drive motors using balues in the rc array and manages pwm signals
+    based on those values.
+ @ Parameters
+    None
+ @ Return Value
+    None
+  ---------------------------------------------------------------------------- */
 void rcUpdateSpeedControllers(void) {
 	//static int channel = NRCSERVOS;	 // Channel index starts right after all Servo motors
 	static int rc_state = 0;			// Initial signal state
@@ -202,43 +211,14 @@ int SetDefaultServoPosition()
     set_rc(RC2Pos, RC2Pos, RCMid, RCMid);
 }
 
-//
-// TurnLeft() 
-// Early version of the a turn left function for the 
-// motor angle servo motors, in pin positions JB3 and JB4.
-// This function is designed so that the motor will turn left 
-// from its default position until the device is properly aligned.
-// Then the function will reset the motor back into its default position.
-//
-int TurnLeft() 
-{ 
-    // Local variables
-    static int pos = 0;
-    int Aligned = 0;
-    int i = 0;
-    
-    pos--;
-    
-    if(pos == RCLeft) pos = 0;
-    
-    set_rc(RC1Pos--, pos, pos, pos);
-    
-    // Until the device is aligned in the correct position 
-    // Right now this is a busy loop just to be a placeholder so that when the 
-    // additional functions get made, they can be inserted more easily.
-    /*
-    while(!Aligned)
-    {   
-        i++;
-        if(i == 9000000)
-            Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
-    }*/
-    DelayMs(1);      // However much additional time for the boat to turn
-    //SetDefaultServoPosition();
-    
-    return 0; 
-}
-
+/* ------------------------------- TurnLeftPos ------------------------------
+ @ Summary
+    Function controlling the orientation of the servo motors
+ @ Parameters
+    @ param1 : integer indicating change to servo orientation
+ @ Return Value
+    0
+  ---------------------------------------------------------------------------- */
 int TurnLeftPos(int movement) 
 { 
     // Local variables
@@ -277,38 +257,14 @@ int TurnLeftPos(int movement)
     return 0; 
 }
 
-//
-// TurnRight() 
-// Early version of the a turn right function for the 
-// motor angle servo motors, in pin positions JB3 and JB4.
-// This function is designed so that the motor will turn right 
-// from its default position until the device is properly aligned.
-// Then the function will reset the motor back into its default position.
-//
-int TurnRight() 
-{ 
-    // Local variables
-    int Aligned = 0;
-    int i = 0;
-    
-    set_rc(RCRight, RCRight, RCRight, RCRight); // Set to the appropriate position to turn the motors
-    
-    // Until the device is aligned in the correct position
-    // Right now this is a busy loop just to be a placeholder so that when the 
-    // additional functions get made, they can be inserted more easily.
-    while(!Aligned)
-    {   
-        i++;
-        if(i == 9000000)
-            Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
-    }
-    
-    //DelayMs(3000);               // However much additional time for the boat to turn
-    SetDefaultServoPosition();
-    
-    return 0; 
-}
-
+/* ------------------------------- TurnRightPos ------------------------------
+ @ Summary
+    Function controlling the orientation of the servo motors
+ @ Parameters
+    @ param1 : integer indicating change to servo orientation
+ @ Return Value
+    0
+  ---------------------------------------------------------------------------- */
 int TurnRightPos(int movement) 
 { 
     // Local variables
@@ -348,6 +304,14 @@ int TurnRightPos(int movement)
     return 0; 
 }
 
+/* ------------------------------- ForwardPos ------------------------------
+ @ Summary
+    Function controlling decreases to power of drive motors
+ @ Parameters
+    @ param1 : integer indicating change to motor speed
+ @ Return Value
+    0
+  ---------------------------------------------------------------------------- */
 int ForwardPos(int movement) 
 { 
     // Local variables                                                                                                                          
@@ -386,6 +350,14 @@ int ForwardPos(int movement)
     return 0; 
 }
 
+/* ------------------------------- BackwardPos ------------------------------
+ @ Summary
+    Function controlling increases to power of drive motors
+ @ Parameters
+    @ param1 : integer indicating change to motor speed
+ @ Return Value
+    0
+  ---------------------------------------------------------------------------- */
 int BackwardPos(int movement) 
 { 
     // Local variables

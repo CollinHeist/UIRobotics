@@ -523,10 +523,14 @@ I2C_RESULT I2C_ReadDev(I2C_DATA_BLOCK  blk)
 	return i2c_ops;
 }
 
-// 
-// i2c_ackError()
-// Simple error message for failure
-//
+/* ------------------------------- i2c_ackError ------------------------------
+ @ Summary
+    Simple error message for failure
+ @ Parameters
+    @ param1 : location of error
+ @ Return Value
+    None
+  ---------------------------------------------------------------------------- */
 void i2c_ackError(int loc)
 {
 	printf("Error: Sent byte was not acknowledged at %d\n\r", loc);
