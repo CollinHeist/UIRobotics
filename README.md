@@ -42,11 +42,15 @@ For those have not yet used Github, I recommend reading through [this](https://g
 * Each function block should have the following comment section before it:
 	```c
 	/**
-	 *	@brief		Brief description of the function's functionality / purpose.
-	 *	@param[in]	parameterOne: Describe the purpose or meaning of this first parameter.
-	 *	@param[out]	paramterTwo: Describe the purpose and meaning of this second paramter.
-	 *	@return		What the return value means.
-	 *	@notes		(Optional) Any additional notes that the user should know about this function.
+	 *	Summary
+	 *		Brief description of the function's functionality / purpose.
+	 *	Parameters
+	 *		parameterOne: Describe the purpose or meaning of this first parameter.
+	 *		paramterTwo: Describe the purpose and meaning of this second paramter.
+	 *	Return
+	 		What the return value means.
+	 *	Notes
+	 		(Optional) Any additional notes that the user should know about this function.
 	 **/
 	 float testFunction(int paramaterOne, int* parameterTwo) {
 	 	// Code
