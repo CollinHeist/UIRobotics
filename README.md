@@ -1,6 +1,6 @@
-## University of Idaho - Robotics Club
+# University of Idaho - Robotics Club
 ---
-#### This Github repository is where we'll be keep the final version of our code used to run the Autonomous Boat.
+## This Github repository is where we'll be keep the working version of our code used to run the Autonomous Boat.
 ---
 For those have not yet used Github, I recommend reading through [this](https://guides.github.com/activities/hello-world/ "Github Walkthrough") quick introduction.
 
@@ -10,17 +10,45 @@ For those have not yet used Github, I recommend reading through [this](https://g
 
 ---
 
-Before adding any new code / functions, or submitting pull requests in general, take a look at the style I'm using in the `main.c` file.
+## Coding Standards
 
-* In general, we want __every function and major block of code__ to be commented, so that we are not constantly playing explaining either the functionality, usage, or purpose of each other's code.
+### Naming Convention
 
-* Try and utilize self-explanatory variable and function names. I realize that I am a bit more long-winded than necessary with many of my names, but I fild it helps a lot with mentally walking through the code.
-  * i.e. as opposed to using `pMotors()` or `pm()`, I am using `powerMotors()`
+* Make all variable names __camel case__.
+	```c
+	int testVariable = 0;
+	```
+* Make all function names __camel case__.
+	```c
+	float testFunction(int parameterOne, int parameterTwo) {
+		// Test code
+	}
+	```
+* Make all _macros_ (__#define__ statements) __SNAKE_CASE__.
+	```c
+	#define TEST_MACRO_NAME		( 500 )
+	```
+* All file names should be __pascal case__.
+	```c
+	#include "TestFileName.h"
+	#include "UARTFileName.h"
+	```
+* Always choose more verbose names over smaller names. As an example, choose `updateRCFlag` as opposed to `RCFlag`.
 
-* Each function should have a block of comments before it's implementation that describes a few key attributes
-  1. __Description__ - A description of the functions purpose. __General overview__ (where it's called, what it does, etc.)
-  2. __Parameters__ - A list of the parameters passed to the function. Include their type, expected values (if applicable) and loose description of purpose
-  3. __Return Value__ - A list of possible returns from the function, as well as what each return would mean. If it's not necessarily a discrete subset of possible returns, describe what the return is and means.
-  4. __Notes__ - This one is largely unnecessary. If you think there are not super peritent details that should be listed, put them here
-  
-* Try and segment your code (reasonably) so that each subsection is compartmentalized, and performs either a specific function or a logical operation. For example, for the function that turns our heading, it is split into shifting the rotation angle, accounting for a zero denominator, powering our motors, and returning
+### Comments
+
+* Add in-line (`//`) comments to all large sections of code. There is no need for line-by-line comments, but give section-wise descriptions of your code's functionality.
+
+* Each function block should have the following comment section before it:
+	```c
+	/**
+	 *	@brief		Brief description of the function's functionality / purpose.
+	 *	@param[in]	parameterOne: Describe the purpose or meaning of this first parameter.
+	 *	@param[out]	paramterTwo: Describe the purpose and meaning of this second paramter.
+	 *	@return		What the return value means.
+	 *	@notes		(Optional) Any additional notes that the user should know about this function.
+	 **/
+	 float testFunction(int paramaterOne, int* parameterTwo) {
+	 	// Code
+	 }
+	```
