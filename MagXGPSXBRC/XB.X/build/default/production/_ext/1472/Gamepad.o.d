@@ -1,7 +1,7 @@
 build/default/production/_ext/1472/Gamepad.o:  \
 ../Gamepad.c  \
-../uart2.h  \
- ../uart4.h  \
-../hardware.h  \
+../Uart2.h  \
+ ../Uart4.h  \
+../Hardware.h  \
 ../RC.h  \
 ../DMA_UART2.h 
