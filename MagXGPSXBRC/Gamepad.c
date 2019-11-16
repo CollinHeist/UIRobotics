@@ -79,7 +79,7 @@ typedef struct gamepadInput
 	Pair varSticksLeft;		//A "Pair" struct of the left stick variables - x and y values
 	Pair varSticksRight;		//A "Pair" struct of the right stick variables - x and y values
 	Pair varDPad;			//A "Pair" struct of the Dpad variables - x and y values
-	Buttons varButtons;		//A "Buttons" struct of the different controller buttons
+	Buttons varButtons;		//A "Buttons" struct of the four different controller buttons
 
 	char varInputString[512];
 } 
