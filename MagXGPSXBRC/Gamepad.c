@@ -294,8 +294,7 @@ void parseInput(char* stringRef)
 				default:
 					break;
 			}
-
-			// Move to the next variable
+//			Move to the next variable
 			variable++;
 		}
 	}
