@@ -10,8 +10,8 @@
 #endif
 
 // File Inclusion
-#include "Uart2.h"
-#include "Uart4.h"
+#include "UART2.h"
+#include "UART4.h"
 #include "Hardware.h"
 #include "RC.h"
 
@@ -90,12 +90,20 @@ static gamepadInput_ gamepadInputManager;
 
 static void moveLeft(int movement);
 
-//
-// gamepadInit()
-// Should be called once prior to using the gamepadInputManager
-// Properly initializes all of the members of this object.
-//
-int gamepadInit()
+/*
+ * gamepadInit()
+ *	Summary:
+ *		Properly initializes all of the members of the
+ *		gamepadInputManager object
+ *	Parameters:
+ *		N/A
+ *	Return:
+ *		N/A
+ *	Notes:
+ *		Should be called once prior to using the gamepadInputManager
+ *		object
+ */
+void gamepadInit()
 {
 	int i = 0;
 
@@ -127,13 +135,20 @@ int gamepadInit()
 
 }
 
-//
-// parseInput()
-// Parses the string and places all of the 
-// appropriate variables into their corresponding
-// variables in the gamepadInputManager object.
-//
-int parseInput(char* stringRef)	    //stringRef, currently, is only the input string from the XBee
+/*
+ * parseInput()
+ *	Summary:
+ *		Parses the string and places all of the appropriate variables
+ *		into their corresponding variables in the gamepadInputManager
+ *		object
+ *	Parameters:
+ *		stringRef: (Pointer): the input string from the XBee
+ *	Return:
+ *		N/A
+ *	Notes:
+ *		N/A
+ */
+void parseInput(char* stringRef)
 {
 	// Local variables
 	int i = 0;		    //traversal variable
@@ -286,12 +301,18 @@ int parseInput(char* stringRef)	    //stringRef, currently, is only the input st
 	}
 }
 
-//
-// handleInput()
-// Call this function to handle all input from the 
-// gamepad and XBee modules.
-//
-int handleInput()
+/*
+ * handleInput()
+ *	Summary:
+ *		Call this function to handle all input from the gamepad and XBee modules
+ *	Parameters:
+ *		N/A
+ *	Return:
+ *		N/A
+ *	Notes:
+ *		N/A
+ */
+void handleInput()
 {
 	char character;
 	int charReceived = 1 ;
@@ -321,10 +342,19 @@ int handleInput()
 
 		parseInput(gamepadInputManager.varInputString);
 	}
-	return 0;
 }
 
-
+/*
+ * moveLeft
+ *	Summary:
+ *		WIP; If provided int > 0, calls TurnLeftPos(-3)
+ *	Parameters:
+ *		movement: used as a true/false to detect movement
+ *	Return:
+ *		N/A
+ *	Notes:
+ *		This is a Work In Progress function that, currently, is not in use anywhere
+ */
 
 void moveLeft(int movement)
 {
@@ -341,9 +371,18 @@ void moveLeft(int movement)
 	    }
 }
 
-
-
-void MoveRight(int movement)
+/*
+ * moveRight
+ *	Summary:
+ *		WIP; If provided int > 0, calls TurnRightPos(3)
+ *	Parameters:
+ *		movement: used as a true/false to detect movement
+ *	Return:
+ *		N/A
+ *	Notes:
+ *		This is a Work In Progress function that, currently, is not in use anywhere
+ */
+void moveRight(int movement)
 {
 	static int received = 0;
     
@@ -358,6 +397,17 @@ void MoveRight(int movement)
 	    }
 }
 
+/*
+ * move
+ *	Summary:
+ *		This is the general control update function
+ *	Parameters:
+ *		N/A
+ *	Return:
+ *		N/A
+ *	Notes:
+ *		N/A
+ */
 void move()
 {
 	int temp = 0;
@@ -394,6 +444,17 @@ void move()
 	DelayMs(20);
 }
 
+/*
+ * clearStickLeft()
+ *	Summary:
+ *		Clears the values of the left controller stick
+ *	Parameters:
+ *		N/A
+ *	Return:
+ *		N/A
+ *	Notes:
+ *		N/A
+ */
 void clearStickLeft()
 {
 	gamepadInputManager.varSticksLeft.varCompOne = 0;
