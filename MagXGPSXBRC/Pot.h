@@ -1,5 +1,5 @@
-#ifndef _POT_H	
-	#define _POT_H
+#ifndef __POT_H__	
+	#define __POT_H__
 /*
 #define ADC_PIN 2
 	// define setup parameters for OpenADC10

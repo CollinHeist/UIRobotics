@@ -1,44 +1,10 @@
-/* ************************************************************************** */
-/** Descriptive File Name: comm_lib.c - UART Serial communications. 
-
-  @Summary
-	UART 4 initialization and character and string I/O.
-
-  @Description
-	UART initialization can be set for any BAUD rate using EVEN, ODD, or NO 
-	parity. Character and string input functions are non blocking functions.
-	The serial interface uses UART channel 4.
-
-**************************************************************************** */
-
 // File Inclusion
-#include "hardware.h"	// Has info regarding the PB clock
+#include "hardware.h"
 #include <plib.h>
-#include <stdio.h>	  // Required for printf 
+#include <stdio.h>
 #include "uart4.h"
 
-/* uart4_init FUNCTION DESCRIPTION *************************************
- @ SYNTAX: void uart1_init(unsigned int baud, int parity);
-
- @Summary
-	UART 4 initialization and character and string I/O.
-
- @Description
-	UART initialization can be set for any BAUD rate using EVEN, ODD, or NO 
-	parity. Character and string input functions are non blocking functions.
-	The serial interface uses UART channel 4.
-
- @ PARAMETERS
-	@param1:		integer Baud rate
-	@param2:		integer (parity, NO_PARITY, ODD_PARITY, or EVEN_PARITY)
- @RETURN VALUE:	 None
-
-  @Remarks
-	This code also uses the "printf" function on UART Serial Port 4
-	9 bit mode MARK or SPACE parity is not supported
-
- **/
-void uart4_init(unsigned int baud, int parity) {
+void initializeUART4(unsigned int baud, int parity) {
 	RPF12R = 0x02;  // Mapping U4TX to RPF12;
 	U4RXR = 0x09;   // Mapping U4RX to RPF13
 
@@ -59,33 +25,15 @@ void uart4_init(unsigned int baud, int parity) {
 			UARTSetLineControl(UART4, UART_DATA_SIZE_8_BITS | UART_PARITY_EVEN | UART_STOP_BITS_1);
 			break;
 	}
-	printf("\n\rUART Serial Port 4 ready\n\n\r");
+	putStringUART4("\n\rUART Serial Port 4 ready\n\n\r");
 }
 
-/* _mon_putc FUNCTION DESCRIPTION ******************************************
- @SYNTAX:		   void _mon_putc(char c);
- 
- @KEYWORDS:		 printf, console, monitor
- 
- @DESCRIPTION:	  Sets up serial port to function as console for printf.
-					Used only by system.
- 
- @PARAMETERS 
-	@param1:		Character to send to monitor
-
- @RETURN VALUE:	 None
- @REMARKS:		  This function will block until space is available
-					in the transmit buffer. Called by system to implement 
-					"printf" functions
- @EXAMPLE
-   None - used by system only
- * END DESCRIPTION **********************************************************/
 void _mon_putc(char c) {
 	while(!UARTTransmitterIsReady(UART4));
 	UARTSendDataByte(UART4, c);
 }
 
-/* putcU4 FUNCTION DESCRIPTION ********************************************
+/* putCharacterUART4 FUNCTION DESCRIPTION ********************************************
  @SYNTAX:		   BOOL putU4( int c);
   
  @KEYWORDS:		 UART, character
@@ -105,22 +53,10 @@ void _mon_putc(char c) {
    @code
 		BOOL result;
 		char ch;
-		result = putcU4(ch);
+		result = putCharacterUART4(ch);
  
  * END DESCRIPTION **********************************************************/
-BOOL putcU4(int ch) {
-	UART_DATA c;
-	BOOL done = FALSE;
-	c.data8bit = (char) ch;
-	if(UARTTransmitterIsReady(UART4)) {
-		UARTSendDataByte(UART4, c.data8bit);
-		done = TRUE;
-	}
-
-	return done;
-}
-
-int putcIU4(int ch) {
+BOOL putCharacterUART4(int ch) {
 	UART_DATA c;
 	BOOL done = FALSE;
 	c.data8bit = (char) ch;
@@ -133,7 +69,7 @@ int putcIU4(int ch) {
 }
 
 /* getU4 FUNCTION DESCRIPTION ********************************************
- @SYNTAX:		   BOOL getcU4( char *ch);
+ @SYNTAX:		   BOOL getCharacterUART4( char *ch);
 
  @KEYWORDS:		 character, get
 
@@ -151,25 +87,13 @@ int putcIU4(int ch) {
    @code
 		BOOL result;
 		char ch;
-		result = getcU4(&ch);
+		result = getCharacterUART4(&ch);
  
  * END DESCRIPTION ********************************************************/
-BOOL getcU4(char *ch) {
+BOOL getCharacterUART4(char *ch) {
 	UART_DATA c;
 	BOOL done = FALSE;
 	if (UARTReceivedDataIsAvailable(UART4))	// wait for new char to arrive
-	{
-		c = UARTGetData(UART4);	// read the char from receive buffer
-		*ch = (c.data8bit);
-		done = TRUE;		// Return new data available flag
-	}
-	return done;			// Return new data not available flag
-}
-
-int getcIU4( char *ch) {
-	UART_DATA c;
-	BOOL done = FALSE;
-	if(UARTReceivedDataIsAvailable(UART4))	// wait for new char to arrive
 	{
 		c = UARTGetData(UART4);	// read the char from receive buffer
 		*ch = (c.data8bit);
@@ -193,15 +117,15 @@ int getcIU4( char *ch) {
  @REMARKS:		 This function will block until space is available
  *				  in the transmit buffer
  * END DESCRIPTION **********************************************************/
-int putsU4( const char *s) {
+int putStringUART4(const char *s) {
 	BOOL ch_sent;
-	while(*s) {
+	while (*s) {
 		do {
-			ch_sent = putcU4(*s++);
+			ch_sent = putCharacterUART4(*s++);
 		} while(ch_sent ==  FALSE);
 	}
-	do { ch_sent = putcU4( '\r'); } while(!ch_sent);
-	do { ch_sent = putcU4( '\n'); } while(!ch_sent);
+	do { ch_sent = putCharacterUART4('\r'); } while(!ch_sent);
+	do { ch_sent = putCharacterUART4('\n'); } while(!ch_sent);
 
 	return 1;
 }
@@ -245,35 +169,30 @@ int getstrU4(char *s, unsigned int len) {
 	static char *p2;				// copy #2 of the buffer pointer
 	char ch;						// Received new character
 
-	if(eol)							// Initial call to function - new line
-	{								// Make two copies of pointer - one for
+	if (eol) {						// Make two copies of pointer - one for
 		p1 = s;						// receiving characters and one for marking
 		p2 = s;						// the starting address of the string.  The
 		eol = FALSE;				// second copy is needed for backspacing.
 		buf_len = len;				// Save maximum buffer length
 	}
 
-	if(!(getcU4(&ch)))				// Check for character received
-	{
+	if (!(getCharacterUART4(&ch))) {// Check for character received
 		return FALSE;				// Bail out if not 
 	}
-	else
-	{
+	else {
 		*p1 = ch;					// Save new character in string buffer
-		putcU4( *p1);				// echo character
-		switch(ch)					// Test for control characters
-		{
+		putCharacterUART4( *p1);	// echo character
+		switch (ch)	{				// Test for control characters
 			case BACKSPACE:
-				if ( p1>p2)
-				{
-					putcU4( ' ');	// overwrite the last character
-					putcU4( BACKSPACE);
+				if (p1 > p2) {
+					putCharacterUART4(' ');	// overwrite the last character
+					putCharacterUART4(BACKSPACE);
 					buf_len++;
 					p1--;			// back off the pointer
 				}
 				break;
 			case '\r':				// end of line, end loop
-				putcU4( '\n');		// add line feed
+				putCharacterUART4( '\n');	// add line feed
 				eol = TRUE;			// Mark end of line
 				break;
 			case '\n':				// line feed, ignore it
@@ -283,10 +202,10 @@ int getstrU4(char *s, unsigned int len) {
 				buf_len--;			// decrement length counter
 		}
 	}
-	if( buf_len == 0 || eol)		// Check for buffer full or end of line
-	{
+	if (buf_len == 0 || eol) {		// Check for buffer full or end of line
 		*p1 = '\0';					// add null terminate the string
 		return TRUE;				// Set EOL flag 
 	}
+	
 	return FALSE;					// Not EOL
 }

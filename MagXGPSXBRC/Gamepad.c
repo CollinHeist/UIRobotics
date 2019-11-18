@@ -3,8 +3,8 @@
 #endif
 
 // File Inclusion
-#include "uart2.h"
-#include "uart4.h"
+#include "UART2.h"
+#include "UART4.h"
 #include "hardware.h"
 #include "RC.h"
 

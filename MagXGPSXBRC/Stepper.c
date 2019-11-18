@@ -3,15 +3,7 @@
 #include <plib.h>
 #include "Stepper.h"
 
-int smPos;	// Motor step position
-int angle;	// Target angle
-int deg;	// Motor Position
-
-//
-// stepper_init()
-//
-//
-void stepper_init(void)  {
+void initializeStepper(void)  {
 	MCInit();
 }
 

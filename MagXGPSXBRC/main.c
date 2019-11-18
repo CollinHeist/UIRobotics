@@ -18,9 +18,8 @@
 #include "swDelay.h"
 
 // Application included files
-#include "uart4.h"  // Monitor UART
-#include "uart2.h"  // GPS UART
-#include "led7.h"
+#include "UART4.h"  // Monitor UART
+#include "UART2.h"  // GPS UART
 #include "LCDlib.h"
 #include "RC.h"
 #include "DMA_UART2.h"
@@ -178,10 +177,9 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
 {
     BOOL Result;
 	Hardware_Setup();					// Initialize common IO
-	uart4_init(38400, NO_PARITY);		// PC Terminal
-	uart2_init(9600, NO_PARITY);		// XBEE
+	initializeUART4(38400, NO_PARITY);		// PC Terminal
+	initializeUART2(9600, NO_PARITY);		// XBEE
 	initLCD();							// Init the LCD screen
-	seg7_init();						// Initialize the seven seg display
 	putsU2("\n\rXBee online\n\r");		// Send message to PC
 	init_analog();						// Initialize AN2 to read Pot
 	init_temperature();
@@ -189,8 +187,8 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
     int16_t x,y,z;
     
     *I2cResultFlag = I2C_Init(I2C1, 100000);
-    initChangeNotice();
-    stepper_init();
+    initializeChangeNotice();
+    initializeStepper();
     
     // Mag init procedure
      if(!(Result = MAG3110_initialize()))

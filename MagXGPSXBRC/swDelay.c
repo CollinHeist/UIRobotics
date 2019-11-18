@@ -1,16 +1,3 @@
-/* ************************************************************************** */
-/** Descriptive File Name: swDelay.c - software delay implemented by polling
-						   the core timer.
-
-  @Summary
-	Blocking and non-blocking time delay
-
-  @Precondition
-	"config_bits* must be included in the project that establishes the
-	the value for CORE_MS_TICK_RATE based on the core timer frequency.
- */
-/* ************************************************************************** */
-
 // File Inclusion
 #include "hardware.h"
 #include <plib.h>

@@ -2,20 +2,19 @@
 #include "hardware.h"
 #include <plib.h>
 #include "uart4.h"
-#include "led7.h"
 #include "LCDlib.h"
 #include "RC.h"
 
 unsigned int millisec = 0;
 	
 void Hardware_Setup(void) {
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Statement configure cache, wait states and peripheral bus clock
- * Configure the device for maximum performance but does not change the PBDIV
- * Given the options, this function will change the flash wait states, RAM
- * wait state and enable prefetch cache but will not change the PBDIV.
- * The PBDIV value is already set via the pragma FPBDIV option above..
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	 * Statement configure cache, wait states and peripheral bus clock
+	 * Configure the device for maximum performance but does not change the PBDIV
+	 * Given the options, this function will change the flash wait states, RAM
+	 * wait state and enable prefetch cache but will not change the PBDIV.
+	 * The PBDIV value is already set via the pragma FPBDIV option above..
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	SYSTEMConfig(GetSystemClock(), SYS_CFG_WAIT_STATES | SYS_CFG_PCACHE);
 	DDPCONbits.JTAGEN = 0;	// Statement is required to use Pin RA0 as IO
   
@@ -36,7 +35,6 @@ void Hardware_Setup(void) {
 
 	//EnableCNA15();
 	//ConfigCNPullups();
-	
 }
 
 /* -------------------------------- initTimer1 -------------------------------
@@ -72,7 +70,7 @@ static void initTimer1(void) {
   @ Returns
 	 None
   ---------------------------------------------------------------------------- */
-void __ISR(_TIMER_1_VECTOR, IPL2SOFT) Timer1Handler(void) {
+void __ISR(_TIMER_1_VECTOR, IPL2SOFT) interruptTimer1Handler(void) {
 	static ms = 100;			// Millisecond counter
 	static int onesec = 1000;	// One second counter
 
@@ -81,14 +79,13 @@ void __ISR(_TIMER_1_VECTOR, IPL2SOFT) Timer1Handler(void) {
 		millisec++;		
 		ms = 100;
 		onesec--;
-		if (onesec <= 0) 
-		{
+		if (onesec <= 0) {
 			invLED3();
 			onesec = 1000;
 		}
-		updateLED7();
 	}
 	rcUpdateServos();		 	// This updates the RC outputs for the servos
 	rcUpdateSpeedControllers();	// This updates the RC outputs for the speed controllers
+
 	mT1ClearIntFlag();			// Clear the interrupt flag	
 }

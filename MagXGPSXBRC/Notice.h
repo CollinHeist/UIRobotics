@@ -1,10 +1,6 @@
-/* 
- * File:   Notice.h
- * Author: Damon
- *
- * Created on February 18, 2019, 3:31 PM
- */
+#ifndef __NOTICE_H__
+	#define __NOTICE_H__
 
-#pragma once
-
-extern void initChangeNotice(void);
+	// extern void initializeChangeNotice(void);
+	void initializeChangeNotice();
+#endif

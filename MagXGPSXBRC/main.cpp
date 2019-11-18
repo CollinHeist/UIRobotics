@@ -198,7 +198,7 @@ I2C_RESULT InitializeModules(I2C_RESULT* I2cResultFlag)
     int16_t x,y,z;
     
     *I2cResultFlag = I2C_Init(I2C1, 100000);
-    initChangeNotice();
+    initializeChangeNotice();
     stepper_init();
     
     // Mag init procedure
