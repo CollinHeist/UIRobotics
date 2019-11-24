@@ -29,14 +29,14 @@
 
 	/* ---------------------- Public Function Declarations ------------------- */
 	void initRC(void);
-	void rc_output(int ch, int ctrl);
+	void rcOutput(int ch, int ctrl);
 	void rcUpdateServos(void);
 	void rcUpdateSpeedControllers(void);
-	void set_rc(int rc1, int rc2, int rc3, int rc4);
-	int TurnLeft();
-	int TurnLeftPos(int movement);
-	int BackwardPos(int movement);
-	int TurnRight();
-	int TurnRightPos(int movement);
-	int ForwardPos(int movement);
+	void setRC(int rc1, int rc2, int rc3, int rc4);
+	int turnLeft();
+	int turnLeftPos(int movement);
+	int backwardPos(int movement);
+	int turnRight();
+	int turnRightPos(int movement);
+	int forwardPos(int movement);
 #endif
