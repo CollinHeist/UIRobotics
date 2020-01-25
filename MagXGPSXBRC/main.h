@@ -1,5 +1,5 @@
 #ifndef __MAIN_H__
-  #define __MAIN_H__
+    #define __MAIN_H__
 
 	#define GPS_BUFFER_SIZE 256
 

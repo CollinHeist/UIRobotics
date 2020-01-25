@@ -25,10 +25,9 @@
 	#define STOP_TEMP		150		// Degrees F where we STOP the motor
 
 	// Function Prototypes
-	void init_temperature(void); 
-	void read_temperature(int *t1, int *t2);
-	void check_thresh(float *motor1_scale, float *motor2_scale);
-	int GetTemp1();
-	int GetTemp2();
-	void read_temperature_store();
+	void initializeTemperatureSensors(void);
+    void readTemperatures(int *t1, int *t2);
+    void checkThresholds(float *motor1_scale, float *motor2_scale);
+    int getTemp1(void);
+    int getTemp2(void);
 #endif

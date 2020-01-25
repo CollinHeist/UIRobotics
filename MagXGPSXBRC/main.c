@@ -1,4 +1,4 @@
-// System included files
+/* ----------------------------------- File Inclusion ----------------------------------- */
 #include "config_bits.h"
 #include "hardware.h"
 #include "main.h"
@@ -11,7 +11,7 @@
 #include "i2c_lib.h"
 #include "GPS_I2C.h"
 #include "Gamepad.h"
-#include "ADC_TEMP.h"
+#include "TempADC.h"
 #include "Notice.h"
 
 // Platform common included files
@@ -26,6 +26,8 @@
 #include "MAG3110.h"
 #include "Stepper.h"
 
+/* -------------------------- Global Variables and Structures --------------------------- */
+
 #define RC_CW   0   // RC Direction of rotation
 #define RC_CCW  1
 
@@ -37,11 +39,11 @@ I2C_RESULT InitMag();
 // Global variables
 static char Char;
 int gps_message = 0;        // Active GPS sentence 
-extern int16_t led_value;
+
+/* ---------------------------------- Public Functions ---------------------------------- */
 
 int main(void) {
-    // Need to disable global interrupts
-
+    /*
     // Local variables
     I2C_RESULT I2cResultFlag;   // I2C Init Result flag
     I2C_RESULT I2cReadFlag;   // I2C Init Result flag
@@ -128,12 +130,10 @@ int main(void) {
     }
     
     return EXIT_FAILURE; // Code execution should never get to this statement 
+    */
 }
 
-//
-// print_pretty_table()
-//
-//
+
 void print_pretty_table(int use_uart) {
     char lcdStr[40];
     int tempC, tempF;
@@ -153,13 +153,11 @@ void print_pretty_table(int use_uart) {
     clrLCD();
     putsLCD(lcdStr);
     gotoLCD(16);
-    sprintf(lcdStr, "T1:%5d T:%5d", GetTemp1(), GetTemp2());
+    sprintf(lcdStr, "T1:%5d T:%5d", getTemp1(), getTemp1());
     putsLCD(lcdStr);
 }
-//
-// InitializeModules()
-//
-//
+
+
 int InitializeModules(I2C_RESULT* I2cResultFlag) {
     BOOL Result;
     Hardware_Setup();				// Initialize common IO
@@ -168,7 +166,7 @@ int InitializeModules(I2C_RESULT* I2cResultFlag) {
     initLCD();					// Init the LCD screen
     putStringUART2("\n\rXBee online\n\r");	// Send message to PC
     init_analog();				// Initialize AN2 to read Pot
-    init_temperature();
+    initializeTemperatureSensors();
     int16_t x,y,z;
     
     *I2cResultFlag = I2C_Init(I2C1, 100000);

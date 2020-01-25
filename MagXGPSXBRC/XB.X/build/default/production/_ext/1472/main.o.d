@@ -7,7 +7,7 @@ build/default/production/_ext/1472/main.o:  \
 ../i2c_lib.h  \
 ../GPS_I2C.h  \
 ../Gamepad.h  \
- ../ADC_TEMP.h  \
+ ../TempADC.h  \
 ../Notice.h  \
 ../swDelay.h  \
 ../UART4.h  \

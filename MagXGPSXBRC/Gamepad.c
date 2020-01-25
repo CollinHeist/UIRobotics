@@ -20,6 +20,12 @@
 #define MODE_TEST
 #define MODE_NORM
 
+extern int DmaIntFlag;	// flag used in interrupts
+extern int bufferNum;	// DMA Buffer number
+extern char dmaBuff[];	// Master DMA UART Rx Buffer
+extern char dmaBuff1[];	// DMA UART Rx Buffer 1
+extern char dmaBuff2[];	// DMA UART Rx Buffer 1
+
 // Possible gamepad messages
 enum GamepadVariables{
     GAME_TIME,

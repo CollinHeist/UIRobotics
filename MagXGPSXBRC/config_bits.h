@@ -1,5 +1,5 @@
-#ifndef _CONFIG_BITS_H	/* Guard against multiple inclusion */
-	#define _CONFIG_BITS_H
+#ifndef __CONFIG_BITS_H__	/* Guard against multiple inclusion */
+	#define __CONFIG_BITS_H__
 
 	// PIC32MX370F512L Configuration Bit Settings
 	#include <xc.h>

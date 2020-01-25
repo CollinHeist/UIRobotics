@@ -17,16 +17,16 @@ const int RCLeft = 0;
 
 int RC1Pos = 50;
 int RC2Pos = 50;
-/* -------------------------------- rcUpdate ---------------------------------
-  @ Summary
-	 Updates information stored in array rc based on rc_set as it cycles
-	 through states based on the value of static variable rc_state and
-	 information from RC_SERVO_MIN and RC_SERVO_MAX. 
-  @ Parameters
-	 None
-  @ Returns
-	 None
-  ---------------------------------------------------------------------------- */
+/*
+    Summary
+	Updates information stored in array rc based on rc_set as it cycles
+	through states based on the value of static variable rc_state and
+	information from RC_SERVO_MIN and RC_SERVO_MAX. 
+    Parameters
+	None
+    Returns
+	None
+ */
 void rcUpdateServos(void) {
     static int channel = NRCSPEEDCONTROLLERS;   // Channel index 0<= channel NRC
     static int rc_state = 0;			        // Initial signal state
@@ -68,11 +68,9 @@ void rcUpdateServos(void) {
 
 void rcUpdateSpeedControllers(void) {
     //static int channel = NRCSERVOS;	 // Channel index starts right after all Servo motors
-    static int rc_state = 0;			// Initial signal state
-    static int rc1, rc2;				// Signal period timers
+    static int rc_state = 0;	    // Initial signal state
+    static int rc1, rc2;	    // Signal period timers
     int i;
-
-    invLED2();
 
     switch (rc_state) {
 	case 0:		// Initial high period
