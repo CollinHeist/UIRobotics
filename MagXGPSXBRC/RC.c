@@ -28,93 +28,93 @@ int RC2Pos = 50;
 	 None
   ---------------------------------------------------------------------------- */
 void rcUpdateServos(void) {
-	static int channel = NRCSPEEDCONTROLLERS;   // Channel index 0<= channel NRC
-	static int rc_state = 0;			        // Initial signal state
-	static int rc1, rc2;				      // Signal period timers
-	int i;
+    static int channel = NRCSPEEDCONTROLLERS;   // Channel index 0<= channel NRC
+    static int rc_state = 0;			        // Initial signal state
+    static int rc1, rc2;				      // Signal period timers
+    int i;
 
     invLED1();
 
-	switch (rc_state) {
-		case 0:		// Initial high period
-			rc_output(channel, TRUE);	// Turn channel on
-			rc1 = RC_SERVO_MIN + rc[channel];	// Compute on time
-			if (rc1 > RC_SERVO_MAX)
-				rc1 = RC_SERVO_MAX;
-			rc2 = RC_SERVO_MAX - rc1;			// Time to end of cycle
-			if (rc2 < 0)
-				rc2 = 0;
-			rc_state++;
-			break;							
-		case 1:
-			if (--rc1 <= 0) {			// Count down cycle ON time
-				rc_output(channel, FALSE);	// Turn channel off
-				rc_state++;
-			}
-			break;
-		case 2:
-			if(--rc2 <= 0) {			// Count down Cycle off time
-				rc_state = 0;			// Reset state counter
-				channel = NRCSPEEDCONTROLLERS + (((channel-NRCSPEEDCONTROLLERS) + 1) % (NRCSERVOS));	// Next channel
-				for (i = NRCSPEEDCONTROLLERS; i < NRC; i++) {
-					rc[i] = rc_set[i];
-				}
-			}
-			break;
-		default:
-			rc_state = 0;
-	}
+    switch (rc_state) {
+	case 0:		// Initial high period
+	    rc_output(channel, TRUE);	// Turn channel on
+	    rc1 = RC_SERVO_MIN + rc[channel];	// Compute on time
+	    if (rc1 > RC_SERVO_MAX)
+		rc1 = RC_SERVO_MAX;
+	    rc2 = RC_SERVO_MAX - rc1;			// Time to end of cycle
+	    if (rc2 < 0)
+		rc2 = 0;
+	    rc_state++;
+	    break;							
+	case 1:
+	    if (--rc1 <= 0) {			// Count down cycle ON time
+		rc_output(channel, FALSE);	// Turn channel off
+		rc_state++;
+	    }
+	    break;
+	case 2:
+	    if (--rc2 <= 0) {			// Count down Cycle off time
+		rc_state = 0;			// Reset state counter
+		channel = NRCSPEEDCONTROLLERS + (((channel-NRCSPEEDCONTROLLERS) + 1) % (NRCSERVOS));	// Next channel
+		for (i = NRCSPEEDCONTROLLERS; i < NRC; i++) {
+			rc[i] = rc_set[i];
+		}
+	    }
+	    break;
+	default:
+	    rc_state = 0;
+    }
 }
 
 void rcUpdateSpeedControllers(void) {
-	//static int channel = NRCSERVOS;	 // Channel index starts right after all Servo motors
-	static int rc_state = 0;			// Initial signal state
-	static int rc1, rc2;				// Signal period timers
-	int i;
+    //static int channel = NRCSERVOS;	 // Channel index starts right after all Servo motors
+    static int rc_state = 0;			// Initial signal state
+    static int rc1, rc2;				// Signal period timers
+    int i;
 
     invLED2();
 
-	switch (rc_state) {
-		case 0:		// Initial high period
-            for(i = 0 ; i < NRCSPEEDCONTROLLERS ; i++)
-            {
-                rc_output(i, TRUE);	// Turn channel on
-            }
-            if(rc[0] > 50) {
-                rc1 = RC_SPEED_CONTROLLER_NEUTRAL + (((rc[0] - 50)/50)*(RC_SPEED_CONTROLLER_MAX-RC_SPEED_CONTROLLER_NEUTRAL));
-            }
-            else {
-                rc1 = RC_SPEED_CONTROLLER_NEUTRAL - (((50 - rc[0])/50)*(RC_SPEED_CONTROLLER_NEUTRAL-RC_SPEED_CONTROLLER_MIN));
-            }
-			if (rc1 > RC_SPEED_CONTROLLER_MAX)
-				rc1 = RC_SPEED_CONTROLLER_MAX;
-            else if (rc1 < RC_SPEED_CONTROLLER_MIN)
-				rc1 = RC_SPEED_CONTROLLER_MIN;
-			rc2 = RC_SPEED_CONTROLLER_PERIOD - rc1;			// Time to end of cycle
-			if (rc2 < 0)
-				rc2 = 0;
-			rc_state++;
-			break;							
-		case 1:
-			if (--rc1 <= 0) {			// Count down cycle ON time
-                for(i = 0 ; i < NRCSPEEDCONTROLLERS ; i++)
-                {
-                    rc_output(i, FALSE);	// Turn channel off
-                }
-				rc_state++;
-			}
-			break;
-		case 2:
-			if(--rc2 <= 0) {			// Count down Cycle off time
-				rc_state = 0;			// Reset state counter
-				for (i = 0; i < NRCSPEEDCONTROLLERS; i++) {
-					rc[i] = rc_set[i];
-				}
-			}
-			break;
-		default:
-			rc_state = 0;
-	}
+    switch (rc_state) {
+	case 0:		// Initial high period
+	    for(i = 0 ; i < NRCSPEEDCONTROLLERS ; i++) {
+		rc_output(i, TRUE);	// Turn channel on
+	    }
+	    if(rc[0] > 50) {
+		rc1 = RC_SPEED_CONTROLLER_NEUTRAL + (((rc[0] - 50)/50)*(RC_SPEED_CONTROLLER_MAX-RC_SPEED_CONTROLLER_NEUTRAL));
+	    }
+	    else {
+		rc1 = RC_SPEED_CONTROLLER_NEUTRAL - (((50 - rc[0])/50)*(RC_SPEED_CONTROLLER_NEUTRAL-RC_SPEED_CONTROLLER_MIN));
+	    }
+	    
+	    if (rc1 > RC_SPEED_CONTROLLER_MAX)
+		rc1 = RC_SPEED_CONTROLLER_MAX;
+	    else if (rc1 < RC_SPEED_CONTROLLER_MIN)
+		rc1 = RC_SPEED_CONTROLLER_MIN;
+	    
+	    rc2 = RC_SPEED_CONTROLLER_PERIOD - rc1;			// Time to end of cycle
+	    if (rc2 < 0)
+		rc2 = 0;
+	    rc_state++;
+	    break;							
+	case 1:
+	    if (--rc1 <= 0) {			// Count down cycle ON time
+		for(i = 0 ; i < NRCSPEEDCONTROLLERS ; i++) {
+		    rc_output(i, FALSE);	// Turn channel off
+		}
+		rc_state++;
+	    }
+	    break;
+	case 2:
+	    if (--rc2 <= 0) {			// Count down Cycle off time
+		rc_state = 0;			// Reset state counter
+		for (i = 0; i < NRCSPEEDCONTROLLERS; i++) {
+			rc[i] = rc_set[i];
+		}
+	    }
+	    break;
+	default:
+	    rc_state = 0;
+    }
 }
 /* --------------------------------- set_rc ----------------------------------
   @ Summary
@@ -130,10 +130,10 @@ void rcUpdateSpeedControllers(void) {
 	 None
   ---------------------------------------------------------------------------- */
 void set_rc(int rc1, int rc2, int rc3, int rc4) {
-	rc_set[0] = rc1;
-	rc_set[1] = rc2;
-	rc_set[2] = rc3;
-	rc_set[3] = rc4;
+    rc_set[0] = rc1;
+    rc_set[1] = rc2;
+    rc_set[2] = rc3;
+    rc_set[3] = rc4;
 }
 
 /* -------------------------------- rc_output --------------------------------
@@ -150,22 +150,22 @@ void set_rc(int rc1, int rc2, int rc3, int rc4) {
 	 This function has no return value.
   ---------------------------------------------------------------------------- */
 void rc_output(int ch, int ctrl) {
-	switch (ch) {
-		case 0:
-			RC_1(ctrl);
-			break;
-		case 1:
-			RC_2(ctrl);
-			break;
-		case 2:
-			RC_3(ctrl);
-			break;
-		case 3:
-			RC_4(ctrl);
-			break;
-		default:
-			break;
-	}
+    switch (ch) {
+	case 0:
+	    RC_1(ctrl);
+	    break;
+	case 1:
+	    RC_2(ctrl);
+	    break;
+	case 2:
+	    RC_3(ctrl);
+	    break;
+	case 3:
+	    RC_4(ctrl);
+	    break;
+	default:
+	    break;
+    }
 }
 
 /* --------------------------------- initRC ----------------------------------
@@ -177,26 +177,24 @@ void rc_output(int ch, int ctrl) {
 	 None
   ---------------------------------------------------------------------------- */
 void initRC(void) {
-	int i;
-	for (i = 0; i < NRC; i++) {
-		rc[i] = 0;		// Array of RC Channel position Range = 0-100
-		rc_set[i] = 0;
-	}
-	cfgRC1();			// Set RC pins for output
-	cfgRC2();
-	cfgRC3();
-	cfgRC4();
+    int i;
+    for (i = 0; i < NRC; i++) {
+	rc[i] = 0;		// Array of RC Channel position Range = 0-100
+	rc_set[i] = 0;
+    }
+    cfgRC1();			// Set RC pins for output
+    cfgRC2();
+    cfgRC3();
+    cfgRC4();
 
-	/* -------------------- Reset all the RC Pins to zero -------------------- */
-	RC_1(0);
-	RC_2(0);
-	RC_3(0);
-	RC_4(0);
-	
+    /* -------------------- Reset all the RC Pins to zero -------------------- */
+    RC_1(0);
+    RC_2(0);
+    RC_3(0);
+    RC_4(0);
 }
 
-int SetDefaultServoPosition()
-{
+int SetDefaultServoPosition(void) {
     //DelayMs(500);  
     RC1Pos = RCMid;
     set_rc(RC2Pos, RC2Pos, RCMid, RCMid);
@@ -210,8 +208,7 @@ int SetDefaultServoPosition()
 // from its default position until the device is properly aligned.
 // Then the function will reset the motor back into its default position.
 //
-int TurnLeft() 
-{ 
+int TurnLeft(void) { 
     // Local variables
     static int pos = 0;
     int Aligned = 0;
@@ -219,7 +216,8 @@ int TurnLeft()
     
     pos--;
     
-    if(pos == RCLeft) pos = 0;
+    if (pos == RCLeft)
+	pos = 0;
     
     set_rc(RC1Pos--, pos, pos, pos);
     
@@ -239,24 +237,20 @@ int TurnLeft()
     return 0; 
 }
 
-int TurnLeftPos(int movement) 
-{ 
+int TurnLeftPos(int movement) { 
     // Local variables
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
     RC1Pos-= movement;
 
-    if(RC1Pos <= 0) 
-    {   
+    if(RC1Pos <= 0)  {   
         RC1Pos = 0;
     }
-    else if(RC1Pos >= 130) 
-    {   
+    else if(RC1Pos >= 130)  {   
         RC1Pos = 130;
     }
-    else
-    {
+    else {
         set_rc(RC2Pos, RC2Pos, RC1Pos, RC1Pos);
     }
     
@@ -285,8 +279,7 @@ int TurnLeftPos(int movement)
 // from its default position until the device is properly aligned.
 // Then the function will reset the motor back into its default position.
 //
-int TurnRight() 
-{ 
+int TurnRight() {
     // Local variables
     int Aligned = 0;
     int i = 0;
@@ -296,10 +289,9 @@ int TurnRight()
     // Until the device is aligned in the correct position
     // Right now this is a busy loop just to be a placeholder so that when the 
     // additional functions get made, they can be inserted more easily.
-    while(!Aligned)
-    {   
+    while (!Aligned) { 
         i++;
-        if(i == 9000000)
+        if (i == 9000000)
             Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
     }
     
@@ -309,24 +301,20 @@ int TurnRight()
     return 0; 
 }
 
-int TurnRightPos(int movement) 
-{ 
+int TurnRightPos(int movement) {
     // Local variables
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
     RC1Pos-= movement;
 
-    if(RC1Pos <= 0) 
-    {   
+    if(RC1Pos <= 0) {  
         RC1Pos = 0;
     }
-    else if(RC1Pos >= 130) 
-    {   
+    else if(RC1Pos >= 130) {   
         RC1Pos = 130;
     }
-    else
-    {
+    else {
         pos++;
         set_rc(RC2Pos, RC2Pos, RC1Pos, RC1Pos);
     }
@@ -348,24 +336,20 @@ int TurnRightPos(int movement)
     return 0; 
 }
 
-int ForwardPos(int movement) 
-{ 
+int ForwardPos(int movement) {
     // Local variables                                                                                                                          
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
     RC2Pos-= movement;
 
-    if(RC2Pos <= 0) 
-    {   
+    if(RC2Pos <= 0) {
         RC2Pos = 0;
     }
-    else if(RC2Pos >= 100) 
-    {   
+    else if(RC2Pos >= 100) {  
         RC2Pos = 100;
     }
-    else
-    {
+    else {
         set_rc(RC2Pos, RC2Pos, RC1Pos, RC1Pos);
     }
     
@@ -386,24 +370,20 @@ int ForwardPos(int movement)
     return 0; 
 }
 
-int BackwardPos(int movement) 
-{ 
+int BackwardPos(int movement) {
     // Local variables
     static int pos = 50;
     int Aligned = 0;
     int i = 0;
     RC2Pos+=movement;
     
-    if(RC2Pos >= 100) 
-    {   
+    if(RC2Pos >= 100) { 
         RC2Pos = 100;
     }
-    else if(RC2Pos <= 0) 
-    {   
+    else if(RC2Pos <= 0) { 
         RC2Pos = 0;
     }
-    else
-    {
+    else {
         pos++;
         set_rc(RC2Pos, RC2Pos, RC1Pos, RC1Pos);
     }

@@ -10,11 +10,10 @@ build/default/production/_ext/1472/main.o:  \
  ../ADC_TEMP.h  \
 ../Notice.h  \
 ../swDelay.h  \
-../uart4.h  \
-../uart2.h  \
-../led7.h  \
- ../LCDlib.h  \
-../RC.h  \
+../UART4.h  \
+../UART2.h  \
+../LCDlib.h  \
+ ../RC.h  \
 ../DMA_UART2.h  \
 ../MAG3110.h  \
 ../Stepper.h 

@@ -38,152 +38,137 @@ I2C_RESULT InitMag();
 static char Char;
 int gps_message = 0;        // Active GPS sentence 
 extern int16_t led_value;
-extern BOOL led_flag;
 
-int main(void)
-{
-	// Need to disable global interrupts
+int main(void) {
+    // Need to disable global interrupts
 
-	// Local variables
-	I2C_RESULT I2cResultFlag;   // I2C Init Result flag
+    // Local variables
+    I2C_RESULT I2cResultFlag;   // I2C Init Result flag
     I2C_RESULT I2cReadFlag;   // I2C Init Result flag
     int16_t x, y, z;
-	unsigned GPSInterval = 1000;
-	unsigned MagInterval = 60;
-	unsigned ADCTemperatureInterval = 60000;
-	unsigned MovementInterval = 20;
-	unsigned ActualGPSInterval = GPSInterval;
-	unsigned GPSIntervalMark = 0;
-	unsigned MagIntervalMark = 0;
-	unsigned ADCIntervalMark = 0;
-	unsigned MovementIntervalMark = 0;
-	unsigned ActualMagInterval = MagInterval;
-	unsigned ActualADCInterval = ADCTemperatureInterval;
-	unsigned ActualMovementInterval = MovementInterval;
+    unsigned GPSInterval = 1000;
+    unsigned MagInterval = 60;
+    unsigned ADCTemperatureInterval = 60000;
+    unsigned MovementInterval = 20;
+    unsigned ActualGPSInterval = GPSInterval;
+    unsigned GPSIntervalMark = 0;
+    unsigned MagIntervalMark = 0;
+    unsigned ADCIntervalMark = 0;
+    unsigned MovementIntervalMark = 0;
+    unsigned ActualMagInterval = MagInterval;
+    unsigned ActualADCInterval = ADCTemperatureInterval;
+    unsigned ActualMovementInterval = MovementInterval;
     float heading = 0;
 
-	// Init. the DMA flag
-	DmaIntFlag = 0;
+    // Init. the DMA flag
+    DmaIntFlag = 0;
 
-	// Initialization
-	I2cResultFlag = InitializeModules(&I2cResultFlag);	// Init all I/O modules
-	DmaUartRxInit();
+    // Initialization
+    I2cResultFlag = InitializeModules(&I2cResultFlag);	// Init all I/O modules
+    DmaUartRxInit();
 
-	// Re-enable global interrupts
+    // Re-enable global interrupts
 
     // Set the default position
-	SetDefaultServoPosition();
+    SetDefaultServoPosition();
 
     MAG3110_EnvCalibrate();
     
-	while (1)  // Forever process loop	
-	{
-		if (DmaIntFlag)          // clear the interrupt flag
-		{
-			DmaIntFlag = 0;                       // Reset DMA Rx block flag
-			printf("message received %s\n", dmaBuff);
-			DmaUartRx();
-			HandleInput();						// Handles all user input from the XB device
-			putsU2("A");
-		}
-
-		if (SW0())
-		{
-			SetDefaultServoPosition();
-		}
-
-		// GPS receives data
-		if ((millisec - GPSIntervalMark) >= GPSInterval)
-		{
-			//I2cReadFlag = ReportGPS(TRUE);	
-			//GPSIntervalMark = millisec;
-		}
-
-		// GPS receives data
-		if ((millisec - MovementIntervalMark) >= MovementInterval)
-		{
-			Move();								// Read from the GPS and display to the screen
-			MovementIntervalMark = millisec;
-		}
-
-        
-		// Mag receives data
-		if ((millisec - MagIntervalMark) >= MagInterval)
-		{
-           I2cResultFlag = MAG3110_readMag(&x,&y,&z);
-            
-           if(I2cResultFlag == I2C_SUCCESS)
-           {
-                MAG3110_readHeading(&heading);
-                if(heading < 0) heading += 360;
-                if(heading >= 360) heading -= 360;
-                clrLCD();
-                printf("%f,%d,%d,%d\n\r", heading, x, y, z);  
-           }
-           else
-           {
-               printf("Readmag error\n");
-           }
-                     
-			MagIntervalMark = millisec;
-		}
-         
-
-		// Get data from the ADC temperature sensors
-		if ((millisec - ADCIntervalMark) >= ADCTemperatureInterval)
-		{
-			read_temperature_store();			// Reads in the temperature
-			ADCIntervalMark = millisec;
-		}
-
+    while (1) {  // Forever process loop	
+	if (DmaIntFlag) {	    // clear the interrupt flag
+	    DmaIntFlag = 0;         // Reset DMA Rx block flag
+	    printf("message received %s\n", dmaBuff);
+	    DmaUartRx();
+	    HandleInput();	    // Handles all user input from the XB device
+	    getStringUART2("A", 1);
 	}
-	return EXIT_FAILURE; // Code execution should never get to this statement 
+
+	if (SW0()) {
+	    SetDefaultServoPosition();
+	}
+
+	// GPS receives data
+	if ((millisec - GPSIntervalMark) >= GPSInterval) {
+	    //I2cReadFlag = ReportGPS(TRUE);	
+	    //GPSIntervalMark = millisec;
+	}
+
+	// GPS receives data
+	if ((millisec - MovementIntervalMark) >= MovementInterval) {
+	    Move();								// Read from the GPS and display to the screen
+	    MovementIntervalMark = millisec;
+	}
+
+
+	// Mag receives data
+	if ((millisec - MagIntervalMark) >= MagInterval) {
+	    I2cResultFlag = MAG3110_readMag(&x,&y,&z);
+
+	    if (I2cResultFlag == I2C_SUCCESS) {
+		MAG3110_readHeading(&heading);
+		if(heading < 0) heading += 360;
+		if(heading >= 360) heading -= 360;
+		clrLCD();
+		printf("%f,%d,%d,%d\n\r", heading, x, y, z);  
+	    }
+	    else {
+		printf("Readmag error\n");
+	    }
+
+	    MagIntervalMark = millisec;
+	}
+
+
+	// Get data from the ADC temperature sensors
+	if ((millisec - ADCIntervalMark) >= ADCTemperatureInterval) {
+	    read_temperature_store();			// Reads in the temperature
+	    ADCIntervalMark = millisec;
+	}
+
+    }
+    
+    return EXIT_FAILURE; // Code execution should never get to this statement 
 }
 
 //
 // print_pretty_table()
 //
 //
-void print_pretty_table(int use_uart)
-{
-	char lcdStr[40];
-	int tempC, tempF;
+void print_pretty_table(int use_uart) {
+    char lcdStr[40];
+    int tempC, tempF;
     int16_t x,y,z;
-	tempC = (int)((35 + ((10 * 0) - (10 * 0)) / 452));
-	tempF = ((tempC * 9) / 5) + 32;
+    tempC = (int)((35 + ((10 * 0) - (10 * 0)) / 452));
+    tempF = ((tempC * 9) / 5) + 32;
     
     I2C_RESULT i2cFlag = MAG3110_readMag(&x,&y,&z);
 
-	if (use_uart)
-	{
-		printf("RAW data values\n\r");
-		printf("X:%6d ", x);
-		printf("Y:%6d ", y);
-		printf("Z:%6d\n\r ", z);
-	}
-	sprintf(lcdStr, "X:%5d Y:%5d", x, y);
-	clrLCD();
-	putsLCD(lcdStr);
-	gotoLCD(16);
-	sprintf(lcdStr, "T1:%5d T:%5d", GetTemp1(), GetTemp2());
-	putsLCD(lcdStr);
-	led_flag = 1;   // Enable 4 digit 7 segment LED display
+    if (use_uart) {
+	printf("RAW data values\n\r");
+	printf("X:%6d ", x);
+	printf("Y:%6d ", y);
+	printf("Z:%6d\n\r ", z);
+    }
+    sprintf(lcdStr, "X:%5d Y:%5d", x, y);
+    clrLCD();
+    putsLCD(lcdStr);
+    gotoLCD(16);
+    sprintf(lcdStr, "T1:%5d T:%5d", GetTemp1(), GetTemp2());
+    putsLCD(lcdStr);
 }
 //
 // InitializeModules()
 //
 //
-int InitializeModules(I2C_RESULT* I2cResultFlag)
-{
+int InitializeModules(I2C_RESULT* I2cResultFlag) {
     BOOL Result;
-	Hardware_Setup();					// Initialize common IO
-	initializeUART4(38400, NO_PARITY);		// PC Terminal
-	initializeUART2(9600, NO_PARITY);		// XBEE
-	initLCD();							// Init the LCD screen
-	putsU2("\n\rXBee online\n\r");		// Send message to PC
-	init_analog();						// Initialize AN2 to read Pot
-	init_temperature();
-	led_flag = 1;						// Enable 4 digit 7 segment LED display
+    Hardware_Setup();				// Initialize common IO
+    initializeUART4(38400, NO_PARITY);		// PC Terminal
+    initializeUART2(9600, NO_PARITY);		// XBEE
+    initLCD();					// Init the LCD screen
+    putStringUART2("\n\rXBee online\n\r");	// Send message to PC
+    init_analog();				// Initialize AN2 to read Pot
+    init_temperature();
     int16_t x,y,z;
     
     *I2cResultFlag = I2C_Init(I2C1, 100000);
@@ -191,63 +176,55 @@ int InitializeModules(I2C_RESULT* I2cResultFlag)
     initializeStepper();
     
     // Mag init procedure
-     if(!(Result = MAG3110_initialize()))
-     {
-         printf("MAG3110 failed to init");
-     }
+    if (!(Result = MAG3110_initialize())) {
+	printf("MAG3110 failed to init");
+    }
     
     
     printf("Magnetometer is calibrating\n\r");
     MAG3110_enterCalMode();
         
-    while(MAG3110_isCalibrating())
-    {
+    while (MAG3110_isCalibrating()) {
         MAG3110_calibrate();
         MAG3110_readMag(&x,&y,&z);
         printf("%d,%d,%d\n\r",x,y,z);
         DelayMs(10);
     }
     
-    if(MAG3110_isCalibrated())
-    {
+    if (MAG3110_isCalibrated()) {
         printf("Magnetometer is calibrated\n\r");
     }
     
     Result = setGPS_RMC();
     
-	return Result; 
+    return Result; 
 }
 
 //
 // InitMag()
 //
 //
-I2C_RESULT InitMag()
-{
-	I2C_RESULT IResult;
-	BOOL Result;
+I2C_RESULT InitMag() {
+    I2C_RESULT IResult;
+    BOOL Result;
     int16_t x,y,z;
 
-	// Mag init procedure
-	if (!(Result = MAG3110_initialize()))
-	{
-		printf("MAG3110 failed to init");
-	}
+    // Mag init procedure
+    if (!(Result = MAG3110_initialize())) {
+	printf("MAG3110 failed to init");
+    }
 
-	printf("Magnetometer is calibrating\n\r");
-	MAG3110_enterCalMode();
+    printf("Magnetometer is calibrating\n\r");
+    MAG3110_enterCalMode();
 
-	while (MAG3110_isCalibrating())
-	{
-		MAG3110_calibrate();
-		MAG3110_readMag(&x, &y, &z);
-		printf("%d,%d,%d\n\r", x, y, z);
-		DelayMs(10);
-	}
+    while (MAG3110_isCalibrating()) {
+	MAG3110_calibrate();
+	MAG3110_readMag(&x, &y, &z);
+	printf("%d,%d,%d\n\r", x, y, z);
+	DelayMs(10);
+    }
 
-	if (MAG3110_isCalibrated())
-	{
-		printf("Magnetometer is calibrated\n\r");
-	}
-
+    if (MAG3110_isCalibrated()) {
+	printf("Magnetometer is calibrated\n\r");
+    }
 }

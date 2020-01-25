@@ -10,8 +10,8 @@
 	// Function Prototypes
 	void initializeUART4(unsigned int baud, int parity);
 	void _mon_putc(char c);
-	BOOL putCharacterUART4(int ch);
-	BOOL getCharacterUART4(char *ch);
+	unsigned int putCharacterUART4(int ch);
+	unsigned int getCharacterUART4(char *ch);
 	int putStringUART4(const char *s); 
-	int getStringUART4( char *s, unsigned int len );
+	int getStringUART4(char *s, unsigned int len);
 #endif

@@ -2,35 +2,36 @@
 #include "hardware.h"
 #include <plib.h>
 #include <stdio.h>
+#include <GenericTypeDefs.h>
 #include "uart4.h"
 
 void initializeUART4(unsigned int baud, int parity) {
-	RPF12R = 0x02;  // Mapping U4TX to RPF12;
-	U4RXR = 0x09;   // Mapping U4RX to RPF13
+    RPF12R = 0x02;  // Mapping U4TX to RPF12;
+    U4RXR = 0x09;   // Mapping U4RX to RPF13
 
-	UARTConfigure(UART4, UART_ENABLE_PINS_TX_RX_ONLY );
-	UARTSetDataRate(UART4, GetPeripheralClock(), baud);
-	
-	// Note the need to specify the UART number twice in the following statement	
-	UARTEnable(UART4, UART_ENABLE_FLAGS(UART_ENABLE | UART4 | UART_RX | UART_TX));  
-	
-	switch (parity) {
-		case NO_PARITY:
-			UARTSetLineControl(UART4, UART_DATA_SIZE_8_BITS | UART_PARITY_NONE | UART_STOP_BITS_1);
-			break;
-		case ODD_PARITY:
-			UARTSetLineControl(UART4, UART_DATA_SIZE_8_BITS | UART_PARITY_ODD | UART_STOP_BITS_1);
-			break;
-		case EVEN_PARITY:
-			UARTSetLineControl(UART4, UART_DATA_SIZE_8_BITS | UART_PARITY_EVEN | UART_STOP_BITS_1);
-			break;
-	}
-	putStringUART4("\n\rUART Serial Port 4 ready\n\n\r");
+    UARTConfigure(UART4, UART_ENABLE_PINS_TX_RX_ONLY );
+    UARTSetDataRate(UART4, GetPeripheralClock(), baud);
+
+    // Note the need to specify the UART number twice in the following statement	
+    UARTEnable(UART4, UART_ENABLE_FLAGS(UART_ENABLE | UART4 | UART_RX | UART_TX));  
+
+    switch (parity) {
+	case NO_PARITY:
+	    UARTSetLineControl(UART4, UART_DATA_SIZE_8_BITS | UART_PARITY_NONE | UART_STOP_BITS_1);
+	    break;
+	case ODD_PARITY:
+	    UARTSetLineControl(UART4, UART_DATA_SIZE_8_BITS | UART_PARITY_ODD | UART_STOP_BITS_1);
+	    break;
+	case EVEN_PARITY:
+	    UARTSetLineControl(UART4, UART_DATA_SIZE_8_BITS | UART_PARITY_EVEN | UART_STOP_BITS_1);
+	    break;
+    }
+    putStringUART4("\n\rUART Serial Port 4 ready\n\n\r");
 }
 
 void _mon_putc(char c) {
-	while(!UARTTransmitterIsReady(UART4));
-	UARTSendDataByte(UART4, c);
+    while(!UARTTransmitterIsReady(UART4));
+    UARTSendDataByte(UART4, c);
 }
 
 /* putCharacterUART4 FUNCTION DESCRIPTION ********************************************
@@ -56,16 +57,16 @@ void _mon_putc(char c) {
 		result = putCharacterUART4(ch);
  
  * END DESCRIPTION **********************************************************/
-BOOL putCharacterUART4(int ch) {
-	UART_DATA c;
-	BOOL done = FALSE;
-	c.data8bit = (char) ch;
-	if(UARTTransmitterIsReady(UART4)) {
-		UARTSendDataByte(UART4, c.data8bit);
-		done = TRUE;
-	}
+unsigned int putCharacterUART4(int ch) {
+    UART_DATA c;
+    unsigned int done = (unsigned int) FALSE;
+    c.data8bit = (char) ch;
+    if (UARTTransmitterIsReady(UART4)) {
+	UARTSendDataByte(UART4, c.data8bit);
+	done = TRUE;
+    }
 
-	return done;
+    return (unsigned int) done;
 }
 
 /* getU4 FUNCTION DESCRIPTION ********************************************
@@ -90,16 +91,16 @@ BOOL putCharacterUART4(int ch) {
 		result = getCharacterUART4(&ch);
  
  * END DESCRIPTION ********************************************************/
-BOOL getCharacterUART4(char *ch) {
-	UART_DATA c;
-	BOOL done = FALSE;
-	if (UARTReceivedDataIsAvailable(UART4))	// wait for new char to arrive
-	{
-		c = UARTGetData(UART4);	// read the char from receive buffer
-		*ch = (c.data8bit);
-		done = TRUE;		// Return new data available flag
-	}
-	return done;			// Return new data not available flag
+unsigned int getCharacterUART4(char *ch) {
+    UART_DATA c;
+    unsigned int done = (unsigned int) FALSE;
+    if (UARTReceivedDataIsAvailable(UART4)) {	// wait for new char to arrive
+	c = UARTGetData(UART4);		// read the char from receive buffer
+	*ch = (c.data8bit);
+	done = (unsigned int) TRUE;	// Return new data available flag
+    }
+    
+    return (unsigned int) done;		// Return new data not available flag
 }
 
 /* putsU4 FUNCTION DESCRIPTION ********************************************

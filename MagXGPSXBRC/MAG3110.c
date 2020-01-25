@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include "i2c_lib.h"
 #include "MAG3110.h"
-#include "led7.h"
 
 #include <plib.h>
 #include <math.h>
