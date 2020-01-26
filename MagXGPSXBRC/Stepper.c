@@ -1,7 +1,13 @@
-// File Inclusion
-#include "hardware.h"
+/* ----------------------------------- File Inclusion ----------------------------------- */
+
 #include <plib.h>
+#include "hardware.h"
+
 #include "Stepper.h"
+
+/* -------------------------- Global Variables and Structures --------------------------- */
+
+/* ---------------------------------- Public Functions ---------------------------------- */
 
 void initializeStepper(void)  {
     MCInit();
@@ -25,3 +31,6 @@ void step(int direction, int mode) {
     BIN2(step_code[step_ptr] & 0x08);
 }
 
+/* --------------------------------- Private Functions ---------------------------------- */
+
+/* ----------------------------- Interrupt Service Routines ----------------------------- */

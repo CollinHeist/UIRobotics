@@ -490,8 +490,7 @@ I2C_RESULT I2C_ReadDev(I2C_DATA_BLOCK  blk)
 										  /* Send device ID with R/W bit set high */
 	I2C_FORMAT_7_BIT_ADDRESS(SlaveAddress, blk.dev_id, I2C_READ);
 	i2c_started = StartTransfer(blk.i2c_channel, FALSE); /* Repeated start */
-	if (i2c_started)
-	{
+	if (i2c_started) {
 		if (TransmitOneByte(blk.i2c_channel, SlaveAddress.byte))
 		{
 			if (!I2CByteWasAcknowledged(blk.i2c_channel))
@@ -501,7 +500,7 @@ I2C_RESULT I2C_ReadDev(I2C_DATA_BLOCK  blk)
 			}
 		}
 		else  i2c_ops = I2C_ERROR;  /* Bytes was not sent */
-		usDelay(35);                /* Wait >30us after sending device ID */
+		delayUS(40);                /* Wait >30us after sending device ID */
 	}
 	else i2c_ops = I2C_ERROR;   /* I2C was not started */
 
@@ -530,5 +529,5 @@ I2C_RESULT I2C_ReadDev(I2C_DATA_BLOCK  blk)
 void i2c_ackError(int loc)
 {
 	printf("Error: Sent byte was not acknowledged at %d\n\r", loc);
-	msDelay(10);
+	delayMS(10);
 }

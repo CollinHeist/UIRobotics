@@ -1,4 +1,3 @@
-/* --------------------- Guarding against multiple inclusion ----------------- */
 #ifndef __GPS_I2C_H__
 	#define __GPS_I2C_H__
    
@@ -78,12 +77,10 @@
 
 	#define MAXWAITSENTENCE         10
 
-	#include <plib.h>
-	
 	struct gps_time gps;
 	extern BYTE gpsStr[256];
     
-	/* ---------------------- Public Function declarations ------------------- */
+	// Function Prototypes
 	I2C_RESULT GPS_I2C_Read(I2C_MODULE i2c_port, BYTE DeviceAddress, BYTE *str, int *len);
 	int GPS_DECODE_RMC(BYTE *str);
 	I2C_RESULT ReportGPS(int show);

@@ -1,33 +1,34 @@
-// File Inclusion
-#include "GPS_I2C.h"
+/* ----------------------------------- File Inclusion ----------------------------------- */
 
-#include "hardware.h"
 #include <plib.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
 
+#include "hardware.h"
+#include "GPS_I2C.h"
 #include "i2c_lib.h"
 #include "swDelay.h"
 
-// Global Variables
+/* -------------------------- Global Variables and Structures --------------------------- */
+
 BYTE gpsStr[256]= {0};
 
-/* ------------------------------- setGPS_RMC --------------------------------
-  @ Summary
-	 Configures the GPS to only send the $RMC Packet, reduces I2C parsing needed
-  @ Parameters
-	 None
-  @ Returns
-	 I2C_result : A flag ensuring the communication was successful
-  ---------------------------------------------------------------------------- */
+/* ---------------------------------- Public Functions ---------------------------------- */
+
+/*
+ *	Summary
+ *		Configure the GPS to only send the $RMC packet to reduce I2C parsing.
+ *	Parameters
+ *		None.
+ *	Returns
+ *		I2C_RESULT that is the flag returned from sending the SET_NMEA packet.
+ */
 I2C_RESULT setGPS_RMC(void) {
 	I2C_RESULT i2cFlag;
-	int dly = 0;
-	do {
-		i2cFlag = sendMTKpacket(PMTK_SET_NMEA_OUTPUT_RMCONLY);
-		DelayMs(MAXWAITSENTENCE);
-	} while (dly);
+	
+	i2cFlag = sendMTKpacket(PMTK_SET_NMEA_OUTPUT_RMCONLY);
+	delayMS(MAXWAITSENTENCE);
 	
 	return i2cFlag;
 }
@@ -88,7 +89,7 @@ I2C_RESULT ReportGPS (int show) {
 	static int hour, min, sec;
 	int pkt_len = 0;
 
-	DelayMs(5);	 // Give GPS time to up load new buffer
+	delayMS(5);	 // Give GPS time to up load new buffer
 	len = MAX_PACKET_SIZE;
 	i2cFlag = I2C_Read(I2C1, GPS_DEV_ID, gpsStr, &len);
 
@@ -102,8 +103,7 @@ I2C_RESULT ReportGPS (int show) {
 			hour -= 7;
 			if (hour < 0)
 				hour += 24;  
-			printf("Time: %2d:%2d:%2d  LAT:%f  LON:%f\n\r",\
-					hour, min, sec, gps.lon, gps.lat);
+			printf("Time: %2d:%2d:%2d  LAT:%f  LON:%f\n\r", hour, min, sec, gps.lon, gps.lat);
 		}
 	}
 		
@@ -132,7 +132,11 @@ I2C_RESULT sendMTKpacket (char *packet) {
 		printf("GPS command: %s", packet);
 		i2cFlag = I2C_Write(I2C1, GPS_DEV_ID, packet, &len);
 	}
-	DelayMs(MAXWAITSENTENCE);
+	delayMS(MAXWAITSENTENCE);
 	
 	return i2cFlag;
 }
+
+/* --------------------------------- Private Functions ---------------------------------- */
+
+/* ----------------------------- Interrupt Service Routines ----------------------------- */

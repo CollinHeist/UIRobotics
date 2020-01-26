@@ -9,8 +9,7 @@
 
 #pragma once
 
-typedef struct cycleData
-{
+typedef struct cycleData {
 	// Motor and Servo data
 	int Servo3Position;
 	int Servo4Position;
@@ -27,7 +26,5 @@ typedef struct cycleData
 	float GPS_Longitude;
 	float GPS_Speed;
 	float GPS_Angle;
-
-
 } Cycle;
 

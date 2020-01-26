@@ -1,13 +1,18 @@
 #ifndef _HARDWARE_H_   
 	#define	_HARDWARE_H_
 
-	#ifndef _SUPPRESS_PLIB_WARNING	// Suppress plib obsolesce warnings
+	// Suppress plib obsolesce warnings
+	#ifndef _SUPPRESS_PLIB_WARNING	
 		#define _SUPPRESS_PLIB_WARNING
 	#endif
 
 	#ifndef _DISABLE_OPENADC10_CONFIGPORT_WARNING
 		#define  _DISABLE_OPENADC10_CONFIGPORT_WARNING
 	#endif
+
+	// Macros for error-detection
+	#define NO_ERROR		(0)
+	#define ERROR			(1)
 
 /* This included file provides access to the peripheral library functions and
    must be installed after the XC32 compiler. See
@@ -159,9 +164,9 @@ http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20
 	#define BIN2(a);   {if(a) LATBbits.LATB5 = 1; else LATBbits.LATB5 = 0;}
 	#define MCMODE(a);  {if(a) LATFbits.LATF1 = 1; else LATFbits.LATF1 = 0;}
 				   
-/* Based upon setting in config_bits.h These directly influence timed
- * events using the Tick module.  They also are used for UART I2C, and SPI
- * baud rate generation. */
+	/* Based upon setting in config_bits.h These directly influence timed
+	 * events using the Tick module.  They also are used for UART I2C, and SPI
+	 * baud rate generation. */
 
 	#define XTAL					(8000000UL)				// 8 MHz Xtal on Basys MX3A
 	#define GetSystemClock()		(80000000UL)			// Instruction frequency
@@ -169,14 +174,10 @@ http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20
 	#define GetCoreClock()			(GetSystemClock()/2)	// Core clock frequency
 	#define GetPeripheralClock()	(GetSystemClock()/8)	// PCLK set for 80 MHz
 
-/* Used in core timer software delay */
-	#define CORE_MS_TICK_RATE	 (unsigned int) (GetCoreClock()/1000UL)
-
 	#define TMR1_TICK		100
     #define TIMER1_MS_COUNT     (100)
 
 	// Function Prototypes
 	void Hardware_Setup(void);
-	static void initTimer1(void);
-	unsigned int millisec;
+	static void initializeTimer1(void);
 #endif

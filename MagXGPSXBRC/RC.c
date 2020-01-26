@@ -45,11 +45,12 @@ void rcUpdateServos(void) {
 	    if (rc2 < 0)
 		rc2 = 0;
 	    rc_state++;
+	    
 	    break;							
 	case 1:
 	    if (--rc1 <= 0) {			// Count down cycle ON time
-		rc_output(channel, FALSE);	// Turn channel off
-		rc_state++;
+			rc_output(channel, FALSE);	// Turn channel off
+			rc_state++;
 	    }
 	    break;
 	case 2:
@@ -193,7 +194,7 @@ void initRC(void) {
 }
 
 int SetDefaultServoPosition(void) {
-    //DelayMs(500);  
+    //delayMS(500);  
     RC1Pos = RCMid;
     set_rc(RC2Pos, RC2Pos, RCMid, RCMid);
 }
@@ -229,7 +230,7 @@ int TurnLeft(void) {
         if(i == 9000000)
             Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
     }*/
-    DelayMs(1);      // However much additional time for the boat to turn
+    delayMS(1);      // However much additional time for the boat to turn
     //SetDefaultServoPosition();
     
     return 0; 
@@ -263,7 +264,7 @@ int TurnLeftPos(int movement) {
         if(i == 9000000)
             Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
     }*/
-    DelayMs(10);               // However much additional time for the boat to turn
+    delayMS(10);               // However much additional time for the boat to turn
     //SetDefaultServoPosition();
     
     return 0; 
@@ -293,7 +294,7 @@ int TurnRight() {
             Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
     }
     
-    //DelayMs(3000);               // However much additional time for the boat to turn
+    //delayMS(3000);               // However much additional time for the boat to turn
     SetDefaultServoPosition();
     
     return 0; 
@@ -328,7 +329,7 @@ int TurnRightPos(int movement) {
         if(i == 9000000)
             Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
     }*/
-    DelayMs(1);      // However much additional time for the boat to turn
+    delayMS(1);      // However much additional time for the boat to turn
     //SetDefaultServoPosition();
     
     return 0; 
@@ -362,7 +363,7 @@ int ForwardPos(int movement) {
         if(i == 9000000)
             Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
     }*/
-    DelayMs(10);               // However much additional time for the boat to turn
+    delayMS(10);               // However much additional time for the boat to turn
     //SetDefaultServoPosition();
     
     return 0; 
@@ -397,7 +398,7 @@ int BackwardPos(int movement) {
         if(i == 9000000)
             Aligned = 1;  // IfAligned() // Returns a variable to indicate if aligned
     }*/
-    DelayMs(1);      // However much additional time for the boat to turn
+    delayMS(1);      // However much additional time for the boat to turn
     //SetDefaultServoPosition();
     
     return 0; 

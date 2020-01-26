@@ -67,7 +67,7 @@ int main(void) {
 
     // Initialization
     I2cResultFlag = InitializeModules(&I2cResultFlag);	// Init all I/O modules
-    DmaUartRxInit();
+    unsigned int error_flag |= initializeDMAUART2RX();
 
     // Re-enable global interrupts
 
@@ -79,8 +79,8 @@ int main(void) {
     while (1) {  // Forever process loop	
 	if (DmaIntFlag) {	    // clear the interrupt flag
 	    DmaIntFlag = 0;         // Reset DMA Rx block flag
-	    printf("message received %s\n", dmaBuff);
-	    DmaUartRx();
+	    printf("message received %s\n", DMABuffer);
+	    restartDMATransfer();
 	    HandleInput();	    // Handles all user input from the XB device
 	    getStringUART2("A", 1);
 	}
@@ -186,7 +186,7 @@ int InitializeModules(I2C_RESULT* I2cResultFlag) {
         MAG3110_calibrate();
         MAG3110_readMag(&x,&y,&z);
         printf("%d,%d,%d\n\r",x,y,z);
-        DelayMs(10);
+        delayMS(10);
     }
     
     if (MAG3110_isCalibrated()) {
@@ -219,7 +219,7 @@ I2C_RESULT InitMag() {
 	MAG3110_calibrate();
 	MAG3110_readMag(&x, &y, &z);
 	printf("%d,%d,%d\n\r", x, y, z);
-	DelayMs(10);
+	delayMS(10);
     }
 
     if (MAG3110_isCalibrated()) {

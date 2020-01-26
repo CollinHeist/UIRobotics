@@ -1,7 +1,5 @@
 #ifndef __RC_H__
 	#define __RC_H__
-
-	#include <plib.h>
 	
 	#define cfgRC1()                PORTSetPinsDigitalOut(IOPORT_D, BIT_9)	// Wall has 4
 	#define cfgRC2()                PORTSetPinsDigitalOut(IOPORT_D, BIT_11) // 8
@@ -16,7 +14,7 @@
 
     #define NRCSERVOS               (2)
     #define NRCSPEEDCONTROLLERS     (2)
-	#define NRC                     (NRCSPEEDCONTROLLERS+NRCSERVOS)		// Number of RC channels
+	#define NRC                     (NRCSPEEDCONTROLLERS + NRCSERVOS)		// Number of RC channels
 
 	/* --------- RC Setting Range - How wide the PWM Signal should be -------- */
 	#define RC_SERVO_MIN                    100
