@@ -1,4 +1,4 @@
-build/default/production/_ext/1472/RC.o:  \
+build/default/debug/_ext/1472/RC.o:  \
 ../RC.c  \
 ../hardware.h  \
 ../RC.h  \

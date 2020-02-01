@@ -30,27 +30,27 @@ void initializeChangeNotice(void)  {
 }
 
 void __ISR(_CHANGE_NOTICE_VECTOR, IPL1SOFT) interruptChangeNoticeHandler(void) {
-	unsigned int JA1;
-	unsigned int JA2;
+    unsigned int JA1;
+    unsigned int JA2;
 
-	// Check to see which pin(s) created the interrupt
-	if (CNSTATC & BIT_13) {
-		JA1 = mPORTCRead() & BIT_13; // Clear all standing CNSTATA bits.
-		SetDefaultServoPosition();
-		ClearLeftStick();
-
-		Status1++;
-		Status1 %= 2;
-	}
-
-	if (CNSTATC & BIT_14) {
-	    JA2 = mPORTCRead() & BIT_14; // Clear all standing CNSTATA bits.
+    // Check to see which pin(s) created the interrupt
+    if (CNSTATC & BIT_13) {
+	    JA1 = mPORTCRead() & BIT_13; // Clear all standing CNSTATA bits.
 	    SetDefaultServoPosition();
 	    ClearLeftStick();
-	    
-	    Status2++;
-	    Status2 %= 2;
-	}
 
-	mCNCClearIntFlag(); // Clear the CN interrupt flag
+	    Status1++;
+	    Status1 %= 2;
+    }
+
+    if (CNSTATC & BIT_14) {
+	JA2 = mPORTCRead() & BIT_14; // Clear all standing CNSTATA bits.
+	SetDefaultServoPosition();
+	ClearLeftStick();
+
+	Status2++;
+	Status2 %= 2;
+    }
+
+    mCNCClearIntFlag(); // Clear the CN interrupt flag
 }

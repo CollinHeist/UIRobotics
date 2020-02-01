@@ -30,52 +30,51 @@ int RC2Pos = 50;
 static unsigned int t2_tick;
 
 unsigned int initialize_pwm(unsigned int m1DutyCycle, unsigned int m2DutyCycle, unsigned int pwmFreq) {
-	// Timer 2 Initialization
-	t2_tick = T2_CLOCK_RATE / pwmFreq;
-	if (t2_tick > (1 << 15))
-		return ERROR;
+    // Timer 2 Initialization
+    t2_tick = T2_CLOCK_RATE / pwmFreq;
+    if (t2_tick > (1 << 15))
+	return ERROR;
 
-	RPE8R = PPS_RE8_OC2;	// Remap RE8 to OC2
-	RPB5R = PPS_RB5_OC3;	// Remap RB5 to OC3
-	
-	OpenTimer2(T2_ON | T2_SOURCE_INT | T2_PS_1_1, t2_tick - 1);
-	mT2SetIntPriority(2);
-	mT2SetIntSubPriority(1);
-	mT2IntEnable(1);
+    RPB3R = PPS_RB3_OC2;	// Remap RE8 to OC2
+    RPB5R = PPS_RB5_OC3;	// Remap RB5 to OC3
 
-	if (m1DutyCycle > 100 || m2DutyCycle > 100)
-		return ERROR;
-	
-	// Output Compare Module
-	unsigned int start_val1 = m1DutyCycle * (t2_tick - 1);
-	unsigned int start_val2 = m2DutyCycle * (t2_tick - 1);
- 	OpenOC2(OC_ON | OC_TIMER_MODE16 | OC_TIMER2_SRC | OC_PWM_FAULT_PIN_DISABLE, start_val, start_val);
- 	OpenOC3(OC_ON | OC_TIMER_MODE16 | OC_TIMER2_SRC | OC_PWM_FAULT_PIN_DISABLE, start_val, start_val);
+    OpenTimer2(T2_ON | T2_SOURCE_INT | T2_PS_1_1, t2_tick - 1);
+    mT2SetIntPriority(2);
+    mT2SetIntSubPriority(1);
+    mT2IntEnable(1);
 
-	return NO_ERROR;
+    if (m1DutyCycle > 100 || m2DutyCycle > 100)
+	return ERROR;
+
+    // Output Compare Module
+    unsigned int start_val1 = m1DutyCycle * (t2_tick - 1);
+    unsigned int start_val2 = m2DutyCycle * (t2_tick - 1);
+    OpenOC2(OC_ON | OC_TIMER_MODE16 | OC_TIMER2_SRC | OC_PWM_FAULT_PIN_DISABLE, start_val1, start_val1);
+    OpenOC3(OC_ON | OC_TIMER_MODE16 | OC_TIMER2_SRC | OC_PWM_FAULT_PIN_DISABLE, start_val2, start_val2);
+
+    return NO_ERROR;
 }
 
 unsigned int set_pwm(unsigned int m1DutyCycle, unsigned int m2DutyCycle) {
-	if ((m1DutyCycle > 100 && m1DutyCylce != DONT_UPDATE_PWM) || (m2DutyCycle > 100 && m2DutyCycle != DONT_UPDATE_PWM))
-		return ERROR;
+    if ((m1DutyCycle > 100 && m1DutyCycle != DONT_UPDATE_PWM) || (m2DutyCycle > 100 && m2DutyCycle != DONT_UPDATE_PWM))
+	return ERROR;
 
-	if (m1DutyCycle != DONT_UPDATE_PWM)
-		SetDCOC2PWM((float) m1DutyCycle / 100.0 * (t2_tick - 1));
-	if (m2DutyCycle != DONT_UPDATE_PWM)
-		SetDCOC3PWM((float) m2DutyCycle / 100.0 * (t2_tick - 1));
+    if (m1DutyCycle != DONT_UPDATE_PWM)
+	SetDCOC2PWM((float) m1DutyCycle / 100.0 * (t2_tick - 1));
+    if (m2DutyCycle != DONT_UPDATE_PWM)
+	SetDCOC3PWM((float) m2DutyCycle / 100.0 * (t2_tick - 1));
 
-	return NO_ERROR;
+    return NO_ERROR;
 }
 
 void __ISR(_TIMER_2_VECTOR, IPL2) isrTimer2Handler(void) {
-	mT2ClearIntFlag();
+    mT2ClearIntFlag();
 }
 
 #endif
 
 
 
-#ifdef OLD_CODE
 /*
     Summary
 	Updates information stored in array rc based on rc_set as it cycles
@@ -463,7 +462,6 @@ int BackwardPos(int movement) {
     return 0; 
 }
 
-#endif
 
 /* --------------------------------- Private Functions ---------------------------------- */
 

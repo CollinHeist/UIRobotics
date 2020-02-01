@@ -18,12 +18,12 @@
  *		None.
  */
 void delayMS(unsigned int ms) {
-	unsigned int tWait, tStart;
+    unsigned int tWait, tStart;
 
-	tStart = ReadCoreTimer();
-	tWait = (CORE_MS_TICK_RATE * ms);
+    tStart = ReadCoreTimer();
+    tWait = (CORE_MS_TICK_RATE * ms);
 
-	while ((ReadCoreTimer() - tStart) < tWait);	// Delay
+    while ((ReadCoreTimer() - tStart) < tWait);	// Delay
 }
 
 /*

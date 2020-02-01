@@ -418,7 +418,7 @@ I2C_RESULT I2C_WriteDev( I2C_DATA_BLOCK blk)
 		{
 			if (TransmitOneByte(blk.i2c_channel, blk.reg_addr))
 			{
-				usDelay(35);    // Delay >30us after device ID 
+				delayUS(35);    // Delay >30us after device ID 
 
 								// Verify that the byte was acknowledged 
 				if (!I2CByteWasAcknowledged(blk.i2c_channel))
@@ -481,45 +481,45 @@ I2C_RESULT I2C_WriteDev( I2C_DATA_BLOCK blk)
 END DESCRIPTION **********************************************************/
 I2C_RESULT I2C_ReadDev(I2C_DATA_BLOCK  blk)
 {
-	I2C_7_BIT_ADDRESS   SlaveAddress;
-	BOOL i2c_started;   /* Flag that indicates that I2C start successful */
-	BYTE * data_ptr;    /* Data buffer pointer */
-	int count = 0;      /* Byte counter */
-	I2C_RESULT i2c_ops = I2C_SUCCESS;     /* Status of I2C action */
+    I2C_7_BIT_ADDRESS   SlaveAddress;
+    BOOL i2c_started;   /* Flag that indicates that I2C start successful */
+    BYTE * data_ptr;    /* Data buffer pointer */
+    int count = 0;      /* Byte counter */
+    I2C_RESULT i2c_ops = I2C_SUCCESS;     /* Status of I2C action */
 
-										  /* Send device ID with R/W bit set high */
-	I2C_FORMAT_7_BIT_ADDRESS(SlaveAddress, blk.dev_id, I2C_READ);
-	i2c_started = StartTransfer(blk.i2c_channel, FALSE); /* Repeated start */
-	if (i2c_started) {
-		if (TransmitOneByte(blk.i2c_channel, SlaveAddress.byte))
+									      /* Send device ID with R/W bit set high */
+    I2C_FORMAT_7_BIT_ADDRESS(SlaveAddress, blk.dev_id, I2C_READ);
+    i2c_started = StartTransfer(blk.i2c_channel, FALSE); /* Repeated start */
+    if (i2c_started) {
+	if (TransmitOneByte(blk.i2c_channel, SlaveAddress.byte))
+	{
+		if (!I2CByteWasAcknowledged(blk.i2c_channel))
 		{
-			if (!I2CByteWasAcknowledged(blk.i2c_channel))
-			{
-				i2c_ackError(7);
-				i2c_ops = I2C_ERROR;
-			}
+			i2c_ackError(7);
+			i2c_ops = I2C_ERROR;
 		}
-		else  i2c_ops = I2C_ERROR;  /* Bytes was not sent */
-		delayUS(40);                /* Wait >30us after sending device ID */
 	}
-	else i2c_ops = I2C_ERROR;   /* I2C was not started */
+	else  i2c_ops = I2C_ERROR;  /* Bytes was not sent */
+	delayUS(40);                /* Wait >30us after sending device ID */
+    }
+    else i2c_ops = I2C_ERROR;   /* I2C was not started */
 
-								/* While I2C read is successful, get all but the last byte with ACK bit set
-								* into data buffer */
-	count = 0;
-	data_ptr = blk.data;
-	while ((count < blk.block_size) && (i2c_ops == I2C_SUCCESS))
-	{
-		i2c_ops = ReceiveOneByte(blk.i2c_channel, data_ptr++, TRUE);
-		count++;
-	}
-	/* Read the last byte without ACK bit set */
-	if (i2c_ops == I2C_SUCCESS)
-	{
-		i2c_ops |= ReceiveOneByte(blk.i2c_channel, data_ptr, FALSE);
-	}
-	StopTransfer(blk.i2c_channel); /* Terminate the EEPROM transfer */
-	return i2c_ops;
+							    /* While I2C read is successful, get all but the last byte with ACK bit set
+							    * into data buffer */
+    count = 0;
+    data_ptr = blk.data;
+    while ((count < blk.block_size) && (i2c_ops == I2C_SUCCESS))
+    {
+	    i2c_ops = ReceiveOneByte(blk.i2c_channel, data_ptr++, TRUE);
+	    count++;
+    }
+    /* Read the last byte without ACK bit set */
+    if (i2c_ops == I2C_SUCCESS)
+    {
+	    i2c_ops |= ReceiveOneByte(blk.i2c_channel, data_ptr, FALSE);
+    }
+    StopTransfer(blk.i2c_channel); /* Terminate the EEPROM transfer */
+    return i2c_ops;
 }
 
 // 
@@ -528,6 +528,6 @@ I2C_RESULT I2C_ReadDev(I2C_DATA_BLOCK  blk)
 //
 void i2c_ackError(int loc)
 {
-	printf("Error: Sent byte was not acknowledged at %d\n\r", loc);
-	delayMS(10);
+    printf("Error: Sent byte was not acknowledged at %d\n\r", loc);
+    delayMS(10);
 }

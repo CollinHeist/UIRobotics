@@ -89,17 +89,15 @@ BOOL MAG3110_initialize(void)
 	}
 }
 
-BYTE MAG3110_readRegister(BYTE address)
-{
+BYTE MAG3110_readRegister(BYTE address) {
     I2C_RESULT i2c_result;
     BYTE reg[2] = {0};
     int len = 1;
 
     reg[0] = address;
     i2c_result = I2C_Write(I2C1, MAG3110_I2C_ADDRESS, reg, &len);
-    usDelay(100);
-    if(i2c_result == I2C_SUCCESS)
-    {
+    delayUS(100);
+    if(i2c_result == I2C_SUCCESS) {
         len = 1;
         i2c_result = I2C_Read(I2C1, MAG3110_I2C_ADDRESS, reg, &len);
         return reg[0];
@@ -108,8 +106,7 @@ BYTE MAG3110_readRegister(BYTE address)
         return 0;
 }
 
-I2C_RESULT MAG3110_writeRegister(BYTE address, BYTE value)
-{
+I2C_RESULT MAG3110_writeRegister(BYTE address, BYTE value) {
     I2C_RESULT i2c_result;
     BYTE reg[2] = {0,0};
     int len = 2;
@@ -117,15 +114,14 @@ I2C_RESULT MAG3110_writeRegister(BYTE address, BYTE value)
     reg[0] = address;
     reg[1] = value;
     i2c_result = I2C_Write(I2C1, MAG3110_I2C_ADDRESS, reg, &len);
+    
     return i2c_result;
 }
 
-BOOL MAG3110_dataReady(void) 
-{
-unsigned char dr_stat;
+BOOL MAG3110_dataReady(void)  {
+    unsigned char dr_stat;
     dr_stat = MAG3110_readRegister(MAG3110_DR_STATUS) & 0xf0;
-    if(dr_stat == 0xf0)
-    {
+    if(dr_stat == 0xf0) {
         return TRUE;
     }
     else
@@ -148,7 +144,7 @@ uint16_t values[3];
     i2c_result = I2C_Write(I2C1, MAG3110_I2C_ADDRESS, reg, &len);
     if(i2c_result == I2C_SUCCESS)
     {
-        DelayMs(5);
+        delayMS(5);
 	// Read out data using multiple byte read mode
         len = 6;
         i2c_result = I2C_Read(I2C1, MAG3110_I2C_ADDRESS, reg, &len);	
@@ -184,8 +180,7 @@ int16_t x_int, y_int, z_int;
 	i2c_result = MAG3110_readMag(&x, &y, &z);
 
 	//Read each axis and scale to Teslas
-    if(i2c_result == I2C_SUCCESS)
-    {
+    if(i2c_result == I2C_SUCCESS) {
     	*xf = (float) x * 0.1f;
         *yf = (float) y * 0.1f;
     	*zf = (float) z * 0.1f;	
@@ -203,20 +198,18 @@ float yf = 0;
 
     i2c_result = MAG3110_rawData(TRUE);
 	i2c_result |= MAG3110_readMag(&x, &y, &z);
-    if(i2c_result == I2C_SUCCESS)
-    {
+    if(i2c_result == I2C_SUCCESS) {
     	xf = ((float) (x - x_offset))*x_scale;
     	yf = ((float) (y - y_offset))*y_scale;
-        if((xf != 0.0) && (yf != 0.0))
+        if ((xf != 0.0) && (yf != 0.0))
             *heading = (atan2f(xf, yf) * RAD2DEG) + MAG_DECLINATION ;    
         else
             *heading = 0.0;
         //printf("X:%6d / %1.6f   Y: %6d / %1.6f  -> %8.2f\n\r",x, xf, y, yf, *heading);                
 	}
-    else
-    {
+    else {
         *heading = 0;
-         printf("Bad heading measurement\n\r");                   
+	printf("Bad heading measurement\n\r");                   
     }
         
 	return ( i2c_result );
@@ -233,13 +226,13 @@ BYTE current;
 	
 	//If we attempt to write to CTRL_REG1 right after going into standby
 	//It might fail to modify the other bits
-	DelayMs(100);
+	delayMS(100);
 	
 	 //Get the current control register
 	current = MAG3110_readRegister(MAG3110_CTRL_REG1) & 0x07; //And chop off the 5 MSB
 	i2c_result |= MAG3110_writeRegister(MAG3110_CTRL_REG1, (current | DROS)); //Write back the register with new DR_OS set
 	
-	DelayMs(100);
+	delayMS(100);
 	
 	//Start sampling again if we were before
 	if(wasActive)
@@ -281,61 +274,59 @@ I2C_RESULT i2c_result = I2C_SUCCESS;
 //Bit 0 of the LSB register is always 0 for some reason...
 //So we have to left shift the values by 1
 //Ask me how confused I was...
-I2C_RESULT MAG3110_setOffset(BYTE axis, int16_t offset)
-{	
-I2C_RESULT i2c_result = I2C_SUCCESS;	
+I2C_RESULT MAG3110_setOffset(BYTE axis, int16_t offset) {	
+    I2C_RESULT i2c_result = I2C_SUCCESS;	
 
     offset = (offset << 1) & 0xfffe;
-	i2c_result |= MAG3110_writeRegister(axis, (BYTE)((offset >> 8) & 0xFF));
-	DelayMs(5);
+    i2c_result |= MAG3110_writeRegister(axis, (BYTE)((offset >> 8) & 0xFF));
+    delayMS(5);
     i2c_result |= MAG3110_writeRegister((axis+1), (BYTE) (offset & 0xFE));
-	DelayMs(5);
+    delayMS(5);
+    
     return i2c_result;
 }
 
 /* ************************************************************************* */
 //See above
-int16_t MAG3110_readOffset(BYTE axis)
-{
-	return (MAG3110_readAxis(axis) >> 1);
+int16_t MAG3110_readOffset(BYTE axis) {
+    return (MAG3110_readAxis(axis) >> 1);
 }
 
 /* ************************************************************************* */
-I2C_RESULT MAG3110_start() 
-{
-I2C_RESULT i2c_result = I2C_SUCCESS;	
-	i2c_result = MAG3110_exitStandby();
+I2C_RESULT MAG3110_start() {
+    I2C_RESULT i2c_result = I2C_SUCCESS;	
+    i2c_result = MAG3110_exitStandby();
 }
 
 /* ************************************************************************* */
-I2C_RESULT MAG3110_enterStandby(void)
-{
-I2C_RESULT i2c_result = I2C_SUCCESS;	
-BYTE current;
+I2C_RESULT MAG3110_enterStandby(void) {
+    I2C_RESULT i2c_result = I2C_SUCCESS;	
+    BYTE current;
     activeMode = FALSE;
-	current = MAG3110_readRegister(MAG3110_CTRL_REG1);
-	//Clear bits 0 and 1 to enter low power standby mode
+    current = MAG3110_readRegister(MAG3110_CTRL_REG1);
+    //Clear bits 0 and 1 to enter low power standby mode
+    
     return i2c_result;
 }
 
 /* ************************************************************************* */
 I2C_RESULT  MAG3110_exitStandby()
 {
-I2C_RESULT i2c_result = I2C_SUCCESS;	
-BYTE current;
-	activeMode = TRUE;
-  	current = MAG3110_readRegister(MAG3110_CTRL_REG1);
-    DelayMs(10);
+    I2C_RESULT i2c_result = I2C_SUCCESS;	
+    BYTE current;
+    activeMode = TRUE;
+    current = MAG3110_readRegister(MAG3110_CTRL_REG1);
+    delayMS(10);
     i2c_result |= MAG3110_writeRegister(MAG3110_CTRL_REG1, (current | MAG3110_ACTIVE_MODE));
-    DelayMs(10);
-    current = MAG3110_readRegister(MAG3110_CTRL_REG1);        
+    delayMS(10);
+    current = MAG3110_readRegister(MAG3110_CTRL_REG1);     
+    
     return i2c_result;	
 }
 
 /* ************************************************************************* */
-BOOL MAG3110_isActive() 
-{
-	return activeMode;
+BOOL MAG3110_isActive()  {
+    return activeMode;
 }
 
 /* ************************************************************************* */
@@ -406,7 +397,7 @@ I2C_RESULT i2c_result = I2C_SUCCESS;
             x_scale,y_scale,z_scale);
 	//Use the offsets (set to normal mode)
 	MAG3110_rawData(FALSE);
-    DelayMs(10);
+    delayMS(10);
 	
 	calibrationMode = FALSE;
 	calibrated = TRUE;
@@ -451,7 +442,7 @@ int16_t reg;
 	
 	msb = MAG3110_readRegister(msbAddress);
 	
-	usDelay(5); //needs at least 1.3us free time between start and stop
+	delayUS(5); //needs at least 1.3us free time between start and stop
 	
 	lsb = MAG3110_readRegister(lsbAddress);
 	
@@ -493,7 +484,7 @@ void MAG3110_EnvCalibrate()
 		// Then move the stepper motor
 		step(1, 1);
 
-		msDelay(5);
+		delayMS(5);
         Step++;
 	}
     

@@ -4,7 +4,6 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>../LCDlib.h</itemPath>
       <itemPath>../config_bits.h</itemPath>
       <itemPath>../hardware.h</itemPath>
       <itemPath>../main.h</itemPath>
@@ -30,7 +29,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>../LCDlib.c</itemPath>
       <itemPath>../hardware.c</itemPath>
       <itemPath>../main.c</itemPath>
       <itemPath>../swDelay.c</itemPath>

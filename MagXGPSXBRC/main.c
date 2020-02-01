@@ -43,6 +43,23 @@ int gps_message = 0;        // Active GPS sentence
 /* ---------------------------------- Public Functions ---------------------------------- */
 
 int main(void) {
+    I2C_RESULT * test;
+    Hardware_Setup();
+    
+//    TRISEbits.TRISE8 = 0; LATEbits.LATE8 = 0;
+//    TRISBbits.TRISB5 = 0; ANSELBbits.ANSB5 = 0; LATBbits.LATB5 = 0;
+    mPORTBSetPinsDigitalOut(BIT_3);
+    
+    unsigned int i = initialize_pwm(0, 0, 1000);
+    
+    i = 0;
+    while(1) {
+	unsigned int error = set_pwm(i, i);
+	delayMS(100);
+	
+	i = i++ % 101;
+    }
+    
     /*
     // Local variables
     I2C_RESULT I2cResultFlag;   // I2C Init Result flag
@@ -150,11 +167,7 @@ void print_pretty_table(int use_uart) {
 	printf("Z:%6d\n\r ", z);
     }
     sprintf(lcdStr, "X:%5d Y:%5d", x, y);
-    clrLCD();
-    putsLCD(lcdStr);
-    gotoLCD(16);
     sprintf(lcdStr, "T1:%5d T:%5d", getTemp1(), getTemp1());
-    putsLCD(lcdStr);
 }
 
 
@@ -163,7 +176,6 @@ int InitializeModules(I2C_RESULT* I2cResultFlag) {
     Hardware_Setup();				// Initialize common IO
     initializeUART4(38400, NO_PARITY);		// PC Terminal
     initializeUART2(9600, NO_PARITY);		// XBEE
-    initLCD();					// Init the LCD screen
     putStringUART2("\n\rXBee online\n\r");	// Send message to PC
     init_analog();				// Initialize AN2 to read Pot
     initializeTemperatureSensors();

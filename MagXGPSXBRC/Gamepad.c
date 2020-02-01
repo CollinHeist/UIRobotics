@@ -1,5 +1,5 @@
 #ifndef _SUPPRESS_PLIB_WARNING
-	#define _SUPPRESS_PLIB_WARNING
+    #define _SUPPRESS_PLIB_WARNING
 #endif
 
 /* ----------------------------------- File Inclusion ----------------------------------- */
@@ -9,6 +9,7 @@
 #include <stdlib.h>
 
 #include "hardware.h"
+#include "Gamepad.h"
 #include "UART2.h"
 #include "UART4.h"
 #include "RC.h"
@@ -27,28 +28,28 @@ extern char DMABuffer[];	// Master DMA UART Rx Buffer
 
 // Possible gamepad messages
 enum GamepadVariables {
-	GAME_TIME,
-	GAME_TRIGGER_LEFT,
-	GAME_BUMPER_LEFT,
-	GAME_TRIGGER_RIGHT,
-	GAME_BUMPER_RIGHT,
-	GAME_STICK_LEFT_X,
-	GAME_STICK_LEFT_Y,
-	GAME_D_PAD_X,
-	GAME_D_PAD_Y,
-	GAME_STICK_RIGHT_X,
-	GAME_STICK_RIGHT_Y,
-	GAME_BUTTON_Y,
-	GAME_BUTTON_B,
-	GAME_BUTTON_A,
-	GAME_BUTTON_X,
-	GAME_BUTTON_START,
-	GAME_BUTTON_BACK
+    GAME_TIME,
+    GAME_TRIGGER_LEFT,
+    GAME_BUMPER_LEFT,
+    GAME_TRIGGER_RIGHT,
+    GAME_BUMPER_RIGHT,
+    GAME_STICK_LEFT_X,
+    GAME_STICK_LEFT_Y,
+    GAME_D_PAD_X,
+    GAME_D_PAD_Y,
+    GAME_STICK_RIGHT_X,
+    GAME_STICK_RIGHT_Y,
+    GAME_BUTTON_Y,
+    GAME_BUTTON_B,
+    GAME_BUTTON_A,
+    GAME_BUTTON_X,
+    GAME_BUTTON_START,
+    GAME_BUTTON_BACK
 };
 
 typedef struct pair {
-	int m_CompOne;
-	int m_CompTwo;
+    int m_CompOne;
+    int m_CompTwo;
 } Pair;
 
 typedef struct buttons {
@@ -59,22 +60,22 @@ typedef struct buttons {
 } Buttons;
 
 typedef struct gamepadInput {
-	unsigned int m_LeftTrigger;
-	unsigned int m_RightTrigger;
+    unsigned int m_LeftTrigger;
+    unsigned int m_RightTrigger;
 
-	int m_SendTime;
-	int m_LeftBumper;
-	int m_RightBumper;
-	int m_StartButton;
-	int m_BackButton;
-	int m_Offset;
+    int m_SendTime;
+    int m_LeftBumper;
+    int m_RightBumper;
+    int m_StartButton;
+    int m_BackButton;
+    int m_Offset;
 
-	Pair m_LeftSticks;
-	Pair m_RightSticks;
-	Pair m_DirPad;
-	Buttons m_Buttons;
+    Pair m_LeftSticks;
+    Pair m_RightSticks;
+    Pair m_DirPad;
+    Buttons m_Buttons;
 
-	char m_InputString[GAMEPAD_INPUT_STRING_SIZE];
+    char m_InputString[GAMEPAD_INPUT_STRING_SIZE];
 } GamepadInput;
 
 // The main object that handles input
@@ -367,7 +368,7 @@ void Move(void) {
 	   // printf("tempR %d\n", temp);
 	}
 
-	DelayMs(20);
+	delayMS(20);
 }
 
 void ClearLeftStick(void) {

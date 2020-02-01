@@ -25,9 +25,14 @@
 	#define	RC_SPEED_CONTROLLER_PERIOD      1490 // Measured PWM period
 	#define RC_SPAN                         100
 
+    #define PPS_RB3_OC2 0b00001011  // Map RB3 to OC4 for PWM - AIN1    
+    #define PPS_RE8_OC2 0b00001011  // Map RE8 to OC2 for PWM - AIN2     
+    #define PPS_RE9_OC5 0b00001011  // Map RE9 to OC5 for PWM - BIN1     
+    #define PPS_RB5_OC3 0b00001011  // Map RB5 to OC3 for PWM - BIN2
+
 	// Timer 2 configuration macros
 	#define T2_PRESCALE			(1)
-	#define T2_CLOCK_RATE		(FPB / T2_PRESCALE)
+	#define T2_CLOCK_RATE		(GetPeripheralClock() / T2_PRESCALE)
 
 	#define DONT_UPDATE_PWM		(999)
 
