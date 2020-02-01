@@ -25,7 +25,13 @@
 	#define	RC_SPEED_CONTROLLER_PERIOD      1490 // Measured PWM period
 	#define RC_SPAN                         100
 
-	/* ---------------------- Public Function Declarations ------------------- */
+	// Timer 2 configuration macros
+	#define T2_PRESCALE			(1)
+	#define T2_CLOCK_RATE		(FPB / T2_PRESCALE)
+
+	#define DONT_UPDATE_PWM		(999)
+
+	// Function Prototypes
 	void rcUpdateServos(void);
     void rcUpdateSpeedControllers(void);
     void set_rc(int rc1, int rc2, int rc3, int rc4);
