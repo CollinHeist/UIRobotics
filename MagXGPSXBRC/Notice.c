@@ -35,17 +35,17 @@ void __ISR(_CHANGE_NOTICE_VECTOR, IPL1SOFT) interruptChangeNoticeHandler(void) {
 
     // Check to see which pin(s) created the interrupt
     if (CNSTATC & BIT_13) {
-	    JA1 = mPORTCRead() & BIT_13; // Clear all standing CNSTATA bits.
-	    SetDefaultServoPosition();
-	    ClearLeftStick();
+	JA1 = mPORTCRead() & BIT_13; // Clear all standing CNSTATA bits.
+//	SetDefaultServoPosition();
+	ClearLeftStick();
 
-	    Status1++;
-	    Status1 %= 2;
+	Status1++;
+	Status1 %= 2;
     }
 
     if (CNSTATC & BIT_14) {
 	JA2 = mPORTCRead() & BIT_14; // Clear all standing CNSTATA bits.
-	SetDefaultServoPosition();
+//	SetDefaultServoPosition();
 	ClearLeftStick();
 
 	Status2++;

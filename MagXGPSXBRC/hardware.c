@@ -29,6 +29,9 @@ void Hardware_Setup(void) {
     MCInit();
 //	initRC();
     initializeTimer1();
+    
+    INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);  /* Do only once */
+    INTEnableInterrupts();   /*Do as needed for global interrupt control */
 }
 
 /* --------------------------------- Private Functions ---------------------------------- */
@@ -42,17 +45,17 @@ void Hardware_Setup(void) {
  *		None.
  */
 static void initializeTimer1(void) {
-	PORTSetPinsDigitalOut(IOPORT_B, BIT_8);
-	millisec = 0;	   // Global millisecond counter
-	OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_1, TMR1_TICK);
+    PORTSetPinsDigitalOut(IOPORT_B, BIT_8);
+    millisec = 0;	   // Global millisecond counter
+    OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_1, TMR1_TICK);
 
-	// Set Timer 1 interrupt with a priority of 2
-	ConfigIntTimer1(T1_INT_ON | T1_INT_PRIOR_2);
-	mT1IntEnable(1);		   // Enable interrupts of T1   
+    // Set Timer 1 interrupt with a priority of 2
+    ConfigIntTimer1(T1_INT_ON | T1_INT_PRIOR_2);
+    mT1IntEnable(1);		   // Enable interrupts of T1   
 
-	// Enable multi-vector interrupts
-	INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);  // Do only once
-	INTEnableInterrupts();   //Do as needed for global interrupt control
+    // Enable multi-vector interrupts
+    INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);  // Do only once
+    INTEnableInterrupts();   //Do as needed for global interrupt control
 }
 
 /* ----------------------------- Interrupt Service Routines ----------------------------- */
@@ -66,16 +69,16 @@ static void initializeTimer1(void) {
  *		None.
  */
 void __ISR(_TIMER_1_VECTOR, IPL2SOFT) interruptTimer1(void) {
-	static int ms_count = TIMER1_MS_COUNT;  // How many counts are necessary to reach 1 ms
-	
-	ms_count--;					// Decrement the millisecond counter
-	if (ms_count <= 0) {
-		millisec++;		
-		ms_count = TIMER1_MS_COUNT;
-	}
-	
+    static int ms_count = TIMER1_MS_COUNT;  // How many counts are necessary to reach 1 ms
+
+    ms_count--;					// Decrement the millisecond counter
+    if (ms_count <= 0) {
+	    millisec++;		
+	    ms_count = TIMER1_MS_COUNT;
+    }
+
 //	rcUpdateServos();		// This updates the RC outputs for the servos
 //	rcUpdateSpeedControllers();	// This updates the RC outputs for the speed controllers
 
-	mT1ClearIntFlag();	// Clear the interrupt flag	
+    mT1ClearIntFlag();	// Clear the interrupt flag	
 }

@@ -8,7 +8,6 @@
 #include <math.h>
 #include <float.h>
 #include <STDIO.h>
-#include "Stepper.h"
 
 // Function Prototypes
 BOOL       MAG3110_initialize(void);
@@ -482,7 +481,7 @@ void MAG3110_EnvCalibrate()
 		TotalZ += z;
 
 		// Then move the stepper motor
-		step(1, 1);
+//		step(1, 1);
 
 		delayMS(5);
         Step++;

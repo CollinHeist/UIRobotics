@@ -306,74 +306,70 @@ int HandleInput(void) {
 
 
 void MoveLeft(int movement) {
-	static int received = 0;
-	
-	if (movement > 0)
-		received = 1;
-	
-	if (movement > 0 || received) {
-		TurnLeftPos(-3);
-	}
-	else {
-		//SetDefaultServoPosition();
-	}
+    static int received = 0;
+
+    if (movement > 0)
+	received = 1;
+
+    if (movement > 0 || received) {
+//	TurnLeftPos(-3);
+    }
+    else {
+	    //SetDefaultServoPosition();
+    }
 }
 
 
 
 void MoveRight(int movement)
 {
-	static int received = 0;
-	
-	if(movement > 0)
-		received = 1;
-	
-	if(movement>0 || received)
-	{
-		TurnRightPos(3);
-	}
-	else
-	{
-		//SetDefaultServoPosition();
-	}
-	
-	
+    static int received = 0;
+
+    if (movement > 0)
+	    received = 1;
+
+    if (movement>0 || received) {
+//	    TurnRightPos(3);
+    }
+    else {
+	    //SetDefaultServoPosition();
+    }
 }
 
 void Move(void) {
-	int temp = 0;
-	
-	if (GamepadInputManager.m_Buttons.m_ButtonA) {
-		SetDefaultServoPosition();
-		GamepadInputManager.m_Buttons.m_ButtonA = 0;
-	}
-	if ((temp = GamepadInputManager.m_LeftSticks.m_CompOne) < 0) {
-		//TurnLeftPos(-5);
-		TurnLeftPos(-temp);
-		//printf("tempL %d\n", temp);
-	}
-	else if ((temp = GamepadInputManager.m_LeftSticks.m_CompOne) > 0) {
-		TurnRightPos(temp);
-	   // TurnRightPos(5);
-	   // printf("tempR %d\n", temp);
-	}
-	if ((temp = GamepadInputManager.m_LeftSticks.m_CompOne) < 0) {
-		//TurnLeftPos(-5);
-		BackwardPos(-temp);
-		//printf("tempL %d\n", temp);
-	}
-	else if ((temp = GamepadInputManager.m_LeftSticks.m_CompOne) > 0) {
-		ForwardPos(temp);
-	   // TurnRightPos(5);
-	   // printf("tempR %d\n", temp);
-	}
+    int temp = 0;
 
-	delayMS(20);
+    if (GamepadInputManager.m_Buttons.m_ButtonA) {
+//	SetDefaultServoPosition();
+	GamepadInputManager.m_Buttons.m_ButtonA = 0;
+    }
+    if ((temp = GamepadInputManager.m_LeftSticks.m_CompOne) < 0) {
+	    //TurnLeftPos(-5);
+//	    TurnLeftPos(-temp);
+	    //printf("tempL %d\n", temp);
+    }
+    else if ((temp = GamepadInputManager.m_LeftSticks.m_CompOne) > 0) {
+//	    TurnRightPos(temp);
+       // TurnRightPos(5);
+       // printf("tempR %d\n", temp);
+    }
+    if ((temp = GamepadInputManager.m_LeftSticks.m_CompOne) < 0) {
+	//TurnLeftPos(-5);
+//	    BackwardPos(-temp);
+	//printf("tempL %d\n", temp);
+    }
+    else if ((temp = GamepadInputManager.m_LeftSticks.m_CompOne) > 0) {
+//	ForwardPos(temp);
+       // TurnRightPos(5);
+       // printf("tempR %d\n", temp);
+    }
+
+    delayMS(20);
 }
 
 void ClearLeftStick(void) {
-	GamepadInputManager.m_LeftSticks.m_CompOne = 0;
-	GamepadInputManager.m_LeftSticks.m_CompTwo = 0;
+    GamepadInputManager.m_LeftSticks.m_CompOne = 0;
+    GamepadInputManager.m_LeftSticks.m_CompTwo = 0;
 }
 
 /* --------------------------------- Private Functions ---------------------------------- */

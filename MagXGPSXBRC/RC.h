@@ -1,39 +1,26 @@
 #ifndef __RC_H__
 	#define __RC_H__
 	
-	#define cfgRC1()                PORTSetPinsDigitalOut(IOPORT_D, BIT_9)	// Wall has 4
-	#define cfgRC2()                PORTSetPinsDigitalOut(IOPORT_D, BIT_11) // 8
-	#define cfgRC3()                PORTSetPinsDigitalOut(IOPORT_D, BIT_10) // 7
-	#define cfgRC4()                PORTSetPinsDigitalOut(IOPORT_D, BIT_8)  // 6
+	#define AIN1cfg()   (TRISBbits.TRISB3 = 0, ANSELBbits.ANSB3 = 0, LATBbits.LATB3 = 0) // OC4
+//	#define AIN2cfg()   (TRISEbits.TRISE8 = 0, LATEbits.LATE8 = 0) // OC2
+	#define BIN1cfg()   (TRISEbits.TRISE9 = 0, LATEbits.LATE9 = 0) // OC5
+//	#define BIN2cfg()   (TRISBbits.TRISB5 = 0, ANSELBbits.ANSB5 = 0, LATBbits.LATB5 = 0) // OC3
+	#define MCMODEcfg() (TRISFbits.TRISF1 = 0, LATFbits.LATF1 = 0)
+	#define MCInit()	(AIN1cfg(), BIN1cfg(), MCMODEcfg())
+    #define MCMODE(a);  {if(a) LATFbits.LATF1 = 1; else LATFbits.LATF1 = 0;}
 
-	/* -------------------- RC Channel pin assignment macros ----------------- */
-	#define RC_1(a)                 (LATDbits.LATD9  = a)
-	#define RC_2(a)                 (LATDbits.LATD11 = a)
-	#define RC_3(a)                 (LATDbits.LATD10 = a)
-	#define RC_4(a)                 (LATDbits.LATD8  = a)
-
-    #define NRCSERVOS               (2)
-    #define NRCSPEEDCONTROLLERS     (2)
-	#define NRC                     (NRCSPEEDCONTROLLERS + NRCSERVOS)		// Number of RC channels
-
-	/* --------- RC Setting Range - How wide the PWM Signal should be -------- */
-	#define RC_SERVO_MIN                    100
-	#define	RC_SERVO_MAX                    200
-	#define RC_SPEED_CONTROLLER_MIN         108  // I rounded up for safety
-	#define	RC_SPEED_CONTROLLER_MAX         190  // I rounded down for safety
-	#define RC_SPEED_CONTROLLER_NEUTRAL     148  // Period of no movement
-	#define	RC_SPEED_CONTROLLER_PERIOD      1490 // Measured PWM period
-	#define RC_SPAN                         100
-
-    #define PPS_RB3_OC2 0b00001011  // Map RB3 to OC4 for PWM - AIN1    
-    #define PPS_RE8_OC2 0b00001011  // Map RE8 to OC2 for PWM - AIN2     
-    #define PPS_RE9_OC5 0b00001011  // Map RE9 to OC5 for PWM - BIN1     
-    #define PPS_RB5_OC3 0b00001011  // Map RB5 to OC3 for PWM - BIN2
-
-	// Timer 2 configuration macros
+	// Timer 2 Macros
 	#define T2_PRESCALE			(1)
 	#define T2_CLOCK_RATE		(GetPeripheralClock() / T2_PRESCALE)
+    #define MAX_T2_VAL          (1 << 15)
 
+    // PWM Output Configurations
+    #define MOTOR1_PIN          (BIT_3)
+    #define MOTOR1_PORT         (IOPORT_B)
+    #define MOTOR2_PIN          (BIT_8)
+    #define MOTOR2_PORT         (IOPORT_E)
+
+    // Macro for not updating the PWM of a given channel
 	#define DONT_UPDATE_PWM		(999)
 
 	// Function Prototypes

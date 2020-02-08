@@ -24,7 +24,6 @@
 #include "RC.h"
 #include "DMA_UART2.h"
 #include "MAG3110.h"
-#include "Stepper.h"
 
 /* -------------------------- Global Variables and Structures --------------------------- */
 
@@ -46,16 +45,14 @@ int main(void) {
     I2C_RESULT * test;
     Hardware_Setup();
     
-//    TRISEbits.TRISE8 = 0; LATEbits.LATE8 = 0;
-//    TRISBbits.TRISB5 = 0; ANSELBbits.ANSB5 = 0; LATBbits.LATB5 = 0;
-    mPORTBSetPinsDigitalOut(BIT_3);
     
-    unsigned int i = initialize_pwm(0, 0, 1000);
+    
+    unsigned int i = initializePWM(0, 0, 1000);
     
     i = 0;
     while(1) {
-	unsigned int error = set_pwm(i, i);
-	delayMS(100);
+	unsigned int error = setPWM(i, i);
+	delayMS(5);
 	
 	i = i++ % 101;
     }
@@ -183,7 +180,7 @@ int InitializeModules(I2C_RESULT* I2cResultFlag) {
     
     *I2cResultFlag = I2C_Init(I2C1, 100000);
     initializeChangeNotice();
-    initializeStepper();
+    
     
     // Mag init procedure
     if (!(Result = MAG3110_initialize())) {

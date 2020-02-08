@@ -150,20 +150,6 @@ http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20
 
 	#define Set_LED8_RGB(a)  (LATDbits.LATD2 = a, LATDbits.LATD12 = a, LATDbits.LATD3 = a)		  
 
-// Set Motor Control drive inputs
-	#define AIN1cfg()   (TRISBbits.TRISB3 = 0, ANSELBbits.ANSB3 = 0, LATBbits.LATB3 = 0)
-	#define AIN2cfg()   (TRISEbits.TRISE8 = 0, LATEbits.LATE8 = 0)
-	#define BIN1cfg()   (TRISEbits.TRISE9 = 0, LATEbits.LATE9 = 0)
-	#define BIN2cfg()   (TRISBbits.TRISB5 = 0, ANSELBbits.ANSB5 = 0, LATBbits.LATB5 = 0)
-	#define MCMODEcfg() (TRISFbits.TRISF1 = 0, LATFbits.LATF1 = 0)
-	#define MCInit()	(AIN1cfg(), AIN2cfg(), BIN1cfg(), BIN2cfg(), MCMODEcfg())
-
-	#define AIN1(a);   {if(a) LATBbits.LATB3 = 1; else LATBbits.LATB3 = 0;}
-	#define AIN2(a);   {if(a) LATEbits.LATE8 = 1; else LATEbits.LATE8 = 0;}
-	#define BIN1(a);   {if(a) LATEbits.LATE9 = 1; else LATEbits.LATE9 = 0;}
-	#define BIN2(a);   {if(a) LATBbits.LATB5 = 1; else LATBbits.LATB5 = 0;}
-	#define MCMODE(a);  {if(a) LATFbits.LATF1 = 1; else LATFbits.LATF1 = 0;}
-				   
 	/* Based upon setting in config_bits.h These directly influence timed
 	 * events using the Tick module.  They also are used for UART I2C, and SPI
 	 * baud rate generation. */

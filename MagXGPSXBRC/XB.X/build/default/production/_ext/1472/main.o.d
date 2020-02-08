@@ -15,5 +15,4 @@ build/default/production/_ext/1472/main.o:  \
 ../LCDlib.h  \
  ../RC.h  \
 ../DMA_UART2.h  \
-../MAG3110.h  \
-../Stepper.h 
+../MAG3110.h 
