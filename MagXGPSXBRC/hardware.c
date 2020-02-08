@@ -3,8 +3,6 @@
 #include <plib.h>
 
 #include "hardware.h"
-#include "uart4.h"
-#include "RC.h"
 
 /* -------------------------- Global Variables and Structures --------------------------- */
 
@@ -12,7 +10,7 @@ unsigned int millisec;
 
 /* ---------------------------------- Public Functions ---------------------------------- */
 
-void Hardware_Setup(void) {
+unsigned int hardwareSetup(void) {
     SYSTEMConfig(GetSystemClock(), SYS_CFG_WAIT_STATES | SYS_CFG_PCACHE);
     DDPCONbits.JTAGEN = 0;	// Statement is required to use Pin RA0 as IO
 
@@ -26,23 +24,23 @@ void Hardware_Setup(void) {
     Set_All_PBs_Input();	// Sets Basys MX3 push buttons as input
     Set_RGB_Output();		// Sets Basys MX3 RGB LED as output
     Set_LED8_RGB(0);		// Sets Basys MX3 RGB LED off
-    MCInit();
-//	initRC();
     initializeTimer1();
     
     INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);  /* Do only once */
     INTEnableInterrupts();   /*Do as needed for global interrupt control */
+    
+    return NO_ERROR;
 }
 
 /* --------------------------------- Private Functions ---------------------------------- */
 
 /*
- *	Summary
- *		Configure T1 for a 10 microsecond interrupt.
- *	Parameters
- *		None.
- *	Returns
- *		None.
+ *  Summary
+ *	Configure T1 for a 10 microsecond interrupt.
+ *  Parameters
+ *	None.
+ *  Returns
+ *	None.
  */
 static void initializeTimer1(void) {
     PORTSetPinsDigitalOut(IOPORT_B, BIT_8);
@@ -61,20 +59,20 @@ static void initializeTimer1(void) {
 /* ----------------------------- Interrupt Service Routines ----------------------------- */
 
 /*
- *	Summary
- *		ISR for the 10 microsecond timer 1 interrupt.
- *	Parameters
- *		None.
- *	Returns
- *		None.
+ *  Summary
+ *	ISR for the 10 microsecond timer 1 interrupt.
+ *  Parameters
+ *	None.
+ *  Returns
+ *	None.
  */
 void __ISR(_TIMER_1_VECTOR, IPL2SOFT) interruptTimer1(void) {
     static int ms_count = TIMER1_MS_COUNT;  // How many counts are necessary to reach 1 ms
 
     ms_count--;					// Decrement the millisecond counter
     if (ms_count <= 0) {
-	    millisec++;		
-	    ms_count = TIMER1_MS_COUNT;
+	millisec++;		
+	ms_count = TIMER1_MS_COUNT;
     }
 
 //	rcUpdateServos();		// This updates the RC outputs for the servos

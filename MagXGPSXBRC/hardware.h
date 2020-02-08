@@ -164,6 +164,6 @@ http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20
     #define TIMER1_MS_COUNT     (100)
 
 	// Function Prototypes
-	void Hardware_Setup(void);
+	unsigned int hardwareSetup(void);
 	static void initializeTimer1(void);
 #endif

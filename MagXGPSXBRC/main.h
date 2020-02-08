@@ -1,16 +1,20 @@
 #ifndef __MAIN_H__
     #define __MAIN_H__
 
-	#define GPS_BUFFER_SIZE 256
+    // UART Configurations
+    #define PC_UART4_BAUD       (38400)
+    #define PC_UART4_PARITY     (NO_PARITY)
+    #define XBEE_UART2_BAUD     (9600)
+    #define XBEE_UART2_PARITY   (NO_PARITY)
 
-	// These GPS signals are not used in this application
-	#define FIX_3d			PORTCbits.RC3	   // 3D fix indication
-	#define PPS1			PORTGbits.RG9	   // 1 PPS flag
-	#define FIX_3D_INPUT	TRISCbits.TRISC3
-	#define PPS1_INPUT		TRISGbits.TRISG9
+    // Motor Configurations
+    #define MOTOR1_START_PWM_PERCENT    (0)
+    #define MOTOR2_START_PWM_PERCENT    (0)
+    #define MOTORS_PWM_FREQUENCY        (1000)  // 1kHz timer 2 operation
 
-	// GPS Sentence type
-	#define GPRMC			1
-	#define GPGGA			2
-	#define GPGLL			3
+    // Temperature Configurations
+    #define TEMPERATURE_TIMEOUT_MS      (500)
+
+    // Function Prototypes
+    unsigned int initializeModules(void);
 #endif

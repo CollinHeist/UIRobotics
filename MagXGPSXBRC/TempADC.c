@@ -4,45 +4,54 @@
 
 #include "hardware.h"
 #include "TempADC.h"
+#include "Delays.h"
 
 /* -------------------------- Global Variables and Structures --------------------------- */
 
-static int Temp1;
-static int Temp2;
+static int Temp1;   // Private variable with the last reading of T1 sensor
+static int Temp2;   // Private variable with the last reading of T2 sensor
 
 /* ---------------------------------- Public Functions ---------------------------------- */
 
 /*
- *	Summary
- *		Initialize the temperature sensors, including the ADC peripheral.
- *	Parameters
- *		None.
- *	Returns
- *		None.
+ *  Summary
+ *	Initialize the temperature sensors, including the ADC peripheral.
+ *  Parameters
+ *	None.
+ *  Returns
+ *	Unsigned int that corresponds to whether an error occurred or not.
  */
-void initializeTemperatureSensors(void) {
+unsigned int initializeTemperatureSensors(unsigned int timeoutMS) {
     TRISGbits.TRISG6 = 1;	// Set pin as input
     ANSELGbits.ANSG6 = 0;	// Set pin as analog input
     TRISGbits.TRISG9 = 1;	// Set pin as input
     ANSELGbits.ANSG9 = 0;	// Set pin as analog input
     CloseADC10();
 
-    // Configure to sampel AN16 and AN19
+    // Configure to sample AN16 and AN19
     SetChanADC10(ADC_CH0_NEG_SAMPLEA_NVREF | ADC_CH0_POS_SAMPLEA_AN16 | ADC_CH0_NEG_SAMPLEB_NVREF | ADC_CH0_POS_SAMPLEB_AN19); 
     // Configure ADC using the above parameter definitions
     OpenADC10G(ADC_PARAM1, ADC_PARAM2, ADC_PARAM3, ADC_PARAM4, ADC_PARAM5); 
     EnableADC10();			// Enable the ADC
-    while (!mAD1GetIntFlag()) {}
+    
+    // Begin the non-blocking delay and try and initialize the module for as long as possible
+    nonBlockingDelayMS(timeoutMS);
+    while (!mAD1GetIntFlag()) {
+	if (!nonBlockingDelayMS(0)) // If the timeout period has passed, an error occurred
+	    return ERROR;
+    }
+    
+    return NO_ERROR;
 }
 
 /*
- *	Summary
- *		Read both ADC converters for the two temperature sensors.
- *	Parameters
- *		t1[out]: int* that will be updated with the result of the ADC1.
- *		t2[out]: int* that will be updated with the result of ADC2.
- *	Returns
- *		None.
+ *  Summary
+ *	Read both ADC converters for the two temperature sensors.
+ *  Parameters
+ *	t1[out]: int* that will be updated with the result of the ADC1.
+ *	t2[out]: int* that will be updated with the result of ADC2.
+ *  Returns
+ *	None.
  */
 void readTemperatures(int *t1, int *t2)  {
     int offset;
@@ -71,13 +80,13 @@ void readTemperatures(int *t1, int *t2)  {
 }
 
 /*
- *	Summary
- *		Return a value of how much to scale the motor speed by.
- *	Parameters
- *		motor1_scale[out]: float* that will be updated with the scaling of motor 1.
- *		motor2_scale[out]: float* that will be updated with the scaling of motor 2.
- *	Returns
- *		None.
+ *  Summary
+ *	Return a value of how much to scale the motor speed by.
+ *  Parameters
+ *	motor1_scale[out]: float* that will be updated with the scaling of motor 1.
+ *	motor2_scale[out]: float* that will be updated with the scaling of motor 2.
+ *  Returns
+ *	None.
  */
 void checkThresholds(float *motor1_scale, float *motor2_scale) {
     int t1 = 0;
@@ -94,31 +103,31 @@ void checkThresholds(float *motor1_scale, float *motor2_scale) {
 }
 
 /*
- *	Summary
- *		Return the last reading of ADC1.
- *	Parameters
- *		None.
- *	Returns
- *		int that is the latest value stored in Temp1.
- *	Notes
- *		Temp1 and Temp2 are updated by calls to readTemperatures();
+ *  Summary
+ *	Return the last reading of ADC1.
+ *  Parameters
+ *	None.
+ *  Returns
+ *	int that is the latest value stored in Temp1.
+ *  Notes
+ *	Temp1 and Temp2 are updated by calls to readTemperatures();
  */
-int getTemp1(void) {
+int getTemperature1(void) {
     return Temp1; 
 }
 
 /*
- *	Summary
- *		Return the last reading of ADC2.
- *	Parameters
- *		None.
- *	Returns
- *		int that is the latest value stored in Temp2.
- *	Notes
- *		Temp1 and Temp2 are updated by calls to readTemperatures();
+ *  Summary
+ *	Return the last reading of ADC2.
+ *  Parameters
+ *	None.
+ *  Returns
+ *	int that is the latest value stored in Temp2.
+ *  Notes
+ *	Temp1 and Temp2 are updated by calls to readTemperatures();
  */
-int getTemp2(void) {
-	return Temp2;
+int getTemperature2(void) {
+    return Temp2;
 }
 
 /* --------------------------------- Private Functions ---------------------------------- */

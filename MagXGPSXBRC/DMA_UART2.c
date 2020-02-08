@@ -9,8 +9,8 @@
 
 /* -------------------------- Global Variables and Structures --------------------------- */
 
-int DmaIntFlag;										// Flag used in interrupts
-char DMABuffer[DMA_BUFFER_SIZE+1];					// Master DMA Uart RX buffer
+int DmaIntFlag;						// Flag used in interrupts
+char DMABuffer[DMA_BUFFER_SIZE+1];			// Master DMA Uart RX buffer
 static char privateDMABuffer[DMA_BUFFER_SIZE+1];	// Private, temporary DMA buffer
 static DmaChannel DMAChannel = DMA_CHANNEL1;		// Active DMA channel
 
@@ -51,12 +51,12 @@ unsigned int initializeDMAUART2RX(void) {
 }
 
 /*
- *	Summary
- *		Restart the DMA transfer from between the U2RX register and privateDMABuffer.
- *	Parameters
- *		None.
- *	Returns
- *		None.
+ *  Summary
+ *	Restart the DMA transfer from between the U2RX register and privateDMABuffer.
+ *  Parameters
+ *	None.
+ *  Returns
+ *	None.
  */
 void restartDMATransfer(void) {
     DmaChnSetTxfer(DMAChannel, (void*)&U2RXREG, privateDMABuffer, 1, DMA_BUFFER_SIZE, 1);
@@ -68,17 +68,17 @@ void restartDMATransfer(void) {
 /* ----------------------------- Interrupt Service Routines ----------------------------- */
 
 /*
- *	Summary
- *		ISR for all DMA channel events.
- *	Parameters
- *		None.
- *	Returns
- *		None.
+ *  Summary
+ *	ISR for all DMA channel events.
+ *  Parameters
+ *	None.
+ *  Returns
+ *	None.
  */
 void __ISR(_DMA1_VECTOR, IPL5SOFT) interruptDMAHandler(void) {
     if (DmaChnGetEvFlags(DMAChannel) & DMA_EV_ALL_EVNTS) {
-	    DmaIntFlag = 1;
-	    strcpy(DMABuffer, privateDMABuffer);	// Change buffers
+	DmaIntFlag = 1;
+	strcpy(DMABuffer, privateDMABuffer);	// Change buffers
     }
 
     INTClearFlag(INT_SOURCE_DMA(DMAChannel));

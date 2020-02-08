@@ -7,19 +7,14 @@
       <itemPath>../config_bits.h</itemPath>
       <itemPath>../hardware.h</itemPath>
       <itemPath>../main.h</itemPath>
-      <itemPath>../swDelay.h</itemPath>
-      <itemPath>../uart2.h</itemPath>
-      <itemPath>../uart4.h</itemPath>
-      <itemPath>../RC.h</itemPath>
-      <itemPath>../Pot.h</itemPath>
-      <itemPath>../GPS_I2C.h</itemPath>
-      <itemPath>../i2c_lib.h</itemPath>
       <itemPath>../Gamepad.h</itemPath>
-      <itemPath>../CycleData.h</itemPath>
       <itemPath>../Notice.h</itemPath>
       <itemPath>../DMA_UART2.h</itemPath>
-      <itemPath>../MAG3110.h</itemPath>
       <itemPath>../TempADC.h</itemPath>
+      <itemPath>../Motor.h</itemPath>
+      <itemPath>../Delays.h</itemPath>
+      <itemPath>../UART4.h</itemPath>
+      <itemPath>../UART2.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -30,19 +25,14 @@
                    projectFiles="true">
       <itemPath>../hardware.c</itemPath>
       <itemPath>../main.c</itemPath>
-      <itemPath>../swDelay.c</itemPath>
-      <itemPath>../uart2.c</itemPath>
-      <itemPath>../uart4.c</itemPath>
-      <itemPath>../RC.c</itemPath>
-      <itemPath>../Pot.c</itemPath>
-      <itemPath>../GPS_I2C.c</itemPath>
-      <itemPath>../i2c_lib.c</itemPath>
       <itemPath>../Gamepad.c</itemPath>
-      <itemPath>../CycleData.c</itemPath>
       <itemPath>../Notice.c</itemPath>
       <itemPath>../DMA_UART2.c</itemPath>
-      <itemPath>../MAG3110.c</itemPath>
       <itemPath>../TempADC.c</itemPath>
+      <itemPath>../Motor.c</itemPath>
+      <itemPath>../Delays.c</itemPath>
+      <itemPath>../UART4.c</itemPath>
+      <itemPath>../UART2.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

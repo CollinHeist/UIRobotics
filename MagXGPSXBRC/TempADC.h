@@ -1,7 +1,11 @@
 #ifndef __ADC_TEMP_H__
 	#define __ADC_TEMP_H__
 
-	/* ------------------ Define setup paramaters for ADC10 ------------------ */
+    // Temperature Parameters - Temporary
+	#define SLOW_TEMP		125		// Degrees F where we start throttling motor
+	#define STOP_TEMP		150		// Degrees F where we STOP the motor
+
+	//Define setup paramaters for ADC10
 	//     turn module on | output integer  | trigger mode auto | enable auto sample
 	#define ADC_PARAM1  ADC_MODULE_ON | ADC_FORMAT_INTG | ADC_CLK_AUTO  | ADC_AUTO_SAMPLING_ON
 
@@ -20,14 +24,11 @@
 	#define ADCMAX			1023
 	#define OpenADC10G(config1, config2, config3, configport, configscan) (mPORTGSetPinsAnalogIn(configport), AD1CSSL = ~(configscan), AD1CON3 = (config3), AD1CON2 = (config2), AD1CON1 = (config1) )
 
-	// Temperature Parameters - Temporary
-	#define SLOW_TEMP		125		// Degrees F where we start throttling motor
-	#define STOP_TEMP		150		// Degrees F where we STOP the motor
 
 	// Function Prototypes
-	void initializeTemperatureSensors(void);
+	unsigned int initializeTemperatureSensors(unsigned int timeoutMS);
     void readTemperatures(int *t1, int *t2);
     void checkThresholds(float *motor1_scale, float *motor2_scale);
-    int getTemp1(void);
-    int getTemp2(void);
+    int getTemperature1(void);
+    int getTemperature2(void);
 #endif
