@@ -1,10 +1,25 @@
-// File Inclusion
-#include "hardware.h"	// Has info regarding the PB clock
+/* ----------------------------------- File Inclusion ----------------------------------- */
+
 #include <plib.h>
-#include <stdio.h>		// Required for printf 
+#include <stdio.h>	// Required for printf 
+
+#include "hardware.h"	// Has info regarding the PB clock
 #include "UART2.h"
 
-void initializeUART2(unsigned int baud, int parity) {
+/* -------------------------- Global Variables and Structures --------------------------- */
+
+/* ---------------------------------- Public Functions ---------------------------------- */
+
+/*
+ *	Summary
+ *		Initialize UART2 to the desired baud and parity.
+ *	Parameters
+ *		baud[in]:   Frequency the UART bus should operate at.
+ *		parity[in]: What parity to operate the bus at.
+ *	Returns
+ *		Unsigned int that corresponds to whether an error occurred or not.
+ */
+unsigned int initializeUART2(unsigned int baud, int parity) {
 	unsigned int config1, config2, ubrg;
 
 	RPG7R = 0x01;  // Mapping U2TX to RPG7
@@ -24,26 +39,36 @@ void initializeUART2(unsigned int baud, int parity) {
 	config2 = UART_TX_PIN_LOW |  UART_RX_ENABLE |  UART_TX_ENABLE;
 	ubrg = GetPeripheralClock() / (baud * 16);
 
-	// UARTConfigure(UART2, UART_ENABLE_PINS_TX_RX_ONLY);
-	// UARTSetFifoMode(UART2, UART_INTERRUPT_ON_TX_NOT_FULL | UART_INTERRUPT_ON_RX_NOT_EMPTY);
-	// UARTSetLineControl(UART2, UART_DATA_SIZE_8_BITS | UART_PARITY_NONE | UART_STOP_BITS_1);
-	// UARTSetDataRate(UART2, GetPeripheralClock(), urbg);
-	// UARTEnable(UART2, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
+//	 UARTConfigure(UART2, UART_ENABLE_PINS_TX_RX_ONLY);
+//	 UARTSetFifoMode(UART2, UART_INTERRUPT_ON_TX_NOT_FULL | UART_INTERRUPT_ON_RX_NOT_EMPTY);
+//	 UARTSetLineControl(UART2, UART_DATA_SIZE_8_BITS | UART_PARITY_NONE | UART_STOP_BITS_1);
+//	 UARTSetDataRate(UART2, GetPeripheralClock(), urbg);
+//	 UARTEnable(UART2, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
 
 	OpenUART2(config1, config2, ubrg);
 
-	/*
 	// Configure UART2 RX Interrupt
-	INTClearFlag(INT_SOURCE_UART_TX(UART2));
-	INTClearFlag(INT_SOURCE_UART_RX(UART2));
-	INTEnable(INT_SOURCE_UART_RX(UART2), INT_ENABLED);
-	INTSetVectorPriority(INT_VECTOR_UART(UART2), INT_PRIORITY_LEVEL_3);
-	INTSetVectorSubPriority(INT_VECTOR_UART(UART2), INT_SUB_PRIORITY_LEVEL_0);
-	 */
+//	INTClearFlag(INT_SOURCE_UART_TX(UART2));
+//	INTClearFlag(INT_SOURCE_UART_RX(UART2));
+//	INTEnable(INT_SOURCE_UART_RX(UART2), INT_ENABLED);
+//	INTSetVectorPriority(INT_VECTOR_UART(UART2), INT_PRIORITY_LEVEL_3);
+//	INTSetVectorSubPriority(INT_VECTOR_UART(UART2), INT_SUB_PRIORITY_LEVEL_0);
+	
+	putStringUART2("\n\rXBee online\n\r");
+	
+	return NO_ERROR;
 }
 
+/*
+ *	Summary
+ *		Place a character on the UART2 bus.
+ *	Parameters
+ *		ch[in]: Character to write to the bus.
+ *	Returns
+ *		integer that is either 0 if the transmission failed, and 1 if successful.
+ */
 int putCharacterUART2(int ch) {
-	char c = (char) ch;;
+	char c = (char) ch;
 	int done = 0;
 
 	// If a transmission can be written
@@ -55,14 +80,22 @@ int putCharacterUART2(int ch) {
 	return done;
 }
 
+/*
+ *	Summary
+ *		Place a string on the UART2 bus.
+ *	Parameters
+ *		s[in]: Character pointer that points to the string that will be written over UART2.
+ *	Returns
+ *		integer that is either 0 if the transmission failed, and 1 if successful.
+ */
 int putStringUART2(const char *s) {
 	BOOL ch_sent;
 
-	while(*s) {
-	do {
-		ch_sent = putCharacterUART2(*s);
-	} while(ch_sent ==  0);
-	s++;
+	while (*s) {
+		do {
+			ch_sent = putCharacterUART2(*s);
+		} while(ch_sent ==  0);
+		s++;
 	}
 	do { ch_sent = putCharacterUART2('\r'); } while(!ch_sent);
 	do { ch_sent = putCharacterUART2('\n'); } while(!ch_sent);
@@ -70,6 +103,14 @@ int putStringUART2(const char *s) {
 	return 1;
 }
 
+/*
+ *	Summary
+ *		Receive the latest character on the UART2 buffer.
+ *	Parameters
+ *		ch[out]: Character pointer to be filled with the contents of the UART4 buffer.
+ *	Returns
+ *		Unsigned int that is either TRUE if a new character was received, or FALSE if none was.
+ */
 int getCharacterUART2(char *ch) {
 	char c;
 	int dr2, dr4;
@@ -78,23 +119,34 @@ int getCharacterUART2(char *ch) {
 
 	lineStatus = UART2GetErrors();	// Check for UART errors
 	if (lineStatus) {
-	// Handle receiver error
-	printf("Error: 0x%08x  %6d\n\r", lineStatus, lineStatus);
+		// Handle receiver error
+		printf("Error: 0x%08x  %6d\n\r", lineStatus, lineStatus);
 
-	UART2ClearAllErrors();
-	getCharacterUART2(ch);		
+		UART2ClearAllErrors();
+		getCharacterUART2(ch);		
 	}
 	else {	   
-	dr2 = DataRdyUART2();
-	if (dr2) {		// Wait for new char to arrive
-		c = ReadUART2();	// Read the char from receive buffer
-		*ch = c;
-		done = 1;		// Return new data available flag 
+		dr2 = DataRdyUART2();
+		if (dr2) {		// Wait for new char to arrive
+			c = ReadUART2();	// Read the char from receive buffer
+			*ch = c;
+			done = 1;		// Return new data available flag 
+		}
 	}
-	}
+	
 	return done;					// Return new data not available flag
 }
 
+/*
+ *	Summary
+ *		Get a string of a given length on the UART2 buffer.
+ *	Parameters
+ *		s[out]: Character pointer to the string that should be filled by this function.
+ *		len[in]: Unsigned integer that is how many bytes to read from the buffer.
+ *	Returns
+ *		Integer that is TRUE if a return character was received, FALSE if it is still
+ *		waiting for the end of line.
+ */
 int getStringUART2(char *s, unsigned int len) {
 	static int eol = 1;				// End of input string flag
 	static unsigned int buf_len;	// Number of received characters
@@ -103,46 +155,59 @@ int getStringUART2(char *s, unsigned int len) {
 	char ch;						// Received new character
 
 	if (eol) {						// Make two copies of pointer - one for
-	p1 = s;						// receiving characters and one for marking
-	p2 = s;						// the starting address of the string.  The
-	eol = 0;					// second copy is needed for backspacing.
-	buf_len = len;				// Save maximum buffer length
+		p1 = s;						// receiving characters and one for marking
+		p2 = s;						// the starting address of the string.  The
+		eol = 0;					// second copy is needed for backspacing.
+		buf_len = len;				// Save maximum buffer length
 	}
 
 	if (!(getCharacterUART2(&ch))) {// Check for character received
-	return 0;					// Bail out if not 
+		return 0;					// Bail out if not 
 	}
 	else {
-	*p1 = ch;					// Save new character in string buffer
-	switch (ch) {				// Test for control characters
-		case BACKSPACE:
-		if (p1 > p2) {
-			putCharacterUART2(' ');	// overwrite the last character
-			putCharacterUART2(BACKSPACE);
-			buf_len++;
-			p1--;			// back off the pointer
+		*p1 = ch;					// Save new character in string buffer
+		switch (ch) {				// Test for control characters
+			case BACKSPACE:
+				if (p1 > p2) {
+					putCharacterUART2(' ');	// overwrite the last character
+					putCharacterUART2(BACKSPACE);
+					buf_len++;
+					p1--;			// back off the pointer
+				}
+				break;
+			case '\r':				// end of line, end loop
+				eol = 1;			// Mark end of line
+				break;
+			case '\n':				// line feed, ignore it
+				break;
+			default:
+				p1++;				// increment buffer pointer
+				buf_len--;		 	// decrement length counter
 		}
-		break;
-		case '\r':				// end of line, end loop
-		eol = 1;			// Mark end of line
-		break;
-		case '\n':				// line feed, ignore it
-		break;
-		default:
-		p1++;				// increment buffer pointer
-		buf_len--;		 	// decrement length counter
 	}
-	}
+
 	if (buf_len == 0 || eol) {		// Check for buffer full or end of line
-	*p1 = '\0';					// add null terminate the string
-	return 1;					// Set EOL flag 
+		*p1 = '\0';					// add null terminate the string
+		return 1;					// Set EOL flag 
 	}
-	
+
 	return 1;						// Not EOL
 }
 
-// UART 2 interrupt handler - This triggers when a character is sent or receieved over UART2
-void __ISR(_UART2_VECTOR, IPL3SOFT) interruptUART2Handler(void) {
+/* --------------------------------- Private Functions ---------------------------------- */
+
+/* ----------------------------- Interrupt Service Routines ----------------------------- */
+
+/*
+ *	Summary
+ *		Interrupt service routine for the UART2 vector. Handled when character is sent
+ *		or received via the UART2 buffer. Calls according functions.
+ *	Parameters
+ *		None.
+ *	Returns
+ *		None.
+ */
+void __ISR(_UART2_VECTOR, IPL3SOFT) isrUART2Handler(void) {
 	// Is this an RX interrupt?
 	if (INTGetFlag(INT_SOURCE_UART_RX(UART2))) {
 		// Echo what we just received.

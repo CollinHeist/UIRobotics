@@ -29,48 +29,15 @@ int main(void) {
     
     errorFlag = hardwareSetup();
     errorFlag |= initializeModules();
-    
-    /*
-    // Local variables
-    I2C_RESULT I2cResultFlag;   // I2C Init Result flag
-    I2C_RESULT I2cReadFlag;   // I2C Init Result flag
-    int16_t x, y, z;
-    unsigned ADCTemperatureInterval = 60000;
-    unsigned MovementInterval = 20;
-    unsigned ADCIntervalMark = 0;
-    unsigned ActualADCInterval = ADCTemperatureInterval;
-    unsigned ActualMovementInterval = MovementInterval;
-    float heading = 0;
 
-    // Init. the DMA flag
-    DmaIntFlag = 0;
+    if (errorFlag != NO_ERROR)
+    	return ERROR;
 
-    // Initialization
-    I2cResultFlag = InitializeModules(&I2cResultFlag);	// Init all I/O modules
-    unsigned int error_flag |= initializeDMAUART2RX();
-
-    // Re-enable global interrupts
-
-    
-    while (1) {  // Forever process loop	
-	if (DmaIntFlag) {	    // clear the interrupt flag
-	    DmaIntFlag = 0;         // Reset DMA Rx block flag
-	    printf("message received %s\n", DMABuffer);
-	    restartDMATransfer();
-	    HandleInput();	    // Handles all user input from the XB device
-	    getStringUART2("A", 1);
-	}
-     * 
-	// Get data from the ADC temperature sensors
-	if ((millisec - ADCIntervalMark) >= ADCTemperatureInterval) {
-	    read_temperature_store();			// Reads in the temperature
-	    ADCIntervalMark = millisec;
-	}
+    while (1) {
 
     }
-    
-    return EXIT_FAILURE; // Code execution should never get to this statement 
-    */
+
+    return ERROR;
 }
 
 unsigned int initializeModules(void) {

@@ -8,7 +8,7 @@
 	#define EVEN_PARITY		2
 
 	// Function Prototypes
-	void initializeUART2(unsigned int baud, int parity);
+	unsigned int initializeUART2(unsigned int baud, int parity);
 	int putCharacterUART2(int c);
 	int getCharacterUART2(char *ch);
 	int putStringUART2(const char *s);

@@ -7,11 +7,14 @@
 	#define ODD_PARITY		1
 	#define EVEN_PARITY		2
 
+	// UART4 Configurations
+	#define UART4_MAX_SEND_TIME_MS		(250)
+
 	// Function Prototypes
-	void initializeUART4(unsigned int baud, int parity);
+	unsigned int initializeUART4(unsigned int baud, int parity);
 	void _mon_putc(char c);
 	unsigned int putCharacterUART4(int ch);
 	unsigned int getCharacterUART4(char *ch);
-	int putStringUART4(const char *s); 
+	unsigned int putStringUART4(const char *s); 
 	int getStringUART4(char *s, unsigned int len);
 #endif

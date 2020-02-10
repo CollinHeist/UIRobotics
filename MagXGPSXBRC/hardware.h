@@ -14,18 +14,9 @@
 	#define NO_ERROR		(0)
 	#define ERROR			(1)
 
-/* This included file provides access to the peripheral library functions and
-   must be installed after the XC32 compiler. See
-http://ww1.microchip.com/downloads/en/DeviceDoc/32bitPeripheralLibraryGuide.pdf and
-http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20Library */
-
-/* The ANSELx register has a default value of 0xFFFF; therefore, all pins that
- * share analog functions are analog (not digital) by default. All pins are 
- * initially set be digital followed be setting A_POT for the ANALOG INPUT 
- * CONTROL and A_MIC for the microphone input back to being analog input pins.*/
-	#define ALL_DIGITAL_IO() (ANSELA=0,ANSELB=0,ANSELC=0,ANSELD=0,ANSELE=0,ANSELF=0,ANSELG = 0)
-	#define SET_MIC_ANALOG()  ANSELBbits.ANSB4 = 1
-	#define SET_POT_ANALOG()  ANSELBbits.ANSB2 = 1
+	#define ALL_DIGITAL_IO()	(ANSELA=0,ANSELB=0,ANSELC=0,ANSELD=0,ANSELE=0,ANSELF=0,ANSELG = 0)
+	#define SET_MIC_ANALOG()	(ANSELBbits.ANSB4 = 1)
+	#define SET_POT_ANALOG()	(ANSELBbits.ANSB2 = 1)
 
 /* Macros to configure PIC pins as inputs to sense switch settings */
 
@@ -142,13 +133,13 @@ http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20
 	#define Set_LED8_R_Out()	TRISDbits.TRISD2 = 0		
 	#define Set_LED8_G_Out()	TRISDbits.TRISD12 = 0		
 	#define Set_LED8_B_Out()	TRISDbits.TRISD3 = 0		
-	#define Set_RGB_Output()	( Set_LED8_R_Out(), Set_LED8_G_Out(), Set_LED8_B_Out() )
+	#define Set_RGB_Output()	(Set_LED8_R_Out(), Set_LED8_G_Out(), Set_LED8_B_Out())
 
-	#define Set_LED8_R(a)	  LATDbits.LATD2 = a
-	#define Set_LED8_G(a)	  LATDbits.LATD12 = a
-	#define Set_LED8_B(a)	  LATDbits.LATD3 = a
+	#define Set_LED8_R(a)		(LATDbits.LATD2 = a)
+	#define Set_LED8_G(a)		(LATDbits.LATD12 = a)
+	#define Set_LED8_B(a)		(LATDbits.LATD3 = a)
 
-	#define Set_LED8_RGB(a)  (LATDbits.LATD2 = a, LATDbits.LATD12 = a, LATDbits.LATD3 = a)		  
+	#define Set_LED8_RGB(a)		(LATDbits.LATD2 = a, LATDbits.LATD12 = a, LATDbits.LATD3 = a)		  
 
 	/* Based upon setting in config_bits.h These directly influence timed
 	 * events using the Tick module.  They also are used for UART I2C, and SPI
@@ -160,8 +151,8 @@ http://www.microchip.com/SWLibraryWeb/product.aspx?product=PIC32%20Peripheral%20
 	#define GetCoreClock()			(GetSystemClock()/2)	// Core clock frequency
 	#define GetPeripheralClock()	(GetSystemClock()/8)	// PCLK set for 80 MHz
 
-	#define TMR1_TICK		100
-    #define TIMER1_MS_COUNT     (100)
+	#define TIMER1_TICK				(100)
+	#define TIMER1_MS_COUNT			(100)
 
 	// Function Prototypes
 	unsigned int hardwareSetup(void);

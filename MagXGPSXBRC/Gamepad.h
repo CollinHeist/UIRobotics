@@ -4,7 +4,6 @@
 	// Configuration Macros
 	#define GAMEPAD_INPUT_STRING_SIZE		(512)
 
-
 	// Function Prototypes
 	void Move();
 	int HandleInput();

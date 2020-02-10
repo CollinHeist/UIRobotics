@@ -5,7 +5,7 @@
 	#define SLOW_TEMP		125		// Degrees F where we start throttling motor
 	#define STOP_TEMP		150		// Degrees F where we STOP the motor
 
-	//Define setup paramaters for ADC10
+	// Define setup paramaters for ADC10
 	//     turn module on | output integer  | trigger mode auto | enable auto sample
 	#define ADC_PARAM1  ADC_MODULE_ON | ADC_FORMAT_INTG | ADC_CLK_AUTO  | ADC_AUTO_SAMPLING_ON
 
