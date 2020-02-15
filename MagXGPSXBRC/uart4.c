@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <GenericTypeDefs.h>
 
-#include "UART4.h"
+#include "uart4.h"
 #include "hardware.h"
 #include "Delays.h"
 

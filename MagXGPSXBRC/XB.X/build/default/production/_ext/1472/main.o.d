@@ -7,6 +7,6 @@ build/default/production/_ext/1472/main.o:  \
 ../TempADC.h  \
 ../Notice.h  \
  ../Delays.h  \
-../UART4.h  \
-../UART2.h  \
+../uart4.h  \
+../uart2.h  \
 ../Motor.h 

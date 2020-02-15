@@ -10,8 +10,8 @@
 
 #include "hardware.h"
 #include "Gamepad.h"
-#include "UART2.h"
-#include "UART4.h"
+#include "uart2.h"
+#include "uart4.h"
 #include "DMA_UART2.h"
 
 /* -------------------------- Global Variables and Structures --------------------------- */

@@ -15,8 +15,8 @@
 #include "Delays.h"
 
 // Application included files
-#include "UART4.h"  // Monitor UART
-#include "UART2.h"  // GPS UART
+#include "uart4.h"  // Monitor UART
+#include "uart2.h"  // GPS UART
 #include "Motor.h"
 
 /* -------------------------- Global Variables and Structures --------------------------- */

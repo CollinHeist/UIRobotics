@@ -13,21 +13,21 @@ c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../.
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_restore_interrupts_lib.o)
                               build/default/production/_ext/1472/hardware.o (INTRestoreInterrupts)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_tbl_lib.o)
-                              build/default/production/_ext/1472/UART2.o (INTClearFlag)
+                              build/default/production/_ext/1472/uart2.o (INTClearFlag)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_ev_enable_flags_lib.o)
-                              build/default/production/_ext/1472/UART2.o (DmaChnSetEvEnableFlags)
+                              build/default/production/_ext/1472/uart2.o (DmaChnSetEvEnableFlags)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_open_lib.o)
-                              build/default/production/_ext/1472/UART2.o (DmaChnOpen)
+                              build/default/production/_ext/1472/uart2.o (DmaChnOpen)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_enable_lib.o)
-                              build/default/production/_ext/1472/UART2.o (DmaChnEnable)
+                              build/default/production/_ext/1472/uart2.o (DmaChnEnable)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_get_ev_flags_lib.o)
-                              build/default/production/_ext/1472/UART2.o (DmaChnGetEvFlags)
+                              build/default/production/_ext/1472/uart2.o (DmaChnGetEvFlags)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_write_event_control_flags_lib.o)
-                              build/default/production/_ext/1472/UART2.o (DmaChnWriteEventControlFlags)
+                              build/default/production/_ext/1472/uart2.o (DmaChnWriteEventControlFlags)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_match_pattern_lib.o)
-                              build/default/production/_ext/1472/UART2.o (DmaChnSetMatchPattern)
+                              build/default/production/_ext/1472/uart2.o (DmaChnSetMatchPattern)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_txfer_lib.o)
-                              build/default/production/_ext/1472/UART2.o (DmaChnSetTxfer)
+                              build/default/production/_ext/1472/uart2.o (DmaChnSetTxfer)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_reg_map_tbl_lib.o)
                               c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_ev_enable_flags_lib.o) (_DmaMapTbl)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(port_set_pins_digital_in_lib.o)
@@ -37,11 +37,11 @@ c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../.
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(_ports_tbl_libp.o)
                               c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(port_set_pins_digital_in_lib.o) (PortRegTbl)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(uart_lib.o)
-                              build/default/production/_ext/1472/UART4.o (UARTEnable)
+                              build/default/production/_ext/1472/uart4.o (UARTEnable)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(floatunsisf.o)
                               build/default/production/_ext/1472/Motor.o (__floatunsisf)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(strcpy.o)
-                              build/default/production/_ext/1472/UART2.o (strcpy)
+                              build/default/production/_ext/1472/uart2.o (strcpy)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-bootstrap-exception-handler.o)
                               c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX370F512L/crt0_mips32r2.o (_bootstrap_exception_handler)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-on-reset.o)
@@ -185,7 +185,7 @@ c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../.
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(strtol.o)
                               build/default/production/_ext/1472/Gamepad.o (strtol)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(printf_cdnopuxX.eo)
-                              build/default/production/_ext/1472/UART2.o (_printf_cdnopuxX)
+                              build/default/production/_ext/1472/uart2.o (_printf_cdnopuxX)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_iob.o)
                               c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(puts.o) (_iob)
 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_fputc_simple.o)
@@ -208,8 +208,8 @@ c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.
 Allocating common symbols
 Common symbol       size              file
 
-DMABuffer           0x101             build/default/production/_ext/1472/UART2.o
-DmaIntFlag          0x4               build/default/production/_ext/1472/UART2.o
+DMABuffer           0x101             build/default/production/_ext/1472/uart2.o
+DmaIntFlag          0x4               build/default/production/_ext/1472/uart2.o
 millisec            0x4               build/default/production/_ext/1472/hardware.o
 
 Microchip PIC32 Memory-Usage Report
@@ -420,8 +420,8 @@ Discarded input sections
  .reginfo       0x00000000       0x18 build/default/production/_ext/1472/TempADC.o
  .reginfo       0x00000000       0x18 build/default/production/_ext/1472/Motor.o
  .reginfo       0x00000000       0x18 build/default/production/_ext/1472/Delays.o
- .reginfo       0x00000000       0x18 build/default/production/_ext/1472/UART4.o
- .reginfo       0x00000000       0x18 build/default/production/_ext/1472/UART2.o
+ .reginfo       0x00000000       0x18 build/default/production/_ext/1472/uart2.o
+ .reginfo       0x00000000       0x18 build/default/production/_ext/1472/uart4.o
  .reginfo       0x00000000       0x18 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX370F512L\default_isr_vectors.o
  .discard       0x00000000      0x100 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX370F512L\default_isr_vectors.o
  .reginfo       0x00000000       0x18 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX370F512L\processor.o
@@ -575,8 +575,8 @@ LOAD build/default/production/_ext/1472/Notice.o
 LOAD build/default/production/_ext/1472/TempADC.o
 LOAD build/default/production/_ext/1472/Motor.o
 LOAD build/default/production/_ext/1472/Delays.o
-LOAD build/default/production/_ext/1472/UART4.o
-LOAD build/default/production/_ext/1472/UART2.o
+LOAD build/default/production/_ext/1472/uart2.o
+LOAD build/default/production/_ext/1472/uart4.o
                 0x00000001                __MPLAB_BUILD = 0x1
                 0x00000800                _min_heap_size = 0x800
 LOAD c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX370F512L\default_isr_vectors.o
@@ -861,7 +861,7 @@ END GROUP
 
 .vector_36      0x9fc01680        0x8
  *(.vector_36)
- .vector_36     0x9fc01680        0x8 build/default/production/_ext/1472/UART2.o
+ .vector_36     0x9fc01680        0x8 build/default/production/_ext/1472/uart2.o
                 0x9fc01680                __vector_dispatch_36
                 0x00000001                ASSERT (((_vector_spacing == 0x0) || (SIZEOF (.vector_36) <= (_vector_spacing << 0x5))), function at exception vector 36 too large)
 
@@ -903,7 +903,7 @@ END GROUP
 
 .vector_43      0x9fc01760        0x8
  *(.vector_43)
- .vector_43     0x9fc01760        0x8 build/default/production/_ext/1472/UART2.o
+ .vector_43     0x9fc01760        0x8 build/default/production/_ext/1472/uart2.o
                 0x9fc01760                __vector_dispatch_43
                 0x00000001                ASSERT (((_vector_spacing == 0x0) || (SIZEOF (.vector_43) <= (_vector_spacing << 0x5))), function at exception vector 43 too large)
 
@@ -1151,8 +1151,8 @@ END GROUP
                 0xa0000030                _sdata_begin = .
  *(.sdata .sdata.* .gnu.linkonce.s.*)
  .sdata         0xa0000030        0x4 build/default/production/_ext/1472/hardware.o
- .sdata         0xa0000034        0x4 build/default/production/_ext/1472/UART4.o
- .sdata         0xa0000038        0x8 build/default/production/_ext/1472/UART2.o
+ .sdata         0xa0000034        0x8 build/default/production/_ext/1472/uart2.o
+ .sdata         0xa000003c        0x4 build/default/production/_ext/1472/uart4.o
  .sdata         0xa0000040        0x4 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_iob.o)
                 0xa0000040                _Files
                 0xa0000044                . = ALIGN (0x4)
@@ -1176,8 +1176,8 @@ END GROUP
  .sbss          0xa0000054        0x8 build/default/production/_ext/1472/TempADC.o
  .sbss          0xa000005c        0x4 build/default/production/_ext/1472/Motor.o
  .sbss          0xa0000060        0xc build/default/production/_ext/1472/Delays.o
- .sbss          0xa000006c        0xc build/default/production/_ext/1472/UART4.o
- .sbss          0xa0000078        0xc build/default/production/_ext/1472/UART2.o
+ .sbss          0xa000006c        0xc build/default/production/_ext/1472/uart2.o
+ .sbss          0xa0000078        0xc build/default/production/_ext/1472/uart4.o
  .sbss          0xa0000084        0x1 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_iob.o)
                 0xa0000084                _outdone
  *fill*         0xa0000085        0x3 
@@ -1186,7 +1186,7 @@ END GROUP
  *(.scommon)
  .scommon       0xa000008c        0x4 build/default/production/_ext/1472/hardware.o
                 0xa000008c                millisec
- .scommon       0xa0000090        0x4 build/default/production/_ext/1472/UART2.o
+ .scommon       0xa0000090        0x4 build/default/production/_ext/1472/uart2.o
                 0xa0000090                DmaIntFlag
                 0xa0000094                _sbss_end = .
                 0xa0000094                . = ALIGN (0x4)
@@ -1194,7 +1194,7 @@ END GROUP
 .bss            0xa0000094      0x104
  *(.dynbss)
  *(COMMON)
- COMMON         0xa0000094      0x101 build/default/production/_ext/1472/UART2.o
+ COMMON         0xa0000094      0x101 build/default/production/_ext/1472/uart2.o
                 0xa0000094                DMABuffer
                 0xa0000198                . = ALIGN ((. != 0x0)?0x4:0x1)
  *fill*         0xa0000195        0x3 
@@ -1230,8 +1230,8 @@ END GROUP
  .mdebug.abi32  0xa0000198        0x0 build/default/production/_ext/1472/TempADC.o
  .mdebug.abi32  0xa0000198        0x0 build/default/production/_ext/1472/Motor.o
  .mdebug.abi32  0xa0000198        0x0 build/default/production/_ext/1472/Delays.o
- .mdebug.abi32  0xa0000198        0x0 build/default/production/_ext/1472/UART4.o
- .mdebug.abi32  0xa0000198        0x0 build/default/production/_ext/1472/UART2.o
+ .mdebug.abi32  0xa0000198        0x0 build/default/production/_ext/1472/uart2.o
+ .mdebug.abi32  0xa0000198        0x0 build/default/production/_ext/1472/uart4.o
  .mdebug.abi32  0xa0000198        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral.a(read_core_timer_lib.o)
  .mdebug.abi32  0xa0000198        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(pcache.o)
  .mdebug.abi32  0xa0000198        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_configure_system_lib.o)
@@ -1320,8 +1320,8 @@ END GROUP
  .comment       0x00000000       0x3d build/default/production/_ext/1472/TempADC.o
  .comment       0x00000000       0x3d build/default/production/_ext/1472/Motor.o
  .comment       0x00000000       0x3d build/default/production/_ext/1472/Delays.o
- .comment       0x00000000       0x3d build/default/production/_ext/1472/UART4.o
- .comment       0x00000000       0x3d build/default/production/_ext/1472/UART2.o
+ .comment       0x00000000       0x3d build/default/production/_ext/1472/uart2.o
+ .comment       0x00000000       0x3d build/default/production/_ext/1472/uart4.o
  .comment       0x0000003c       0x3c c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral.a(read_core_timer_lib.o)
                                  0x3d (size before relaxing)
  .comment       0x00000000       0x3d c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(pcache.o)
@@ -1396,9 +1396,9 @@ END GROUP
  .debug_aranges
                 0x000000c0       0x20 build/default/production/_ext/1472/Delays.o
  .debug_aranges
-                0x000000e0       0x20 build/default/production/_ext/1472/UART4.o
+                0x000000e0       0x20 build/default/production/_ext/1472/uart2.o
  .debug_aranges
-                0x00000100       0x20 build/default/production/_ext/1472/UART2.o
+                0x00000100       0x20 build/default/production/_ext/1472/uart4.o
  .debug_aranges
                 0x00000120       0x20 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral.a(read_core_timer_lib.o)
  .debug_aranges
@@ -1484,9 +1484,9 @@ END GROUP
  .debug_pubnames
                 0x00000201       0x4d build/default/production/_ext/1472/Delays.o
  .debug_pubnames
-                0x0000024e       0x86 build/default/production/_ext/1472/UART4.o
+                0x0000024e       0xd2 build/default/production/_ext/1472/uart2.o
  .debug_pubnames
-                0x000002d4       0xd2 build/default/production/_ext/1472/UART2.o
+                0x00000320       0x86 build/default/production/_ext/1472/uart4.o
  .debug_pubnames
                 0x000003a6       0x24 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral.a(read_core_timer_lib.o)
  .debug_pubnames
@@ -1554,7 +1554,7 @@ END GROUP
  .debug_pubnames
                 0x00000a85       0x20 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(_umoddi3.o)
 
-.debug_info     0x00000000    0x101f2
+.debug_info     0x00000000    0x101f4
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x222e build/default/production/_ext/1472/hardware.o
  .debug_info    0x0000222e      0xf7a build/default/production/_ext/1472/main.o
@@ -1563,46 +1563,46 @@ END GROUP
  .debug_info    0x00005880     0x1955 build/default/production/_ext/1472/TempADC.o
  .debug_info    0x000071d5     0x1e7a build/default/production/_ext/1472/Motor.o
  .debug_info    0x0000904f     0x107e build/default/production/_ext/1472/Delays.o
- .debug_info    0x0000a0cd     0x165d build/default/production/_ext/1472/UART4.o
- .debug_info    0x0000b72a     0x2195 build/default/production/_ext/1472/UART2.o
- .debug_info    0x0000d8bf       0xaa c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral.a(read_core_timer_lib.o)
- .debug_info    0x0000d969       0xbf c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(pcache.o)
- .debug_info    0x0000da28       0xb2 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_configure_system_lib.o)
- .debug_info    0x0000dada       0xb4 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_enable_interrupts_lib.o)
- .debug_info    0x0000db8e       0xb6 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_disable_interrupts_lib.o)
- .debug_info    0x0000dc44       0xb6 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_restore_interrupts_lib.o)
- .debug_info    0x0000dcfa      0x196 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_tbl_lib.o)
- .debug_info    0x0000de90       0xbd c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_ev_enable_flags_lib.o)
- .debug_info    0x0000df4d       0xb5 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_open_lib.o)
- .debug_info    0x0000e002       0xa6 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_enable_lib.o)
- .debug_info    0x0000e0a8       0xb0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_get_ev_flags_lib.o)
- .debug_info    0x0000e158       0xc9 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_write_event_control_flags_lib.o)
- .debug_info    0x0000e221       0xba c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_match_pattern_lib.o)
- .debug_info    0x0000e2db       0xbc c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_txfer_lib.o)
- .debug_info    0x0000e397        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_reg_map_tbl_lib.o)
- .debug_info    0x0000e397       0xba c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(port_set_pins_digital_in_lib.o)
- .debug_info    0x0000e451       0xbc c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(port_set_pins_digital_out_lib.o)
- .debug_info    0x0000e50d        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(_ports_tbl_libp.o)
- .debug_info    0x0000e50d      0x175 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(uart_lib.o)
- .debug_info    0x0000e682      0x157 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(floatunsisf.o)
- .debug_info    0x0000e7d9       0xde c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-bootstrap-exception-handler.o)
- .debug_info    0x0000e8b7       0xb8 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-on-reset.o)
- .debug_info    0x0000e96f       0xc0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-on-bootstrap.o)
- .debug_info    0x0000ea2f       0xda c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-general-exception-handler.o)
- .debug_info    0x0000eb09       0xd2 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(defaultinterrupt.o)
- .debug_info    0x0000ebdb        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(ctype.o)
- .debug_info    0x0000ebdb       0xc1 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(puts.o)
- .debug_info    0x0000ec9c       0xc7 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(strtol.o)
- .debug_info    0x0000ed63       0xbb c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(printf_cdnopuxX.eo)
- .debug_info    0x0000ee1e        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_iob.o)
- .debug_info    0x0000ee1e       0xaf c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_fputc_simple.o)
- .debug_info    0x0000eecd      0x215 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(ctypef.o)
- .debug_info    0x0000f0e2        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(errno.o)
- .debug_info    0x0000f0e2       0xbe c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(doprnt_cdnopuxX.eo)
- .debug_info    0x0000f1a0       0xb2 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_flsbuf_simple.o)
- .debug_info    0x0000f252       0xa9 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(write.o)
- .debug_info    0x0000f2fb      0x75f c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(_udivdi3.o)
- .debug_info    0x0000fa5a      0x798 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(_umoddi3.o)
+ .debug_info    0x0000a0cd     0x2197 build/default/production/_ext/1472/uart2.o
+ .debug_info    0x0000c264     0x165d build/default/production/_ext/1472/uart4.o
+ .debug_info    0x0000d8c1       0xaa c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral.a(read_core_timer_lib.o)
+ .debug_info    0x0000d96b       0xbf c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(pcache.o)
+ .debug_info    0x0000da2a       0xb2 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_configure_system_lib.o)
+ .debug_info    0x0000dadc       0xb4 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_enable_interrupts_lib.o)
+ .debug_info    0x0000db90       0xb6 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_disable_interrupts_lib.o)
+ .debug_info    0x0000dc46       0xb6 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_restore_interrupts_lib.o)
+ .debug_info    0x0000dcfc      0x196 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_tbl_lib.o)
+ .debug_info    0x0000de92       0xbd c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_ev_enable_flags_lib.o)
+ .debug_info    0x0000df4f       0xb5 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_open_lib.o)
+ .debug_info    0x0000e004       0xa6 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_enable_lib.o)
+ .debug_info    0x0000e0aa       0xb0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_get_ev_flags_lib.o)
+ .debug_info    0x0000e15a       0xc9 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_write_event_control_flags_lib.o)
+ .debug_info    0x0000e223       0xba c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_match_pattern_lib.o)
+ .debug_info    0x0000e2dd       0xbc c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_txfer_lib.o)
+ .debug_info    0x0000e399        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_reg_map_tbl_lib.o)
+ .debug_info    0x0000e399       0xba c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(port_set_pins_digital_in_lib.o)
+ .debug_info    0x0000e453       0xbc c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(port_set_pins_digital_out_lib.o)
+ .debug_info    0x0000e50f        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(_ports_tbl_libp.o)
+ .debug_info    0x0000e50f      0x175 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(uart_lib.o)
+ .debug_info    0x0000e684      0x157 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(floatunsisf.o)
+ .debug_info    0x0000e7db       0xde c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-bootstrap-exception-handler.o)
+ .debug_info    0x0000e8b9       0xb8 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-on-reset.o)
+ .debug_info    0x0000e971       0xc0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-on-bootstrap.o)
+ .debug_info    0x0000ea31       0xda c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-general-exception-handler.o)
+ .debug_info    0x0000eb0b       0xd2 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(defaultinterrupt.o)
+ .debug_info    0x0000ebdd        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(ctype.o)
+ .debug_info    0x0000ebdd       0xc1 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(puts.o)
+ .debug_info    0x0000ec9e       0xc7 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(strtol.o)
+ .debug_info    0x0000ed65       0xbb c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(printf_cdnopuxX.eo)
+ .debug_info    0x0000ee20        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_iob.o)
+ .debug_info    0x0000ee20       0xaf c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_fputc_simple.o)
+ .debug_info    0x0000eecf      0x215 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(ctypef.o)
+ .debug_info    0x0000f0e4        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(errno.o)
+ .debug_info    0x0000f0e4       0xbe c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(doprnt_cdnopuxX.eo)
+ .debug_info    0x0000f1a2       0xb2 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_flsbuf_simple.o)
+ .debug_info    0x0000f254       0xa9 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(write.o)
+ .debug_info    0x0000f2fd      0x75f c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(_udivdi3.o)
+ .debug_info    0x0000fa5c      0x798 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(_umoddi3.o)
 
 .debug_abbrev   0x00000000     0x1a58
  *(.debug_abbrev)
@@ -1613,8 +1613,8 @@ END GROUP
  .debug_abbrev  0x000008af      0x1d8 build/default/production/_ext/1472/TempADC.o
  .debug_abbrev  0x00000a87      0x1d6 build/default/production/_ext/1472/Motor.o
  .debug_abbrev  0x00000c5d      0x1db build/default/production/_ext/1472/Delays.o
- .debug_abbrev  0x00000e38      0x268 build/default/production/_ext/1472/UART4.o
- .debug_abbrev  0x000010a0      0x26b build/default/production/_ext/1472/UART2.o
+ .debug_abbrev  0x00000e38      0x26b build/default/production/_ext/1472/uart2.o
+ .debug_abbrev  0x000010a3      0x268 build/default/production/_ext/1472/uart4.o
  .debug_abbrev  0x0000130b       0x25 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral.a(read_core_timer_lib.o)
  .debug_abbrev  0x00001330       0x25 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(pcache.o)
  .debug_abbrev  0x00001355       0x25 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_configure_system_lib.o)
@@ -1654,7 +1654,7 @@ END GROUP
  .debug_abbrev  0x000017de      0x132 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(_udivdi3.o)
  .debug_abbrev  0x00001910      0x148 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(_umoddi3.o)
 
-.debug_line     0x00000000     0x21c8
+.debug_line     0x00000000     0x21ca
  *(.debug_line)
  .debug_line    0x00000000      0x244 build/default/production/_ext/1472/hardware.o
  .debug_line    0x00000244      0x170 build/default/production/_ext/1472/main.o
@@ -1663,46 +1663,46 @@ END GROUP
  .debug_line    0x00000751      0x1bc build/default/production/_ext/1472/TempADC.o
  .debug_line    0x0000090d      0x1a9 build/default/production/_ext/1472/Motor.o
  .debug_line    0x00000ab6      0x191 build/default/production/_ext/1472/Delays.o
- .debug_line    0x00000c47      0x221 build/default/production/_ext/1472/UART4.o
- .debug_line    0x00000e68      0x23c build/default/production/_ext/1472/UART2.o
- .debug_line    0x000010a4       0x6e c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral.a(read_core_timer_lib.o)
- .debug_line    0x00001112       0x62 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(pcache.o)
- .debug_line    0x00001174       0x71 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_configure_system_lib.o)
- .debug_line    0x000011e5       0x72 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_enable_interrupts_lib.o)
- .debug_line    0x00001257       0x73 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_disable_interrupts_lib.o)
- .debug_line    0x000012ca       0x73 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_restore_interrupts_lib.o)
- .debug_line    0x0000133d       0x64 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_tbl_lib.o)
- .debug_line    0x000013a1       0x78 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_ev_enable_flags_lib.o)
- .debug_line    0x00001419       0x7b c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_open_lib.o)
- .debug_line    0x00001494       0x6b c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_enable_lib.o)
- .debug_line    0x000014ff       0x71 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_get_ev_flags_lib.o)
- .debug_line    0x00001570       0x7e c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_write_event_control_flags_lib.o)
- .debug_line    0x000015ee       0x76 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_match_pattern_lib.o)
- .debug_line    0x00001664       0x80 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_txfer_lib.o)
- .debug_line    0x000016e4        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_reg_map_tbl_lib.o)
- .debug_line    0x000016e4       0x77 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(port_set_pins_digital_in_lib.o)
- .debug_line    0x0000175b       0x78 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(port_set_pins_digital_out_lib.o)
- .debug_line    0x000017d3        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(_ports_tbl_libp.o)
- .debug_line    0x000017d3       0x62 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(uart_lib.o)
- .debug_line    0x00001835       0x8e c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(floatunsisf.o)
- .debug_line    0x000018c3       0x97 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-bootstrap-exception-handler.o)
- .debug_line    0x0000195a       0x84 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-on-reset.o)
- .debug_line    0x000019de       0x88 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-on-bootstrap.o)
- .debug_line    0x00001a66       0x95 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-general-exception-handler.o)
- .debug_line    0x00001afb       0x96 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(defaultinterrupt.o)
- .debug_line    0x00001b91        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(ctype.o)
- .debug_line    0x00001b91       0x6e c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(puts.o)
- .debug_line    0x00001bff       0x70 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(strtol.o)
- .debug_line    0x00001c6f       0x70 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(printf_cdnopuxX.eo)
- .debug_line    0x00001cdf        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_iob.o)
- .debug_line    0x00001cdf       0x6f c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_fputc_simple.o)
- .debug_line    0x00001d4e       0x70 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(ctypef.o)
- .debug_line    0x00001dbe        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(errno.o)
- .debug_line    0x00001dbe       0x70 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(doprnt_cdnopuxX.eo)
- .debug_line    0x00001e2e       0x70 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_flsbuf_simple.o)
- .debug_line    0x00001e9e       0x79 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(write.o)
- .debug_line    0x00001f17      0x158 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(_udivdi3.o)
- .debug_line    0x0000206f      0x159 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(_umoddi3.o)
+ .debug_line    0x00000c47      0x23e build/default/production/_ext/1472/uart2.o
+ .debug_line    0x00000e85      0x221 build/default/production/_ext/1472/uart4.o
+ .debug_line    0x000010a6       0x6e c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral.a(read_core_timer_lib.o)
+ .debug_line    0x00001114       0x62 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(pcache.o)
+ .debug_line    0x00001176       0x71 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_configure_system_lib.o)
+ .debug_line    0x000011e7       0x72 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_enable_interrupts_lib.o)
+ .debug_line    0x00001259       0x73 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_disable_interrupts_lib.o)
+ .debug_line    0x000012cc       0x73 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_restore_interrupts_lib.o)
+ .debug_line    0x0000133f       0x64 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_tbl_lib.o)
+ .debug_line    0x000013a3       0x78 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_ev_enable_flags_lib.o)
+ .debug_line    0x0000141b       0x7b c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_open_lib.o)
+ .debug_line    0x00001496       0x6b c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_enable_lib.o)
+ .debug_line    0x00001501       0x71 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_get_ev_flags_lib.o)
+ .debug_line    0x00001572       0x7e c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_write_event_control_flags_lib.o)
+ .debug_line    0x000015f0       0x76 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_match_pattern_lib.o)
+ .debug_line    0x00001666       0x80 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_chn_set_txfer_lib.o)
+ .debug_line    0x000016e6        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(dma_reg_map_tbl_lib.o)
+ .debug_line    0x000016e6       0x77 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(port_set_pins_digital_in_lib.o)
+ .debug_line    0x0000175d       0x78 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(port_set_pins_digital_out_lib.o)
+ .debug_line    0x000017d5        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(_ports_tbl_libp.o)
+ .debug_line    0x000017d5       0x62 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(uart_lib.o)
+ .debug_line    0x00001837       0x8e c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(floatunsisf.o)
+ .debug_line    0x000018c5       0x97 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-bootstrap-exception-handler.o)
+ .debug_line    0x0000195c       0x84 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-on-reset.o)
+ .debug_line    0x000019e0       0x88 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-on-bootstrap.o)
+ .debug_line    0x00001a68       0x95 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(default-general-exception-handler.o)
+ .debug_line    0x00001afd       0x96 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(defaultinterrupt.o)
+ .debug_line    0x00001b93        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(ctype.o)
+ .debug_line    0x00001b93       0x6e c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(puts.o)
+ .debug_line    0x00001c01       0x70 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(strtol.o)
+ .debug_line    0x00001c71       0x70 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(printf_cdnopuxX.eo)
+ .debug_line    0x00001ce1        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_iob.o)
+ .debug_line    0x00001ce1       0x6f c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_fputc_simple.o)
+ .debug_line    0x00001d50       0x70 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(ctypef.o)
+ .debug_line    0x00001dc0        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(errno.o)
+ .debug_line    0x00001dc0       0x70 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(doprnt_cdnopuxX.eo)
+ .debug_line    0x00001e30       0x70 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_flsbuf_simple.o)
+ .debug_line    0x00001ea0       0x79 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libpic32.a(write.o)
+ .debug_line    0x00001f19      0x158 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(_udivdi3.o)
+ .debug_line    0x00002071      0x159 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(_umoddi3.o)
 
 .debug_frame    0x00000000      0xca8
  *(.debug_frame)
@@ -1713,8 +1713,8 @@ END GROUP
  .debug_frame   0x000001f8       0xa0 build/default/production/_ext/1472/TempADC.o
  .debug_frame   0x00000298       0x88 build/default/production/_ext/1472/Motor.o
  .debug_frame   0x00000320       0x80 build/default/production/_ext/1472/Delays.o
- .debug_frame   0x000003a0       0xb8 build/default/production/_ext/1472/UART4.o
- .debug_frame   0x00000458      0x164 build/default/production/_ext/1472/UART2.o
+ .debug_frame   0x000003a0      0x164 build/default/production/_ext/1472/uart2.o
+ .debug_frame   0x00000504       0xb8 build/default/production/_ext/1472/uart4.o
  .debug_frame   0x000005bc       0x20 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral.a(read_core_timer_lib.o)
  .debug_frame   0x000005dc       0x30 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(pcache.o)
  .debug_frame   0x0000060c       0x20 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_configure_system_lib.o)
@@ -1758,8 +1758,8 @@ END GROUP
  .debug_str     0x0000044c      0x147 build/default/production/_ext/1472/TempADC.o
  .debug_str     0x00000593      0x151 build/default/production/_ext/1472/Motor.o
  .debug_str     0x000006e4       0xef build/default/production/_ext/1472/Delays.o
- .debug_str     0x000007d3       0xe2 build/default/production/_ext/1472/UART4.o
- .debug_str     0x000008b5      0x10a build/default/production/_ext/1472/UART2.o
+ .debug_str     0x000007d3      0x10a build/default/production/_ext/1472/uart2.o
+ .debug_str     0x000008dd       0xe2 build/default/production/_ext/1472/uart4.o
  .debug_str     0x000009bf        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral.a(read_core_timer_lib.o)
  .debug_str     0x000009bf        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(pcache.o)
  .debug_str     0x000009bf        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral_32MX370F512L.a(int_configure_system_lib.o)
@@ -1838,9 +1838,9 @@ END GROUP
  .debug_pubtypes
                 0x00000638       0xc7 build/default/production/_ext/1472/Delays.o
  .debug_pubtypes
-                0x000006ff      0x102 build/default/production/_ext/1472/UART4.o
+                0x000006ff       0xf1 build/default/production/_ext/1472/uart2.o
  .debug_pubtypes
-                0x00000801       0xf1 build/default/production/_ext/1472/UART2.o
+                0x000007f0      0x102 build/default/production/_ext/1472/uart4.o
  .debug_pubtypes
                 0x000008f2       0x34 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2\libgcc.a(floatunsisf.o)
  .debug_pubtypes
@@ -1886,9 +1886,9 @@ END GROUP
  .gnu.attributes
                 0x00000060       0x10 build/default/production/_ext/1472/Delays.o
  .gnu.attributes
-                0x00000070       0x10 build/default/production/_ext/1472/UART4.o
+                0x00000070       0x10 build/default/production/_ext/1472/uart2.o
  .gnu.attributes
-                0x00000080       0x10 build/default/production/_ext/1472/UART2.o
+                0x00000080       0x10 build/default/production/_ext/1472/uart4.o
  .gnu.attributes
                 0x00000090       0x10 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libmchp_peripheral.a(read_core_timer_lib.o)
  .gnu.attributes
@@ -1991,7 +1991,7 @@ LOAD data_init
 
 .bss            0xa0000198      0x34c
  .bss           0xa0000198      0x248 build/default/production/_ext/1472/Gamepad.o
- .bss           0xa00003e0      0x104 build/default/production/_ext/1472/UART2.o
+ .bss           0xa00003e0      0x104 build/default/production/_ext/1472/uart2.o
 
 .data           0xa00004e4       0xa0
  .data          0xa00004e4       0xa0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib\libc.a(_iob.o)
@@ -2626,14 +2626,14 @@ LOAD data_init
 .data%z208      0x00000000        0x0
  .data          0x00000000        0x0 c:/program files (x86)/microchip/xc32/v1.31/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX370F512L\default_isr_vectors.o
 
-.data%z209      0x00000000        0x0
- .data          0x00000000        0x0 build/default/production/_ext/1472/UART2.o
+.bss%z209       0x00000000        0x0
+ .bss           0x00000000        0x0 build/default/production/_ext/1472/uart4.o
 
-.bss%z210       0x00000000        0x0
- .bss           0x00000000        0x0 build/default/production/_ext/1472/UART4.o
+.data%z210      0x00000000        0x0
+ .data          0x00000000        0x0 build/default/production/_ext/1472/uart4.o
 
 .data%z211      0x00000000        0x0
- .data          0x00000000        0x0 build/default/production/_ext/1472/UART4.o
+ .data          0x00000000        0x0 build/default/production/_ext/1472/uart2.o
 
 .bss%z212       0x00000000        0x0
  .bss           0x00000000        0x0 build/default/production/_ext/1472/Delays.o
@@ -2725,13 +2725,13 @@ LOAD data_init
                 0x9d001360                __negsf2
                 0x9d001370                fpnan
                 0x9d001370                nanf
- .text          0x9d0013bc      0x8ac build/default/production/_ext/1472/UART2.o
+ .text          0x9d0013bc      0x8ac build/default/production/_ext/1472/uart2.o
                 0x9d0013bc                initializeUART2
-                0x9d0014bc                restartDMATransfer
-                0x9d001528                putCharacterUART2
-                0x9d001584                putStringUART2
-                0x9d001634                getCharacterUART2
-                0x9d0016fc                getStringUART2
+                0x9d0014bc                putCharacterUART2
+                0x9d001518                putStringUART2
+                0x9d0015c8                getCharacterUART2
+                0x9d001690                getStringUART2
+                0x9d0017fc                restartDMATransfer
                 0x9d0019a0                isrUART2Handler
                 0x9d001b00                isrDMAHandler
  .text          0x9d001c68      0x82c build/default/production/_ext/1472/Gamepad.o
@@ -2757,7 +2757,7 @@ LOAD data_init
                 0x9d0034d0                checkThresholds
                 0x9d003678                getTemperature1
                 0x9d00369c                getTemperature2
- .text          0x9d0036c0      0x52c build/default/production/_ext/1472/UART4.o
+ .text          0x9d0036c0      0x52c build/default/production/_ext/1472/uart4.o
                 0x9d0036c0                initializeUART4
                 0x9d0037cc                _mon_putc
                 0x9d00386c                putCharacterUART4
@@ -2977,7 +2977,7 @@ LOAD data_init
                 0x9d006414                DmaChnWriteEventControlFlags
 
 .rodata         0x9d006440       0x28
- .rodata        0x9d006440       0x28 build/default/production/_ext/1472/UART2.o
+ .rodata        0x9d006440       0x28 build/default/production/_ext/1472/uart2.o
 
 .text.INTClearFlag
                 0x9d006468       0x28
@@ -3037,7 +3037,7 @@ LOAD data_init
 
 .rodata         0x9d0065e8       0x40
  .rodata        0x9d0065e8       0x20 build/default/production/_ext/1472/TempADC.o
- .rodata        0x9d006608       0x20 build/default/production/_ext/1472/UART4.o
+ .rodata        0x9d006608       0x20 build/default/production/_ext/1472/uart4.o
 
 .text.DmaChnGetEvFlags
                 0x9d006628       0x20
