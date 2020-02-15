@@ -5,6 +5,6 @@
 	#define DMA_BUFFER_SIZE     (256)
 
 	// Function Prototypes
-	void initializeDMAUART2RX(void);
+	unsigned int initializeDMAUART2RX(void);
 	void restartDMATransfer(void);
 #endif

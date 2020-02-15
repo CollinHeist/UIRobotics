@@ -9,5 +9,4 @@ build/default/production/_ext/1472/main.o:  \
  ../Delays.h  \
 ../UART4.h  \
 ../UART2.h  \
-../Motor.h  \
-../DMA_UART2.h 
+../Motor.h 

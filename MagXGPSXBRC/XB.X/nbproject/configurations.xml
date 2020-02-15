@@ -9,7 +9,6 @@
       <itemPath>../main.h</itemPath>
       <itemPath>../Gamepad.h</itemPath>
       <itemPath>../Notice.h</itemPath>
-      <itemPath>../DMA_UART2.h</itemPath>
       <itemPath>../TempADC.h</itemPath>
       <itemPath>../Motor.h</itemPath>
       <itemPath>../Delays.h</itemPath>
@@ -27,7 +26,6 @@
       <itemPath>../main.c</itemPath>
       <itemPath>../Gamepad.c</itemPath>
       <itemPath>../Notice.c</itemPath>
-      <itemPath>../DMA_UART2.c</itemPath>
       <itemPath>../TempADC.c</itemPath>
       <itemPath>../Motor.c</itemPath>
       <itemPath>../Delays.c</itemPath>

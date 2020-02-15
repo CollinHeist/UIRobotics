@@ -16,5 +16,5 @@
 	#define TEMPERATURE_TIMEOUT_MS		(500)
 
 	// Function Prototypes
-	unsigned int initializeModules(void);
+	unsigned int initializeSystem(void);
 #endif

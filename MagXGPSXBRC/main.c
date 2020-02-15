@@ -18,37 +18,32 @@
 #include "UART4.h"  // Monitor UART
 #include "UART2.h"  // GPS UART
 #include "Motor.h"
-#include "DMA_UART2.h"
 
 /* -------------------------- Global Variables and Structures --------------------------- */
 
 /* ---------------------------------- Public Functions ---------------------------------- */
 
 int main(void) {
-    unsigned int errorFlag = NO_ERROR;
-    
-    errorFlag = hardwareSetup();
-    errorFlag |= initializeModules();
+    unsigned int errorFlag = initializeSystem();
 
     if (errorFlag != NO_ERROR)
     	return ERROR;
 
     while (1) {
-
+		Nop();
     }
 
     return ERROR;
 }
 
-unsigned int initializeModules(void) {
-    unsigned int errorFlag = NO_ERROR;
+unsigned int initializeSystem(void) {
+    unsigned int errorFlag = initializeHardware();
     
     errorFlag |= initializeUART4(PC_UART4_BAUD, PC_UART4_PARITY);
     errorFlag |= initializeUART2(XBEE_UART2_BAUD, XBEE_UART2_PARITY);
     errorFlag |= initializePWM(MOTOR1_START_PWM_PERCENT, MOTOR2_START_PWM_PERCENT, MOTORS_PWM_FREQUENCY);
     errorFlag |= initializeTemperatureSensors(TEMPERATURE_TIMEOUT_MS);
+    errorFlag |= initializeChangeNotice();
     
-    initializeChangeNotice();
-    
-    return errorFlag; 
+    return errorFlag;
 }
