@@ -44,21 +44,8 @@ unsigned int initializeUART2(unsigned int baud, int parity) {
 	config2 = UART_TX_PIN_LOW |  UART_RX_ENABLE |  UART_TX_ENABLE;
 	ubrg = GetPeripheralClock() / (baud * 16);
 
-//	 UARTConfigure(UART2, UART_ENABLE_PINS_TX_RX_ONLY);
-//	 UARTSetFifoMode(UART2, UART_INTERRUPT_ON_TX_NOT_FULL | UART_INTERRUPT_ON_RX_NOT_EMPTY);
-//	 UARTSetLineControl(UART2, UART_DATA_SIZE_8_BITS | UART_PARITY_NONE | UART_STOP_BITS_1);
-//	 UARTSetDataRate(UART2, GetPeripheralClock(), urbg);
-//	 UARTEnable(UART2, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
-
 	OpenUART2(config1, config2, ubrg);
 
-	// Configure UART2 RX Interrupt
-//	INTClearFlag(INT_SOURCE_UART_TX(UART2));
-//	INTClearFlag(INT_SOURCE_UART_RX(UART2));
-//	INTEnable(INT_SOURCE_UART_RX(UART2), INT_ENABLED);
-//	INTSetVectorPriority(INT_VECTOR_UART(UART2), INT_PRIORITY_LEVEL_3);
-//	INTSetVectorSubPriority(INT_VECTOR_UART(UART2), INT_SUB_PRIORITY_LEVEL_0);
-	
 	putStringUART2("\n\rXBee online\n\r");
 	
 	return initializeDMAUART2RX();

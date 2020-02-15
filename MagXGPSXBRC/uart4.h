@@ -1,12 +1,6 @@
 #ifndef __UART_4_H__
 	#define __UART_4_H__
 
-	// ASCII control characters 
-	#define BACKSPACE		0x08
-	#define NO_PARITY		0
-	#define ODD_PARITY		1
-	#define EVEN_PARITY		2
-
 	// UART4 Configurations
 	#define UART4_MAX_SEND_TIME_MS		(250)
 

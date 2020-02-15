@@ -1,11 +1,8 @@
 #ifndef __UART2_H__
 	#define __UART2_H__
 
-	// ASCII control characters
-	#define BACKSPACE		0x08
-	#define NO_PARITY		0
-	#define ODD_PARITY		1
-	#define EVEN_PARITY		2
+    // DMA Configurations
+    #define DMA_BUFFER_SIZE     (256)
 
 	// Function Prototypes
 	unsigned int initializeUART2(unsigned int baud, int parity);
@@ -13,5 +10,6 @@
 	int getCharacterUART2(char *ch);
 	int putStringUART2(const char *s);
 	int getStringUART2(char *s, unsigned int len);
+    static unsigned int initializeDMAUART2RX(void);
 #endif
 
