@@ -22,8 +22,8 @@
  *		Unsigned int that corresponds to whether an error occurred or not.
  */
 unsigned int initializeUART4(unsigned int baud, int parity) {
-	RPF12R = 0x02;  // Mapping U4TX to RPF12;
-	U4RXR = 0x09;   // Mapping U4RX to RPF13
+	RPF12R = 0x02;	// Mapping U4TX to RPF12;
+	U4RXR = 0x09;	// Mapping U4RX to RPF13
 
 	UARTConfigure(UART4, UART_ENABLE_PINS_TX_RX_ONLY );
 	UARTSetDataRate(UART4, GetPeripheralClock(), baud);
@@ -116,9 +116,8 @@ unsigned int putStringUART4(const char *s) {
 	// Begin the non-blocking delay and try and send the string for as long as possible
 	nonBlockingDelayMS(UART4_MAX_SEND_TIME_MS);
 	while (*s) {
-		putCharacterUART4(*s++);
-		if (!nonBlockingDelayMS(0))		// String placement took too long - return an error
-			return ERROR;
+		putCharacterUART4(*s);
+		s++;
 	}
 
 	return NO_ERROR;

@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=../hardware.c ../main.c ../Gamepad.c ../Notice.c ../TempADC.c ../Motor.c ../Delays.c ../uart2.c ../uart4.c
+SOURCEFILES_QUOTED_IF_SPACED=../hardware.c ../main.c ../Gamepad.c ../Notice.c ../TempADC.c ../Motor.c ../Delays.c ../uart2.c ../uart4.c ../uart3.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1472/hardware.o ${OBJECTDIR}/_ext/1472/main.o ${OBJECTDIR}/_ext/1472/Gamepad.o ${OBJECTDIR}/_ext/1472/Notice.o ${OBJECTDIR}/_ext/1472/TempADC.o ${OBJECTDIR}/_ext/1472/Motor.o ${OBJECTDIR}/_ext/1472/Delays.o ${OBJECTDIR}/_ext/1472/uart2.o ${OBJECTDIR}/_ext/1472/uart4.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1472/hardware.o.d ${OBJECTDIR}/_ext/1472/main.o.d ${OBJECTDIR}/_ext/1472/Gamepad.o.d ${OBJECTDIR}/_ext/1472/Notice.o.d ${OBJECTDIR}/_ext/1472/TempADC.o.d ${OBJECTDIR}/_ext/1472/Motor.o.d ${OBJECTDIR}/_ext/1472/Delays.o.d ${OBJECTDIR}/_ext/1472/uart2.o.d ${OBJECTDIR}/_ext/1472/uart4.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1472/hardware.o ${OBJECTDIR}/_ext/1472/main.o ${OBJECTDIR}/_ext/1472/Gamepad.o ${OBJECTDIR}/_ext/1472/Notice.o ${OBJECTDIR}/_ext/1472/TempADC.o ${OBJECTDIR}/_ext/1472/Motor.o ${OBJECTDIR}/_ext/1472/Delays.o ${OBJECTDIR}/_ext/1472/uart2.o ${OBJECTDIR}/_ext/1472/uart4.o ${OBJECTDIR}/_ext/1472/uart3.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1472/hardware.o.d ${OBJECTDIR}/_ext/1472/main.o.d ${OBJECTDIR}/_ext/1472/Gamepad.o.d ${OBJECTDIR}/_ext/1472/Notice.o.d ${OBJECTDIR}/_ext/1472/TempADC.o.d ${OBJECTDIR}/_ext/1472/Motor.o.d ${OBJECTDIR}/_ext/1472/Delays.o.d ${OBJECTDIR}/_ext/1472/uart2.o.d ${OBJECTDIR}/_ext/1472/uart4.o.d ${OBJECTDIR}/_ext/1472/uart3.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/_ext/1472/hardware.o ${OBJECTDIR}/_ext/1472/main.o ${OBJECTDIR}/_ext/1472/Gamepad.o ${OBJECTDIR}/_ext/1472/Notice.o ${OBJECTDIR}/_ext/1472/TempADC.o ${OBJECTDIR}/_ext/1472/Motor.o ${OBJECTDIR}/_ext/1472/Delays.o ${OBJECTDIR}/_ext/1472/uart2.o ${OBJECTDIR}/_ext/1472/uart4.o
+OBJECTFILES=${OBJECTDIR}/_ext/1472/hardware.o ${OBJECTDIR}/_ext/1472/main.o ${OBJECTDIR}/_ext/1472/Gamepad.o ${OBJECTDIR}/_ext/1472/Notice.o ${OBJECTDIR}/_ext/1472/TempADC.o ${OBJECTDIR}/_ext/1472/Motor.o ${OBJECTDIR}/_ext/1472/Delays.o ${OBJECTDIR}/_ext/1472/uart2.o ${OBJECTDIR}/_ext/1472/uart4.o ${OBJECTDIR}/_ext/1472/uart3.o
 
 # Source Files
-SOURCEFILES=../hardware.c ../main.c ../Gamepad.c ../Notice.c ../TempADC.c ../Motor.c ../Delays.c ../uart2.c ../uart4.c
+SOURCEFILES=../hardware.c ../main.c ../Gamepad.c ../Notice.c ../TempADC.c ../Motor.c ../Delays.c ../uart2.c ../uart4.c ../uart3.c
 
 
 CFLAGS=
@@ -160,6 +160,12 @@ ${OBJECTDIR}/_ext/1472/uart4.o: ../uart4.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/_ext/1472/uart4.o 
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/uart4.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1472/uart4.o.d" -o ${OBJECTDIR}/_ext/1472/uart4.o ../uart4.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/_ext/1472/uart3.o: ../uart3.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
+	@${RM} ${OBJECTDIR}/_ext/1472/uart3.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1472/uart3.o 
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/uart3.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1472/uart3.o.d" -o ${OBJECTDIR}/_ext/1472/uart3.o ../uart3.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
 else
 ${OBJECTDIR}/_ext/1472/hardware.o: ../hardware.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
@@ -214,6 +220,12 @@ ${OBJECTDIR}/_ext/1472/uart4.o: ../uart4.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/_ext/1472/uart4.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1472/uart4.o 
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/uart4.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1472/uart4.o.d" -o ${OBJECTDIR}/_ext/1472/uart4.o ../uart4.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/_ext/1472/uart3.o: ../uart3.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
+	@${RM} ${OBJECTDIR}/_ext/1472/uart3.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1472/uart3.o 
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/uart3.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1472/uart3.o.d" -o ${OBJECTDIR}/_ext/1472/uart3.o ../uart3.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
 endif
 

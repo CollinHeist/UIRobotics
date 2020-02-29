@@ -6,6 +6,8 @@
 	#define PC_UART4_PARITY				(NO_PARITY)
 	#define XBEE_UART2_BAUD				(9600)
 	#define XBEE_UART2_PARITY			(NO_PARITY)
+    #define ARDUINO_UART3_BAUD          (38400)
+    #define ARDUINO_UART3_PARITY        (NO_PARITY)
 
 	// Motor Configurations
 	#define MOTOR1_START_PWM_PERCENT	(0)

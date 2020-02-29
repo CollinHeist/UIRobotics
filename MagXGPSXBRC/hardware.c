@@ -40,6 +40,12 @@ unsigned int initializeHardware(void) {
 	return NO_ERROR;
 }
 
+inline void clearBuffer(char* buffer, unsigned int length) {
+	unsigned int i = 0;
+	for (i = 0; i < length; i++)
+		buffer[i] = '\0';
+}
+
 /* --------------------------------- Private Functions ---------------------------------- */
 
 /*

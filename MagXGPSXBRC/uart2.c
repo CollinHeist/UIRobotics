@@ -5,11 +5,12 @@
 
 #include "hardware.h"	// Has info regarding the PB clock
 #include "uart2.h"
+#include "uart4.h"
 
 /* -------------------------- Global Variables and Structures --------------------------- */
 
-int DmaIntFlag;						// Flag used in interrupts
-char DMABuffer[DMA_BUFFER_SIZE+1];			// Master DMA Uart RX buffer
+int DmaIntFlag;										// Flag used in interrupts
+char DMABuffer[DMA_BUFFER_SIZE+1];					// Master DMA UART RX buffer
 static char privateDMABuffer[DMA_BUFFER_SIZE+1];	// Private, temporary DMA buffer
 static DmaChannel DMAChannel = DMA_CHANNEL1;		// Active DMA channel
 
@@ -28,7 +29,8 @@ unsigned int initializeUART2(unsigned int baud, int parity) {
 	unsigned int config1, config2, ubrg;
 
 	RPG7R = 0x01;  // Mapping U2TX to RPG7
-	U2RXR = 0x01;  // Mapping U2RX to RPG8
+	U2RXR = 0x01;  // Mapping U2RX to RPB5
+//	U2RXR = 
 
 	switch (parity) {
 		case NO_PARITY:
@@ -41,12 +43,15 @@ unsigned int initializeUART2(unsigned int baud, int parity) {
 			config1 = UART_EN | UART_RX_TX | UART_BRGH_SIXTEEN | UART_ODD_PAR_8BIT;					
 			break;
 	}
-	config2 = UART_TX_PIN_LOW |  UART_RX_ENABLE |  UART_TX_ENABLE;
-	ubrg = GetPeripheralClock() / (baud * 16);
+	
+	unsigned int brg = (unsigned int) (((float) GetPeripheralClock() / ((float) 4 * (float) baud))- (float) 0.5);
 
-	OpenUART2(config1, config2, ubrg);
+	OpenUART2(UART_EN | UART_BRGH_FOUR | UART_NO_PAR_8BIT, UART_RX_ENABLE | UART_TX_ENABLE, brg);
+	mU2RXIntEnable(1);
+	mU2SetIntPriority(3);
+	mU2SetIntSubPriority(1);
 
-	putStringUART2("\n\rXBee online\n\r");
+	putStringUART4("\n\rXBee online\n\r");
 	
 	return initializeDMAUART2RX();
 }
@@ -221,12 +226,11 @@ static unsigned int initializeDMAUART2RX(void) {
 	DmaChnSetTxfer(DMAChannel, (void*)&U2RXREG, privateDMABuffer, 1, DMA_BUFFER_SIZE, 1);
 
 	// Enable the transfer done interrupt on pattern match for all the characters transferred
-	DmaChnSetEvEnableFlags(DMAChannel, DMA_EV_BLOCK_DONE);		
+	DmaChnSetEvEnableFlags(DMAChannel, DMA_EV_BLOCK_DONE);	
+	
 	INTEnable(INT_SOURCE_DMA(DMAChannel), INT_ENABLED);
-
 	INTSetVectorPriority(INT_VECTOR_DMA(DMAChannel), INT_PRIORITY_LEVEL_5);			// Set INT controller priority
-	INTSetVectorSubPriority(INT_VECTOR_DMA(DMAChannel), INT_SUB_PRIORITY_LEVEL_3);	// Set INT controller sub-priority
-	// Enable the channel interrupt
+	INTSetVectorSubPriority(INT_VECTOR_DMA(DMAChannel), INT_SUB_PRIORITY_LEVEL_0);	// Set INT controller sub-priority
 	INTEnable(INT_SOURCE_DMA(DMAChannel), INT_ENABLED);		
 
 	// Enable the DMA channel now that it's been configured
@@ -249,17 +253,10 @@ static unsigned int initializeDMAUART2RX(void) {
 void __ISR(_UART2_VECTOR, IPL3SOFT) isrUART2Handler(void) {
 	// Is this an RX interrupt?
 	if (INTGetFlag(INT_SOURCE_UART_RX(UART2))) {
-		// Echo what we just received.
 		HandleInput();
-
-		// Clear the RX interrupt Flag
-		INTClearFlag(INT_SOURCE_UART_RX(UART2));
 	}
 
-	// We don't care about TX interrupt
-	if (INTGetFlag(INT_SOURCE_UART_TX(UART2))) {
-		INTClearFlag(INT_SOURCE_UART_TX(UART2));
-	}
+	mU2ClearAllIntFlags();	// Clear all UART2 flags
 }
 
 /*

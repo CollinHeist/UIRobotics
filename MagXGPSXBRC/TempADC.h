@@ -29,6 +29,6 @@
 	unsigned int initializeTemperatureSensors(unsigned int timeoutMS);
     void readTemperatures(int *t1, int *t2);
     void checkThresholds(float *motor1_scale, float *motor2_scale);
-    int getTemperature1(void);
-    int getTemperature2(void);
+    inline int getTemperature1(void);
+    inline int getTemperature2(void);
 #endif

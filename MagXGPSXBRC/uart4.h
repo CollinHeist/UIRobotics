@@ -2,7 +2,7 @@
 	#define __UART_4_H__
 
 	// UART4 Configurations
-	#define UART4_MAX_SEND_TIME_MS		(250)
+	#define UART4_MAX_SEND_TIME_MS		(500)
 
 	// Function Prototypes
 	unsigned int initializeUART4(unsigned int baud, int parity);

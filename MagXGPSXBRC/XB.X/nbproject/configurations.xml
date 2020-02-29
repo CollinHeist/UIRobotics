@@ -14,6 +14,8 @@
       <itemPath>../Delays.h</itemPath>
       <itemPath>../uart2.h</itemPath>
       <itemPath>../uart4.h</itemPath>
+      <itemPath>../uart3.h</itemPath>
+      <itemPath>../SensorData.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -31,6 +33,7 @@
       <itemPath>../Delays.c</itemPath>
       <itemPath>../uart2.c</itemPath>
       <itemPath>../uart4.c</itemPath>
+      <itemPath>../uart3.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

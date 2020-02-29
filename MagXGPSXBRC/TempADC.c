@@ -112,7 +112,7 @@ void checkThresholds(float *motor1_scale, float *motor2_scale) {
  *	Notes
  *		Temp1 and Temp2 are updated by calls to readTemperatures();
  */
-int getTemperature1(void) {
+inline int getTemperature1(void) {
 	return Temp1; 
 }
 
@@ -126,7 +126,7 @@ int getTemperature1(void) {
  *	Notes
  *		Temp1 and Temp2 are updated by calls to readTemperatures();
  */
-int getTemperature2(void) {
+inline int getTemperature2(void) {
 	return Temp2;
 }
 

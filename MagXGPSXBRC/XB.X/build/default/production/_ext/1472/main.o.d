@@ -6,7 +6,9 @@ build/default/production/_ext/1472/main.o:  \
 ../Gamepad.h  \
 ../TempADC.h  \
 ../Notice.h  \
- ../Delays.h  \
+ ../SensorData.h  \
+../Delays.h  \
 ../uart4.h  \
+../uart3.h  \
 ../uart2.h  \
 ../Motor.h 
