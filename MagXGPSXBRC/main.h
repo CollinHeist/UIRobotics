@@ -18,5 +18,5 @@
 	#define TEMPERATURE_TIMEOUT_MS		(500)
 
 	// Function Prototypes
-	unsigned int initializeSystem(void);
+	static unsigned int initializeSystem(void);
 #endif

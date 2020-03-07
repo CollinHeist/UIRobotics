@@ -8,8 +8,8 @@
 
 /* -------------------------- Global Variables and Structures --------------------------- */
 
-static int Temp1;	// Private variable with the last reading of T1 sensor
-static int Temp2;	// Private variable with the last reading of T2 sensor
+static int latestTemp1;	// Private variable with the last reading of T1 sensor
+static int latestTemp2;	// Private variable with the last reading of T2 sensor
 
 /* ---------------------------------- Public Functions ---------------------------------- */
 
@@ -21,7 +21,7 @@ static int Temp2;	// Private variable with the last reading of T2 sensor
  *	Returns
  *		Unsigned int that corresponds to whether an error occurred or not.
  */
-unsigned int initializeTemperatureSensors(unsigned int timeoutMS) {
+unsigned int initializeTemperatureSensors(const unsigned int timeoutMS) {
 	TRISGbits.TRISG6 = 1;	// Set pin as input
 	ANSELGbits.ANSG6 = 0;	// Set pin as analog input
 	TRISGbits.TRISG9 = 1;	// Set pin as input
@@ -48,43 +48,41 @@ unsigned int initializeTemperatureSensors(unsigned int timeoutMS) {
  *	Summary
  *		Read both ADC converters for the two temperature sensors.
  *	Parameters
- *		t1[out]: int* that will be updated with the result of the ADC1.
- *		t2[out]: int* that will be updated with the result of ADC2.
+ *		t1[out]: Pointer to an integer that will be updated with the result of the ADC1.
+ *		t2[out]: Pointer to an integer that will be updated with the result of ADC2.
  *	Returns
  *		None.
  */
 void readTemperatures(int *t1, int *t2)  {
-	int offset;
-	int adc1, adc2;
-	float v1, v2, tempC;
+	float v1, v2, tempC1, tempC2;
 
 	ConvertADC10();
 	// Wait for the first conversion to complete so there will be vaild data in ADC result registers
 	while (!mAD1GetIntFlag()) {} 
-	offset = 8 * ((~ReadActiveBufferADC10() & 0x01));  // Determine which buffer is idle and create an offset
-	adc1 = ReadADC10(offset);
-	adc2 = ReadADC10(offset + 1);
+	int offset = 8 * ((~ReadActiveBufferADC10() & 0x01));  // Determine which buffer is idle and create an offset
+	int adc1 = ReadADC10(offset);
+	int adc2 = ReadADC10(offset + 1);
 
 	// Convert the first ADC Channel
-	v1	= ((adc1 * 3.3) / ADCMAX);	//Convert output bits from TMP36 to actual voltage on sensor
-	tempC = (v1 - .5) * 100.0;		  //Remove the .5 volt offset of sensor, and then multiply by the 100 degrees C per volt
-	*t1   = ((tempC * 9) / 5) + 32;	 //Convert from C to F
+	v1	= ((adc1 * 3.3) / ADCMAX);		// Convert output bits from TMP36 to actual voltage on sensor
+	tempC1 = (v1 - .5) * 100.0;			// Remove the .5 volt offset of sensor, and then multiply by the 100 degrees C per volt
+	*t1   = ((tempC1 * 9) / 5) + 32;	// Convert from C to F
 
 	// Convert the second ADC Channel
-	v1	= ((adc2 * 3.3) / ADCMAX);	//Convert output bits from TMP36 to actual voltage on sensor
-	tempC = (v1 - .5) * 100.0;		  //Remove the .5 volt offset of sensor, and then multiply by the 100 degrees C per volt
-	*t2   = ((tempC * 9) / 5) + 32;	 //Convert from C to F
+	v2	= ((adc2 * 3.3) / ADCMAX);		// Convert output bits from TMP36 to actual voltage on sensor
+	tempC2 = (v2 - .5) * 100.0;			// Remove the .5 volt offset of sensor, and then multiply by the 100 degrees C per volt
+	*t2   = ((tempC2 * 9) / 5) + 32;	// Convert from C to F
 
-	Temp1 = *t1;
-	Temp2 = *t2;
+	latestTemp1 = *t1;
+	latestTemp2 = *t2;
 }
 
 /*
  *	Summary
- *		Return a value of how much to scale the motor speed by.
+ *		Return a value of how much to scale the motors' speeds by.
  *	Parameters
- *		motor1_scale[out]: float* that will be updated with the scaling of motor 1.
- *		motor2_scale[out]: float* that will be updated with the scaling of motor 2.
+ *		motor1_scale[out]: Pointer to the float that will be updated with the scaling of motor 1.
+ *		motor2_scale[out]: Pointer to the float that will be updated with the scaling of motor 2.
  *	Returns
  *		None.
  */
@@ -108,12 +106,12 @@ void checkThresholds(float *motor1_scale, float *motor2_scale) {
  *	Parameters
  *		None.
  *	Returns
- *		int that is the latest value stored in Temp1.
+ *		Integer that is the latest value stored in Temp1.
  *	Notes
  *		Temp1 and Temp2 are updated by calls to readTemperatures();
  */
 inline int getTemperature1(void) {
-	return Temp1; 
+	return latestTemp1; 
 }
 
 /*
@@ -122,12 +120,12 @@ inline int getTemperature1(void) {
  *	Parameters
  *		None.
  *	Returns
- *		int that is the latest value stored in Temp2.
+ *		Integer that is the latest value stored in Temp2.
  *	Notes
  *		Temp1 and Temp2 are updated by calls to readTemperatures();
  */
 inline int getTemperature2(void) {
-	return Temp2;
+	return latestTemp2;
 }
 
 /* --------------------------------- Private Functions ---------------------------------- */

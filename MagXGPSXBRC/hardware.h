@@ -133,6 +133,6 @@
 
 	// Function Prototypes
 	unsigned int initializeHardware(void);
-    inline void clearBuffer(char* buffer, unsigned int length);
+    inline void clearBuffer(char* buffer, const unsigned int length);
 	static void initializeTimer1(void);
 #endif

@@ -13,8 +13,16 @@ unsigned int parseSensorString(SensorData *data);	// Prototype here to avoid err
 
 /* ---------------------------------- Public Functions ---------------------------------- */
 
-
-unsigned int initializeUART3(unsigned int baud, int parity) {
+/*
+ *	Summary
+ *		Function to initialize UART3 - the Arduino UART - for a given baud and parity.
+ *	Parameters
+ *		baud[in]:   Frequency the UART3 bus should operate at.
+ *		parity[in]: What parity to operate the UART3 bus at.
+ *	Returns
+ *		Unsigned int that corresponds to whether an error occurred or not.
+ */
+unsigned int initializeUART3(const unsigned int baud, const int parity) {
     ANSELGbits.ANSG7 = 0;
     ANSELGbits.ANSG8 = 0;
     TRISGbits.TRISG7 = 1;   // UART3 Input RPG7 - JA8
@@ -49,39 +57,34 @@ unsigned int initializeUART3(unsigned int baud, int parity) {
 	return NO_ERROR;
 }
 
-/* -------------------------------- putcU2 -----------------------------------
-  @ Description
-     Waits while UART2 is busy (meaning the buffer is full) and then sends a
-     single byte to UART3. This function is non-blocking if there is no
-     available space in the transmit buffer.
-  @ Parameters
-     @ param1 : The integer representation of the character to be put on UART
-  @ Returns
-     1 : The passed character is sent
-     0 : The passed character is not sent 
-  ---------------------------------------------------------------------------- */
-int putCharacterUART3(int ch) {
-    char c = (char) ch;
-    int done = 0;
-    
+/*
+ *	Summary
+ *		Send a single character out over the UART3 TX bus.
+ *	Parameters
+ *		ch[in]: What character to place on the bus. 
+ *	Returns
+ *		Unsigned integer that is 1 of the transmission was successful, and 0 if
+ *		the transmission was unsuccessful.
+ */
+unsigned int putCharacterUART3(const char ch) {
     if (U3STAbits.TRMT) {
-        U3TXREG = c;
-        done = 1;
+        U3TXREG = ch;
+        return 1;
     }
 	
-    return done;
+    return 0;
 }
 
-/* -------------------------------- putsU2 -----------------------------------
-  @ Description
-     Sends a NULL terminated text string to UART2 with CR and LF appended.
-  @ Parameters
-     @ param1 : Pointer to the text string
-  @ Returns
-     1 : Logical true that the string has been sent.
-  ---------------------------------------------------------------------------- */
-int putStringUART3(const char *s) {
-    int ch_sent;
+/*
+ *	Summary
+ *		Function to place an entire string on the UART3 TX bus.
+ *	Parameters
+ *		s[in]: Pointer to the first character in the string to be sent out.
+ *	Returns
+ *		None.
+ */
+void putStringUART3(const char* s) {
+    unsigned int ch_sent;
     while (*s) {
         do {
             ch_sent = putCharacterUART3(*s++); // Wall has the s++ part outside the loop, I believe that's wrong
@@ -89,44 +92,39 @@ int putStringUART3(const char *s) {
     }
     do { ch_sent = putCharacterUART3('\r'); } while(!ch_sent);
     do { ch_sent = putCharacterUART3('\n'); } while(!ch_sent);
-    
-    return 1;
 }
 
-/* -------------------------------- getcU2 -----------------------------------
-  @ Description
-     Checks for a new character to arrive to the UART2 serial port.
-  @ Parameters
-     @ param1 : A pointer to the character variable that is passed into the UART.
-  @ Returns
-     1 : A new character has been received 
-     0 : No new character has been received
-  ---------------------------------------------------------------------------- */
-int getCharacterUART3(char *ch) {
-    UART_DATA c;
+/*
+ *	Summary
+ *		Function to get a single character from UART3.
+ *	Parameters
+ *		ch[out]: Pointer to the character to be 'filled' with the latest character
+ *			received over UART3.
+ *	Returns
+ *		Integer that is either 0 or 1 if the received operation was successful.
+ */
+unsigned int getCharacterUART3(char *ch) {
     BOOL done = FALSE;
     if (UARTReceivedDataIsAvailable(UART3)) {	// wait for new char to arrive
-        c = UARTGetData(UART3);					// read the char from receive buffer
+        UART_DATA c = UARTGetData(UART3);		// read the char from receive buffer
         *ch = (c.data8bit);
         done = TRUE;							// Return new data available flag
     }   
 	
-    return done;
+    return (int) done;
 }
           
-/* ------------------------------- getstrU2 ----------------------------------
-  @ Description
-     Assemble a line of text until the number of characters either exceeds
-     the buffer length, or an ASCII CR (\r) is received. The returned string
-     has the CR removed, but includes the null char (\0) at the end
-  @ Parameters
-     @ param1 : A pointer to the string that's filled from UART
-     @ param2 : Maximum length of the string
-  @ Returns
-     1 : Return character has been received (EOL read)
-     0 : No return character received
-  ---------------------------------------------------------------------------- */
-int getStringUART3(char *s, unsigned int len) {
+/*
+ *	Summary
+ *		Function to get a complete string from the UART3 TX line.
+ *	Parameters
+ *		s[out]:	 A pointer to the first character of the buffer to be filled.
+ *		len[in]: Unsigned integer that is the maximum number of bytes to fill s with.
+ *	Returns
+ *		Unsigned integer that is either 0 or 1 if a complete message hasn't or has
+ *		been received (respectively).
+ */
+unsigned int getStringUART3(char* s, const unsigned int len) {
     static int eol = 1;             // End of input string flag
     static unsigned int buf_len;    // Number of received characters
     static char *p1;                // Copy #1 of buffer pointer
@@ -173,23 +171,39 @@ int getStringUART3(char *s, unsigned int len) {
     return 0;
 }
 
+/*
+ *	Summary
+ *		Function to parse the latest sensor message data from the Arduino.
+ *	Parameters
+ *		data[out]: Pointer to a SensorData structure that will be filled with the
+ *			contents of the Arduino sensor string.
+ *	Returns
+ *		Unsigned integer that is one of the return encodings (see header) to indicate
+ *		whether the string is invalid, done or still being parsed.
+ */
 unsigned int parseSensorString(SensorData* data) {
 	static char sensorString[SENSOR_STRING_WIDTH] = {'\0'};
 	static unsigned int stringIndex = 0;
 	char c;
 	unsigned int flag = getCharacterUART3(&c);
 	if (flag) {
+		// If a character is received, place it inside sensorString
 		sensorString[stringIndex++] = c;
 		if (c == '\n') {
+			// When the newline character was sent - indicating the EOS - parse contents
 			if (sensorString[0] != START_CHARACTER) {
+				// First character should be valid, otherwise return an error
 				clearBuffer(sensorString, (unsigned int) SENSOR_STRING_WIDTH);
 				stringIndex = 0;
+				
 				return INVALID_STRING;
 			}
+			// Parse contents of the sensor string  into the passed SensorData structure.
 			sscanf(sensorString, "$%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%fN:%fW\n",
 				&(data->temperatureF), &(data->relativeHumidity), &(data->magX), 
 				&(data->magY), &(data->magZ), &(data->hour), &(data->min), &(data->sec), 
 				&(data->month), &(data->day), &(data->year), &(data->latitude), &(data->longitude));
+			
 			clearBuffer(sensorString, (unsigned int) SENSOR_STRING_WIDTH);	// Clear buffer to all zeros
 			stringIndex = 0;
 		}

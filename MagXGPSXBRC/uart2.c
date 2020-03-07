@@ -1,7 +1,6 @@
 /* ----------------------------------- File Inclusion ----------------------------------- */
 
 #include <plib.h>
-#include <stdio.h>	// Required for printf 
 
 #include "hardware.h"	// Has info regarding the PB clock
 #include "uart2.h"
@@ -25,12 +24,12 @@ static DmaChannel DMAChannel = DMA_CHANNEL1;		// Active DMA channel
  *	Returns
  *		Unsigned int that corresponds to whether an error occurred or not.
  */
-unsigned int initializeUART2(unsigned int baud, int parity) {
-	unsigned int config1, config2, ubrg;
+unsigned int initializeUART2(const unsigned int baud, const unsigned int parity) {
+	// By default, operate in NO_PARITY mode
+	unsigned int config1 = UART_EN | UART_RX_TX | UART_BRGH_SIXTEEN | UART_NO_PAR_8BIT;
 
 	RPG7R = 0x01;  // Mapping U2TX to RPG7
 	U2RXR = 0x01;  // Mapping U2RX to RPB5
-//	U2RXR = 
 
 	switch (parity) {
 		case NO_PARITY:
@@ -60,21 +59,18 @@ unsigned int initializeUART2(unsigned int baud, int parity) {
  *	Summary
  *		Place a character on the UART2 bus.
  *	Parameters
- *		ch[in]: Character to write to the bus.
+ *		c[in]: Character to write to the bus.
  *	Returns
- *		integer that is either 0 if the transmission failed, and 1 if successful.
+ *		Unsigned integer that is either 0 if the transmission failed, and 1 if successful.
  */
-int putCharacterUART2(int ch) {
-	char c = (char) ch;
-	int done = 0;
-
-	// If a transmission can be written
-	if (U2STAbits.TRMT) {
+unsigned int putCharacterUART2(const char c) {
+	if (U2STAbits.TRMT) {	// If a transmission can be written
 		WriteUART2(c);
-		done = 1;
+		
+		return 1;
 	}
 
-	return done;
+	return 0;
 }
 
 /*
@@ -83,21 +79,19 @@ int putCharacterUART2(int ch) {
  *	Parameters
  *		s[in]: Character pointer that points to the string that will be written over UART2.
  *	Returns
- *		integer that is either 0 if the transmission failed, and 1 if successful.
+ *		None.
  */
-int putStringUART2(const char *s) {
-	BOOL ch_sent;
+void putStringUART2(const char *s) {
+	unsigned int ch_sent;
 
 	while (*s) {
 		do {
 			ch_sent = putCharacterUART2(*s);
-		} while(ch_sent ==  0);
+		} while(ch_sent == 0);
 		s++;
 	}
 	do { ch_sent = putCharacterUART2('\r'); } while(!ch_sent);
 	do { ch_sent = putCharacterUART2('\n'); } while(!ch_sent);
-
-	return 1;
 }
 
 /*
@@ -108,43 +102,36 @@ int putStringUART2(const char *s) {
  *	Returns
  *		Unsigned int that is either TRUE if a new character was received, or FALSE if none was.
  */
-int getCharacterUART2(char *ch) {
-	char c;
-	int dr2, dr4;
-	int done = 0;
-	unsigned int lineStatus;
-
-	lineStatus = UART2GetErrors();	// Check for UART errors
-	if (lineStatus) {
+unsigned int getCharacterUART2(char *ch) {
+	if (UART2GetErrors()) {
 		// Handle receiver error
-		printf("Error: 0x%08x  %6d\n\r", lineStatus, lineStatus);
+		putStringUART2("Error on UART2.");
 
 		UART2ClearAllErrors();
-		getCharacterUART2(ch);		
+		getCharacterUART2(ch);	// Try again
 	}
 	else {	   
-		dr2 = DataRdyUART2();
-		if (dr2) {		// Wait for new char to arrive
-			c = ReadUART2();	// Read the char from receive buffer
-			*ch = c;
-			done = 1;		// Return new data available flag 
+		if (DataRdyUART2()) {	// Wait for new char to arrive
+			*ch = ReadUART2();
+			
+			return UART2_NEW_DATA_AVAILABLE;
 		}
 	}
 	
-	return done;					// Return new data not available flag
+	return UART2_NO_NEW_DATA_AVAILABLE;
 }
 
 /*
  *	Summary
  *		Get a string of a given length on the UART2 buffer.
  *	Parameters
- *		s[out]: Character pointer to the string that should be filled by this function.
- *		len[in]: Unsigned integer that is how many bytes to read from the buffer.
+ *		s[out]:		Character pointer to the string that should be filled by this function.
+ *		length[in]: Unsigned integer that is how many bytes to read from the buffer.
  *	Returns
- *		Integer that is TRUE if a return character was received, FALSE if it is still
- *		waiting for the end of line.
+ *		Unsigned integer that is TRUE if a return character was received, FALSE if
+ *		it is still waiting for the end of line.
  */
-int getStringUART2(char *s, unsigned int len) {
+unsigned int getStringUART2(char *s, const unsigned int length) {
 	static int eol = 1;				// End of input string flag
 	static unsigned int buf_len;	// Number of received characters
 	static char *p1;				// copy #1 of the buffer pointer 
@@ -155,11 +142,11 @@ int getStringUART2(char *s, unsigned int len) {
 		p1 = s;						// receiving characters and one for marking
 		p2 = s;						// the starting address of the string.  The
 		eol = 0;					// second copy is needed for backspacing.
-		buf_len = len;				// Save maximum buffer length
+		buf_len = length;			// Save maximum buffer length
 	}
 
-	if (!(getCharacterUART2(&ch))) {// Check for character received
-		return 0;					// Bail out if not 
+	if (getCharacterUART2(&ch) == UART2_NO_NEW_DATA_AVAILABLE) {
+		return UART2_STILL_PARSING;
 	}
 	else {
 		*p1 = ch;					// Save new character in string buffer
@@ -185,10 +172,11 @@ int getStringUART2(char *s, unsigned int len) {
 
 	if (buf_len == 0 || eol) {		// Check for buffer full or end of line
 		*p1 = '\0';					// add null terminate the string
-		return 1;					// Set EOL flag 
+		
+		return UART2_DONE_PARSING;
 	}
 
-	return 1;						// Not EOL
+	return UART2_STILL_PARSING;
 }
 
 /*
@@ -212,7 +200,7 @@ void restartDMATransfer(void) {
  *  Parameters
  *		None.
  *	Returns
- *		unsigned int that corresponds to whether or not the initialization was successful.
+ *		Unsigned integer that corresponds to whether or not the initialization was successful.
  *	Notes
  *		The DMA stores UART2 messages in privateDMABuffer, and completed messages are transfered to DMABuffer
  */
@@ -235,6 +223,9 @@ static unsigned int initializeDMAUART2RX(void) {
 
 	// Enable the DMA channel now that it's been configured
 	DmaChnEnable(DMAChannel);
+	
+	// Make sure the DMA is valid right-away.
+	restartDMATransfer();
 
 	return NO_ERROR;
 }

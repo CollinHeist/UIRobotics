@@ -17,19 +17,26 @@
 
 // Application included files
 #include "uart4.h"  // Monitor UART
-#include "uart3.h"
+#include "uart3.h"	// Arduino UART
 #include "uart2.h"  // GPS UART
 #include "Motor.h"
 
 /* -------------------------- Global Variables and Structures --------------------------- */
 
 extern char DMABuffer[DMA_BUFFER_SIZE+1];
-char buff[DMA_BUFFER_SIZE+1];
 
-SensorData latestReadings;
+static SensorData latestReadings;
 
 /* ---------------------------------- Public Functions ---------------------------------- */
 
+/*
+ *	Summary
+ *		Main background execution loop.
+ *	Parameters
+ *		None.
+ *	Returns
+ *		If this function returns, something went wrong..
+ */
 int main(void) {
     unsigned int errorFlag = initializeSystem();
 
@@ -37,24 +44,37 @@ int main(void) {
     	return ERROR;
 
     while (1) {
-		putStringUART4(DMABuffer);
-		while(getStringUART4(buff, 256)) {
-			Nop();
+		switch (parseSensorString(&latestReadings)) {
+			case INVALID_STRING:
+				putStringUART4("Invalid string sent from the Arduino.");
+				break;
+			case STILL_PARSING:	break;
+			case DONE_PARSING:
+				// Do something
+				break;
+			default:
+				putStringUART4("Unknown return from parseSensorString().");
+				break;
 		}
-		restartDMATransfer();
-		delayMS(500);
     }
 
     return ERROR;
 }
 
-unsigned int initializeSystem(void) {
+/*
+ *	Summary
+ *		Function to initialize all subsystems on the board.
+ *	Parameters
+ *		None.
+ *	Returns
+ *		Unsigned integer that is ERROR or NO_ERROR for if any initializations failed.
+ */
+static unsigned int initializeSystem(void) {
     unsigned int errorFlag = initializeHardware();
     
     errorFlag |= initializeUART4(PC_UART4_BAUD, PC_UART4_PARITY);
     errorFlag |= initializeUART2(XBEE_UART2_BAUD, XBEE_UART2_PARITY);
 	errorFlag |= initializeUART3(ARDUINO_UART3_BAUD, ARDUINO_UART3_PARITY);
-	restartDMATransfer();
     errorFlag |= initializePWM(MOTOR1_START_PWM_PERCENT, MOTOR2_START_PWM_PERCENT, MOTORS_PWM_FREQUENCY);
     errorFlag |= initializeTemperatureSensors(TEMPERATURE_TIMEOUT_MS);
     errorFlag |= initializeChangeNotice();

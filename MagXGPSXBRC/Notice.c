@@ -19,7 +19,7 @@ static int Status2 = 0;
  *	Parameters
  *		None.
  *	Returns
- *		Unsigned int that corresponds to whether an error occurred or not.
+ *		Unsigned integer that corresponds to whether an error occurred or not.
  */
 unsigned int initializeChangeNotice(void)  {
 	PORTSetPinsDigitalIn(IOPORT_C, BIT_13 | BIT_14); // Declare BTND as CN pin as input

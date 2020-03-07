@@ -15,17 +15,17 @@ static unsigned int t2_tick;	// Internal variable used for T2 tick
  *	Summary
  *		Initialize the PWM motor outputs to a given starting duty cycle and operating frequency.
  *	Parameters
- *		m1DutyCycle[in]: unsigned int that is the percent [0-100] to start motor 1 at.
- *		m2DutyCycle[in]: unsigned int that is the percent [0-100] to start motor 2 at.
- *		pwmFreq[in]: unsigned int that corresponds to what frequency Timer 2 should operate at.
+ *		m1DutyCycle[in]: Unsigned integer that is the percent [0-100] to start motor 1 at.
+ *		m2DutyCycle[in]: Unsigned integer that is the percent [0-100] to start motor 2 at.
+ *		pwmFreq[in]:	 Unsigned integer that corresponds to what frequency Timer 2 should operate at.
  *	Returns
- *		Unsigned int that corresponds to whether an error occurred or not.
+ *		Unsigned integer that corresponds to whether an error occurred or not.
  */
-unsigned int initializePWM(unsigned int m1DutyCycle, unsigned int m2DutyCycle, unsigned int pwmFreq) {
+unsigned int initializePWM(const unsigned int m1DutyCycle, const unsigned int m2DutyCycle, const unsigned int pwmFreq) {
 	// Timer 2 Initialization
 	t2_tick = T2_CLOCK_RATE / pwmFreq;
 	if (t2_tick > MAX_T2_VAL)
-	return ERROR;
+		return ERROR;
 	
 	OpenTimer2(T2_ON | T2_SOURCE_INT | T2_PS_1_1, t2_tick - 1);
 	ConfigIntTimer2(T2_INT_ON | T2_INT_PRIOR_2);
@@ -33,10 +33,10 @@ unsigned int initializePWM(unsigned int m1DutyCycle, unsigned int m2DutyCycle, u
 	
 	// Initialize Motor Pins
 	if (initializeMotorPins() == ERROR)
-	return ERROR;
+		return ERROR;
 	
 	if (m1DutyCycle > 100 || m2DutyCycle > 100)
-	return ERROR;
+		return ERROR;
 
 	// Output Compare Module
 	unsigned int start_val1 = m1DutyCycle * (t2_tick - 1);
@@ -51,21 +51,21 @@ unsigned int initializePWM(unsigned int m1DutyCycle, unsigned int m2DutyCycle, u
  *	Summary
  *		Set the duty cycle for both motors.
  *	Parameters
- *		m1DutyCycle[in]: unsigned int that is the percent [0-100] to start motor 1 at.
- *		m2DutyCycle[in]: unsigned int that is the percent [0-100] to start motor 2 at.
+ *		m1DutyCycle[in]: Unsigned integer that is the percent [0-100] to start motor 1 at.
+ *		m2DutyCycle[in]: Unsigned integer that is the percent [0-100] to start motor 2 at.
  *	Returns
- *		Unsigned int that corresponds to whether an error occurred or not.
+ *		Unsigned integer that corresponds to whether an error occurred or not.
  *	Notes
  *		If either input variable is DONT_UPDATE_PWM (see header), that output isn't changed.
  */
-unsigned int setPWM(unsigned int m1DutyCycle, unsigned int m2DutyCycle) {
+unsigned int setPWM(const unsigned int m1DutyCycle, const unsigned int m2DutyCycle) {
 	if ((m1DutyCycle > 100 && m1DutyCycle != DONT_UPDATE_PWM) || (m2DutyCycle > 100 && m2DutyCycle != DONT_UPDATE_PWM))
-	return ERROR;
+		return ERROR;
 
 	if (m1DutyCycle != DONT_UPDATE_PWM)
-	SetDCOC2PWM((int) ((float) m1DutyCycle / 100.0 * (t2_tick - 1)));
+		SetDCOC2PWM((int) ((float) m1DutyCycle / 100.0 * (t2_tick - 1)));
 	if (m2DutyCycle != DONT_UPDATE_PWM)
-	SetDCOC3PWM((int) ((float) m2DutyCycle / 100.0 * (t2_tick - 1)));
+		SetDCOC3PWM((int) ((float) m2DutyCycle / 100.0 * (t2_tick - 1)));
 
 	return NO_ERROR;
 }
@@ -78,7 +78,7 @@ unsigned int setPWM(unsigned int m1DutyCycle, unsigned int m2DutyCycle) {
  *	Parameters
  *		None.
  *	Returns
- *		Unsigned int that corresponds to whether an error occurred or not.
+ *		Unsigned integer that corresponds to whether an error occurred or not.
  */
 static unsigned int initializeMotorPins(void) {
 	// Motor A1

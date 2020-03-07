@@ -13,15 +13,13 @@
  *	Summary
  *		A blocking millisecond delay function that uses the core timer.
  *	Parameters
- *		ms[in]: unsigned int that signifies the number of milliseconds to delay.
+ *		ms[in]: Unsigned integer that signifies the number of milliseconds to delay.
  *	Returns
  *		None.
  */
-void delayMS(unsigned int ms) {
-	unsigned int tWait, tStart;
-
-	tStart = ReadCoreTimer();
-	tWait = (CORE_MS_TICK_RATE * ms);
+void delayMS(const unsigned int ms) {
+	unsigned int tStart = ReadCoreTimer();
+	unsigned int tWait = (CORE_MS_TICK_RATE * ms);
 
 	while ((ReadCoreTimer() - tStart) < tWait);	// Delay
 }
@@ -30,15 +28,13 @@ void delayMS(unsigned int ms) {
  *	Summary
  *		A blocking microsecond delay function that uses the core timer.
  *	Parameters
- *		us[in]: unsigned int that signifies the number of microseconds to delay.
+ *		us[in]: Unsigned integer that signifies the number of microseconds to delay.
  *	Returns
  *		None.
  */
-void delayUS(unsigned int us) {
-	unsigned int tWait, tStart;
-
-	tStart = ReadCoreTimer();
-	tWait = (CORE_MS_TICK_RATE * us / 1000);
+void delayUS(const unsigned int us) {
+	unsigned int tStart = ReadCoreTimer();
+	unsigned int tWait = (CORE_MS_TICK_RATE * us / 1000);
 
 	while ((ReadCoreTimer() - tStart) < tWait);	// Delay
 }
@@ -47,11 +43,11 @@ void delayUS(unsigned int us) {
  *	Summary
  *		A blocking nanosecond delay function that uses the core timer.
  *	Parameters
- *		ns[in]: unsigned int that signifies the number of nanoseconds to delay.
+ *		ns[in]: Unsigned integer that signifies the number of nanoseconds to delay.
  *	Returns
  *		None.
  */
-void delayNS(unsigned int ns) {
+void delayNS(const unsigned int ns) {
 	unsigned int tWait, tStart;
 
 	tStart = ReadCoreTimer();
@@ -64,25 +60,24 @@ void delayNS(unsigned int ns) {
  *	Summary
  *		A non-blocking millisecond delay function.
  *	Parameters
- *		ms[in]: unsigned int that signifies the number of milliseconds to 'delay'.
+ *		ms[in]: Unsigned integer that signifies the number of milliseconds to 'delay'.
  *	Returns
- *		int that is non-zero (TRUE) if an old delay is in progress, and zero
- *		(FALSE) if no previous delay is in progress.
+ *		Unsigned integer that is DELAY_IN_PROGRESS or NO_DELAY_IN_PROGRESS (see header).
  *	Notes
  *		To check the status of a previous delay, pass a 0 to this function.
  */
-int nonBlockingDelayMS(unsigned int ms) {
+unsigned int nonBlockingDelayMS(const unsigned int ms) {
 	static int delayInProgress = FALSE;
 	static unsigned int tWait, tStart;
 
-	if (delayInProgress == FALSE) {		// New Period
-		tStart = ReadCoreTimer();		// Capture starting time
+	if (delayInProgress == NO_DELAY_IN_PROGRESS) {
+		tStart = ReadCoreTimer();			// Capture starting time
 		tWait = (CORE_MS_TICK_RATE * ms);	// Compute delay period
-		delayInProgress = TRUE;			// Set operation flag
+		delayInProgress = DELAY_IN_PROGRESS;
 	}
 
-	if ((ReadCoreTimer() - tStart) >= tWait)	// Check if period is over
-		delayInProgress = FALSE;
+	if ((ReadCoreTimer() - tStart) >= tWait)// Check if period is over
+		delayInProgress = NO_DELAY_IN_PROGRESS;
 
 	return delayInProgress;
 }

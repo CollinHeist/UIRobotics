@@ -16,12 +16,12 @@
  *	Summary
  *		Initialize UART4 to the desired baud and parity.
  *	Parameters
- *		baud[in]: Frequency the UART bus should operate at.
+ *		baud[in]:	Frequency the UART bus should operate at.
  *		parity[in]: What parity to operate the bus at.
  *	Returns
  *		Unsigned int that corresponds to whether an error occurred or not.
  */
-unsigned int initializeUART4(unsigned int baud, int parity) {
+unsigned int initializeUART4(const unsigned int baud, const unsigned int parity) {
 	RPF12R = 0x02;	// Mapping U4TX to RPF12;
 	U4RXR = 0x09;	// Mapping U4RX to RPF13
 
@@ -68,18 +68,16 @@ void _mon_putc(char c) {
  *	Parameters
  *		ch[in]: Character to be placed in the UART buffer.
  *	Returns
- *		Unsigned int that is either TRUE if a new character was sent, or FALSE if it wasnt.
+ *		Unsigned integer that is either TRUE if a new character was sent, or FALSE if it wasn't.
  */
-unsigned int putCharacterUART4(int ch) {
-	UART_DATA c;
-	unsigned int done = (unsigned int) FALSE;
-	c.data8bit = (char) ch;
+unsigned int putCharacterUART4(const char c) {
 	if (UARTTransmitterIsReady(UART4)) {
-		UARTSendDataByte(UART4, c.data8bit);
-		done = TRUE;
+		UARTSendDataByte(UART4, c);
+		
+		return 1;
 	}
 
-	return done;
+	return 0;
 }
 
 /*
@@ -91,15 +89,14 @@ unsigned int putCharacterUART4(int ch) {
  *		Unsigned int that is either TRUE if a new character was received, or FALSE if none was.
  */
 unsigned int getCharacterUART4(char *ch) {
-	UART_DATA c;
-	unsigned int done = (unsigned int) FALSE;
 	if (UARTReceivedDataIsAvailable(UART4)) {	// wait for new char to arrive
-		c = UARTGetData(UART4);		// read the char from receive buffer
+		UART_DATA c = UARTGetData(UART4);		// read the char from receive buffer
 		*ch = (c.data8bit);
-		done = (unsigned int) TRUE;	// Return new data available flag
+		
+		return TRUE;
 	}
 	
-	return (unsigned int) done;		// Return new data not available flag
+	return FALSE;
 }
 
 /*
@@ -107,10 +104,10 @@ unsigned int getCharacterUART4(char *ch) {
  *		Place a given string on the UART4 buffer.
  *	Parameters
  *		s[in]: Character pointer to the string that should be placed on the buffer.
- *		This string must be null-terminated.
+ *			This string must be null-terminated.
  *	Returns
  *		Unsigned int that is NO_ERROR if the string was successfully sent within
- *		UART4_MAX_SEND_TIME_MS (see header), and ERROR otherwise.
+ *			UART4_MAX_SEND_TIME_MS (see header), and ERROR otherwise.
  */
 unsigned int putStringUART4(const char *s) {
 	// Begin the non-blocking delay and try and send the string for as long as possible
@@ -118,6 +115,8 @@ unsigned int putStringUART4(const char *s) {
 	while (*s) {
 		putCharacterUART4(*s);
 		s++;
+		if (nonBlockingDelayMS(0) == NO_DELAY_IN_PROGRESS)
+			return ERROR;	// More than the maximum send time has passed, return an error
 	}
 
 	return NO_ERROR;
@@ -133,7 +132,7 @@ unsigned int putStringUART4(const char *s) {
  *		Integer that is TRUE if a return character was received, FALSE if it is still
  *		waiting for the end of line.
  */
-int getStringUART4(char *s, unsigned int len) {
+int getStringUART4(char *s, const unsigned int len) {
 	static int eol = TRUE;			// End of input string flag
 	static unsigned int buf_len;	// Number of received characters
 	static char *p1;				// copy #1 of the buffer pointer 

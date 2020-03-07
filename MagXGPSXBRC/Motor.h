@@ -10,7 +10,7 @@
 	#define DONT_UPDATE_PWM		(999)
 
 	// Function Prototypes
-	unsigned int initializePWM(unsigned int m1DutyCycle, unsigned int m2DutyCycle, unsigned int pwmFreq);
-    unsigned int setPWM(unsigned int m1DutyCycle, unsigned int m2DutyCycle);
+	unsigned int initializePWM(const unsigned int m1DutyCycle, const unsigned int m2DutyCycle, const unsigned int pwmFreq);
+    unsigned int setPWM(const unsigned int m1DutyCycle, const unsigned int m2DutyCycle);
     static unsigned int initializeMotorPins(void);
 #endif

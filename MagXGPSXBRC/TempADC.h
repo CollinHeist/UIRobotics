@@ -26,7 +26,7 @@
 
 
 	// Function Prototypes
-	unsigned int initializeTemperatureSensors(unsigned int timeoutMS);
+	unsigned int initializeTemperatureSensors(const unsigned int timeoutMS);
     void readTemperatures(int *t1, int *t2);
     void checkThresholds(float *motor1_scale, float *motor2_scale);
     inline int getTemperature1(void);
